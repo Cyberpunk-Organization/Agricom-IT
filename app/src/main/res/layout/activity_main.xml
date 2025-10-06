@@ -72,11 +72,12 @@
             android:gravity="center">
 
 
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_margin="16dp"
-                android:src=""/>
+<!--            <ImageView-->
+<!--                android:layout_width="64dp"-->
+<!--                android:layout_height="64dp"-->
+<!--                android:layout_margin="16dp"-->
+<!--                android:contentDescription="@string/todo"-->
+<!--                android:src=""/>-->
         </LinearLayout>
 
 
