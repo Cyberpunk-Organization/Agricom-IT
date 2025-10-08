@@ -18,9 +18,7 @@ public class TaskClass {
     public String GetDescription() {return Description;}
     public boolean getIS_Done() {return Is_Done;}
     public Date getDueDate() {return DueDate;}
-    public void setDescription(String description) {
-        Description = description;
-    }
+    public void setDescription(String description) {Description = description;}
     public boolean complete(){return Is_Done = true;}
 
 }
