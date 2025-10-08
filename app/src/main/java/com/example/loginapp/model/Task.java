@@ -1,14 +1,16 @@
-package com.example.loginapp;
+package com.example.loginapp.model;
 
 import java.util.Date;
 
-public class TaskClass {
+public class Task {
     private int TaskID;
     private String Description;
     private boolean Is_Done;
     private Date DueDate;
 
-    public TaskClass(int TaskID, String Description, boolean Is_Done, Date DueDate) {
+    public Task(){}; //Blank constructors is needed as well. Don't remove.
+
+    public Task(int TaskID, String Description, boolean Is_Done, Date DueDate) {
         this.TaskID = TaskID;
         this.Description = Description;
         this.Is_Done = Is_Done;
