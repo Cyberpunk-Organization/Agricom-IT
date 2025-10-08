@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FFF8"
+    tools:context=".DashboardActivity">
+
+    <!--Top Bar-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="#E8F5E9"
+        android:elevation="4dp">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/agricom_logo"
+            android:contentDescription="App Logo"
+            android:layout_alignParentStart="true"
+            android:adjustViewBounds="true"/>
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/icon_account_circle"
+            android:tint="#388E3C"
+            android:contentDescription="Profile Icon"/>
+
+    </RelativeLayout>
+    <!--Farm Map Section-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_corner"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading farm map..."
+            android:textColor="#888"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <!--Bottom Navigation-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        android:background="#FFFFFF"
+        app:itemIconTint="@color/green"
+        app:itemTextColor="@color/green"
+        android:elevation="8dp"/>
+
+</LinearLayout>
