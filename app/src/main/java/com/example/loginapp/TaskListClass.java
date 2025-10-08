@@ -24,7 +24,7 @@ public class TaskListClass extends User,TaskClass {  // need the user class to w
     public User GetUser(){
         // need to get information of the user
 
-        return null; //TODO: Temp return plug. Replace when function is written
+        return null; // TODO: Temp return plug. Replace when function is written
     }
 
     public void addTask(Task newTask){tasks.add(new Task);}
