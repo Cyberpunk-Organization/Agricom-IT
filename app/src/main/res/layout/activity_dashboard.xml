@@ -59,7 +59,9 @@
         app:menu="@menu/bottom_nav_menu"
         android:background="#FFFFFF"
         app:itemIconTint="@color/green"
+        app:itemBackground="@android:color/transparent"
         app:itemTextColor="@color/green"
+        app:labelVisibilityMode="unlabeled"
         android:elevation="8dp"/>
 
 </LinearLayout>
