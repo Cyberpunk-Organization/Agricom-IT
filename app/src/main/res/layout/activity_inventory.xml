@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -52,7 +53,7 @@
             android:id="@+id/btnAddItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/lime"
+            android:backgroundTint="@color/green"
             android:text="Add Item" />
         <View
             android:layout_width="0dp"
@@ -66,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginStart="12dp"
-            android:backgroundTint="@color/lime"
+            android:backgroundTint="@color/green"
             android:text="Sort" />
     </LinearLayout>
 
@@ -117,23 +118,19 @@
         android:layout_height="0dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/tableHeader"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavFragment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" >
 
-    <!-- 🔹 Bottom Navigation Bar -->
-    <LinearLayout
-        android:id="@+id/bottomNav"
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <fragment
+        android:id="@+id/bottomNavFragment"
+        android:name="com.example.loginapp.fragments.BottomNavFragment"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="#E0E0E0"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
