@@ -16,7 +16,7 @@ public class Message {
 
     public Message(){};
 
-    public Message(int MessageID,int SenderID,int ReceiverIDID,String MessageContent){
+    public Message(int MessageID,int SenderID,int ReceiverID,String MessageContent){
         this.MessageID = MessageID;
         this.SenderID = SenderID;
         this.ReceiverID = ReceiverID;
