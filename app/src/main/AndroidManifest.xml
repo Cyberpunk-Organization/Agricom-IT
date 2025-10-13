@@ -21,9 +21,9 @@
         <activity
             android:name=".DashboardActivity"
             android:exported="false" />
-        <activity
-            android:name=".MainPageActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".MainPageActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

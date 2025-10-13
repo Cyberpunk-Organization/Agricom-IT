@@ -9,32 +9,14 @@
     tools:context=".DashboardActivity">
 
     <!--Top Bar-->
-    <RelativeLayout
+    <fragment
+        android:id="@+id/topBarFragment"
+        android:name="com.example.loginapp.fragments.TopBarFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="#E8F5E9"
-        android:elevation="4dp">
-
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/agricom_logo"
-            android:contentDescription="App Logo"
-            android:layout_alignParentStart="true"
-            android:adjustViewBounds="true"/>
-
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/icon_account_circle"
-            android:tint="#388E3C"
-            android:contentDescription="Profile Icon"/>
-
-    </RelativeLayout>
+        android:layout_height="wrap_content" />
     <!--Farm Map Section-->
     <FrameLayout
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.9"
@@ -51,17 +33,10 @@
     </FrameLayout>
 
     <!--Bottom Navigation-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+    <fragment
+        android:id="@+id/bottomNavFragment"
+        android:name="com.example.loginapp.fragments.BottomNavFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="#FFFFFF"
-        app:itemIconTint="@color/green"
-        app:itemBackground="@android:color/transparent"
-        app:itemTextColor="@color/green"
-        app:labelVisibilityMode="unlabeled"
-        android:elevation="8dp"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
