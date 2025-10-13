@@ -4,6 +4,7 @@ package com.example.loginapp.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Message {
     private int MessageID;
@@ -22,6 +23,7 @@ public class Message {
         this.MessageContent = MessageContent;
         this.DateSent = LocalDate.now();
         this.TimeSent = LocalTime.now();
+
     }
 
     public int GetMessageID() {return MessageID;}
@@ -29,6 +31,9 @@ public class Message {
     public int GetSenderID() {return SenderID;}
     public String GetMessageContent() {return MessageContent;}
     public LocalDate GetDateSent() {return DateSent;}
-    public LocalTime GetTimeSent() {return TimeSent;}
+    public String GetTimeSent() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return TimeSent.format(formatter);
+    }
 
 }
