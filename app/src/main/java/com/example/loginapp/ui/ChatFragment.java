@@ -21,7 +21,7 @@ public class ChatFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentChatBinding.inflate(inflater, container, false);
         // Example: set welcome text
-        binding.welcomeText.setText("Welcome to your Dashboard!");
+        binding.welcomeText.setText("Welcome to your Chats!");
         return binding.getRoot();
     }
 
