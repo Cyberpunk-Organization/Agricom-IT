@@ -26,7 +26,6 @@ public class InventoryFragment extends Fragment {
 
         // Example: set text on a TextView in fragment_inventory.xml
         // Make sure you actually have a TextView with android:id="@+id/inventoryText"
-        binding.inventoryText.setText("Welcome to Inventory!");
 
         return binding.getRoot();
     }
