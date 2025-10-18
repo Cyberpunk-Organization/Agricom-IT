@@ -2,20 +2,17 @@ package com.example.loginapp.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.loginapp.R;
-import com.example.loginapp.databinding.FragmentBottomNavBinding;
 import com.example.loginapp.ui.HomeFragment;
 import com.example.loginapp.ui.InventoryFragment;
 import com.example.loginapp.ui.SettingsFragment;
+import com.example.loginapp.ui.ToDoListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BottomNavFragment extends Fragment {
@@ -37,6 +34,8 @@ public class BottomNavFragment extends Fragment {
                 fm.beginTransaction().replace(R.id.contentFrame, new InventoryFragment()).commit();
             } else if (id == R.id.nav_settings) {
                 fm.beginTransaction().replace(R.id.contentFrame, new SettingsFragment()).commit();
+            }else if (id == R.id.nav_list) {
+                fm.beginTransaction().replace(R.id.contentFrame, new ToDoListFragment()).commit();
             }
             return true;
         });
