@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.loginapp.databinding.FragmentChatBinding;
 
 public class ChatFragment extends Fragment {
-    private FragmentHomeBinding binding;
+    private FragmentChatBinding binding;
 
     @Nullable
     @Override
