@@ -9,17 +9,38 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.loginapp.R;
 import com.example.loginapp.databinding.FragmentBottomNavBinding;
+import com.example.loginapp.ui.HomeFragment;
+import com.example.loginapp.ui.InventoryFragment;
+import com.example.loginapp.ui.SettingsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BottomNavFragment extends Fragment {
 
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater,
-                                 @Nullable ViewGroup container,
-                                 @Nullable Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_bottom_nav, container, false);
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_bottom_nav, container, false);
+
+        BottomNavigationView bottomNav = view.findViewById(R.id.bottom_nav);
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment parentFragment = getParentFragment();
+            FragmentManager fm = getParentFragmentManager();
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                fm.beginTransaction().replace(R.id.contentFrame, new HomeFragment()).commit();
+            } else if (id == R.id.nav_inventory) {
+                fm.beginTransaction().replace(R.id.contentFrame, new InventoryFragment()).commit();
+            } else if (id == R.id.nav_settings) {
+                fm.beginTransaction().replace(R.id.contentFrame, new SettingsFragment()).commit();
+            }
+            return true;
+        });
+
+        return view;
     }
+}

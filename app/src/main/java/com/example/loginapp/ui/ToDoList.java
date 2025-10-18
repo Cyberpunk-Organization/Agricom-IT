@@ -23,7 +23,7 @@ public class ToDoList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editTextTask = findViewById(R.id.editTextTask);
+//        editTextTask = findViewById(R.id.editTextTask); TODO see todo layout
         buttonAdd = findViewById(R.id.buttonAdd);
         listViewTasks = findViewById(R.id.listViewTasks);
 
