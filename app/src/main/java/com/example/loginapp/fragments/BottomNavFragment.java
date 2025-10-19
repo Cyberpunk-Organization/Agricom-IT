@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.loginapp.R;
+import com.example.loginapp.ui.ChatFragment;
 import com.example.loginapp.ui.HomeFragment;
 import com.example.loginapp.ui.InventoryFragment;
 import com.example.loginapp.ui.SettingsFragment;
@@ -36,7 +37,9 @@ public class BottomNavFragment extends Fragment {
                 fm.beginTransaction().replace(R.id.contentFrame, new SettingsFragment()).commit();
             }else if (id == R.id.nav_list) {
                 fm.beginTransaction().replace(R.id.contentFrame, new ToDoListFragment()).commit();
-            }
+            }else if (id == R.id.nav_chat) {
+            fm.beginTransaction().replace(R.id.contentFrame, new ChatFragment()).commit();
+        }
             return true;
         });
 
