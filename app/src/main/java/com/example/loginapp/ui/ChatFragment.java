@@ -6,11 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.example.loginapp.databinding.FragmentChatBinding;
+import com.example.loginapp.R;
 
 public class ChatFragment extends Fragment {
-    private FragmentChatBinding binding;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.chat_list_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        //recyclerView.setAdapter(new ChatListAdapter(chatData));
+
+        return view;
+    }
 }
