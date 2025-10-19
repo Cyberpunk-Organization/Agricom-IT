@@ -29,8 +29,8 @@
             android:layout_height="36dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/icon_account_circle"
-            android:tint="#388E3C"
-            android:contentDescription="Profile Icon"/>
+            android:contentDescription="Profile Icon"
+            app:tint="#388E3C" />
     </RelativeLayout>
 
     <!--Search Bar-->
@@ -48,7 +48,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@android:drawable/ic_menu_search"
-            android:tint="#388E3C"/>
+            app:tint="#388E3C" />
 
         <EditText
             android:layout_width="match_parent"
@@ -57,7 +57,6 @@
             android:background="@android:color/transparent"
             android:paddingStart="8dp"/>
     </LinearLayout>
-
     <!--Most Recent Label-->
     <TextView
         android:id="@+id/most_recent_label"
