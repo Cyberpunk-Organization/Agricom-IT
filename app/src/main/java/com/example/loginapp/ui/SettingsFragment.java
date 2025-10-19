@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.loginapp.MainActivity;
 import com.example.loginapp.R;
 
 
@@ -24,7 +27,8 @@ public class SettingsFragment extends Fragment {
 
         view.findViewById(R.id.logout_layout).setOnClickListener(v -> {
             Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();
-            // Add logout logic here
+            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            startActivity(intent);
         });
 
 
