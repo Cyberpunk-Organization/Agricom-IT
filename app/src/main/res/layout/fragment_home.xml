@@ -6,19 +6,5 @@
     android:gravity="center"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome to your Dashboard!"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
-
-    <Button
-        android:id="@+id/btnQuickInventory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Inventory"/>
 
 </LinearLayout>

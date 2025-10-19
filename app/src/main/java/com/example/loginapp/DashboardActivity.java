@@ -24,6 +24,5 @@ public class DashboardActivity extends AppCompatActivity {
                     .replace(binding.contentFrame.getId(), new HomeFragment())
                     .commit();
         }
-
     }
 }
