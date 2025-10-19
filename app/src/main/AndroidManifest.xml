@@ -15,12 +15,9 @@
         <activity
             android:name=".ChatConversationActivity"
             android:exported="false" />
-        <activity
-            android:name=".ChatListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".DashboardActivity"-->
+<!--            android:exported="false" />-->
 <!--        <activity-->
 <!--            android:name=".MainPageActivity"-->
 <!--            android:exported="false" />-->
