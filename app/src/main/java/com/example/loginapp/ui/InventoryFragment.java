@@ -39,6 +39,8 @@ public class InventoryFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.rvInventory);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        btnAddItem =view.findViewById(R.id.btnAddItem);
         btnSort = view.findViewById(R.id.btnSort);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -52,6 +54,20 @@ public class InventoryFragment extends Fragment {
 
         adapter = new InventoryAdapter(inventoryList);
         recyclerView.setAdapter(adapter);
+
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewItem();
+            }
+        });
+
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortItemsByName();
+            }
+        });
 
         return view;
     }
