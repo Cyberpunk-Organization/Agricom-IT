@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
     android:background="#FFFFFF">
 
     <EditText
-        android:="@+id/editTextTask"
+        android:id="@+id/editTextTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_a_new_task"
+        android:hint="Enter a new task"
         android:padding="10dp"
         android:background="@android:drawable/edit_text"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"/>
 
     <Button
         android:id="@+id/buttonAdd"
@@ -22,14 +21,12 @@
         android:layout_height="wrap_content"
         android:text="Add Task"
         android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="10dp"/>
 
-    <ListView
-        android:id="@+id/listViewTasks"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
-
+        android:layout_weight="1"/>
 </LinearLayout>

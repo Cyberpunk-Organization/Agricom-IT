@@ -16,6 +16,8 @@ public class Task {
         this.Is_Done = Is_Done;
         this.DueDate = DueDate;
     }
+
+
     public int GetTaskID() {return TaskID;}
     public String GetDescription() {return Description;}
     public boolean getIS_Done() {return Is_Done;}
