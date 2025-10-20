@@ -33,9 +33,11 @@ public class SettingsFragment extends Fragment {
 
 
         view.findViewById(R.id.about_layout).setOnClickListener(v -> {
-            Toast.makeText(getContext(), "App version 1.0.0", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), "Special Thanks to EvolutionAnywhere: https://evolutionanywhere.com/",Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), "Special Thanks to VirtuoCloud: https://virtuocloud.co.za/",Toast.LENGTH_SHORT).show();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.contentFrame, new AboutFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
 
         return view;
