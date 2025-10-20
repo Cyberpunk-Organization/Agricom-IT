@@ -23,7 +23,7 @@ public class SettingsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         view.findViewById(R.id.logout_layout).setOnClickListener(v -> {
             Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();
