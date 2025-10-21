@@ -1,41 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
-        android:contentDesription="@string/app_name"
-        android:src="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:id="@+id/tvTitle"
+    <!-- Main column container -->
+    <LinearLayout
+        android:id="@+id/about_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="About Us"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="20dp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Argicom-IT was developed by Eduvos student by: Graham.R, Mathews.DT,
-        Amsenga.E, Fitzgerald.R, Mphonyo.TL, Madilonga.M. Argicom-IT is a platform
-        that accomdates the needs for farmers by provding effective communication, manage
-        inventory and task."
-        android:textSize="14sp"
-        android:gravity="center"
-        android:layout_marginTop="12dp"
-        android:lineSpacingExtra="2dp" />
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/app_name"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher" /> <!-- TODO: Need to add image of the company -->
 
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About Us"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="20dp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Argicom-IT was developed by Eduvos students: Graham R., Mathews D.T., Amsenga E., Fitzgerald R., Mphonyo T.L., Madilonga M. Argicom-IT is a platform that accommodates farmers' needs by providing effective communication, inventory management and task management."
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="2dp" />
+
+        <TextView
+            android:id="@+id/tvSpecialTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Special Thanks To:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <!-- Company 1 container -->
+        <LinearLayout
+            android:id="@+id/EvolutionAnywhere_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp">
+
+            <ImageView
+                android:id="@+id/EvolutionAnywhere_logo"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/ic_launcher_round"<!-- TODO: Need to add image of the company -->
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/EvolutionAnywhere_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Provided the server infrastructure for this project."
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/EvolutionAnywhere_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visit website"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Company 2 container -->
+        <LinearLayout
+            android:id="@+id/VirtuoCloud_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp">
+
+            <ImageView
+                android:id="@+id/VirtuoCloud_logo"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/ic_launcher_round"<!-- TODO: Need to add image of the company -->
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/VirtuoCloud_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Provided permission to use the domain hosting services."
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/VirtuoCloud_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visit website"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- How they helped text (kept separate under containers) -->
+        <TextView
+            android:id="@+id/how_they_helped_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="A heartfelt thank you to the directors - not only powering this platform, but also for the invaluable knowledge, guidance, and support throughout our academic journey."
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginBottom="24dp" />
+
+    </LinearLayout>
+</ScrollView>
