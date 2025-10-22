@@ -7,6 +7,7 @@
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.Button;
+    import android.widget.ImageView;
 
     import androidx.annotation.NonNull;
     import androidx.annotation.Nullable;
@@ -22,6 +23,13 @@
                                  @Nullable ViewGroup container,
                                  @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_about, container, false);
+
+            ImageView myImage = view.findViewById(R.id.imgLogo);
+            myImage.setOnClickListener(v -> {
+                String url = "https://afrimart.virtuocloud.co.za/woofels.html";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            });
 
             Button evoButton = view.findViewById(R.id.EvolutionAnywhere_button);
 

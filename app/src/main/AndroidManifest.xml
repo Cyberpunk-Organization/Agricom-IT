@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +17,8 @@
         android:theme="@style/Theme.LoginApp"
         tools:targetApi="33"
         android:enableOnBackInvokedCallback="true">
+        <meta-data android:name="osmdroid.basePath" android:value="osmdroid" />
+        <meta-data android:name="osmdroid.tileCache" android:value="tile" />
         <activity
             android:name=".ChatConversationActivity"
             android:exported="false" />
