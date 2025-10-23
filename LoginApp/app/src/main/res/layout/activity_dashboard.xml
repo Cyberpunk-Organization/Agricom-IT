@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FFF8"
+    tools:context=".DashboardActivity">
+
+    <!-- Top Bar -->
+    <fragment
+        android:id="@+id/topBarFragment"
+        android:name="com.example.loginapp.fragments.TopBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Content area (fragments get swapped here) -->
+    <FrameLayout
+        android:id="@+id/contentFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_corner"
+        android:elevation="2dp"/>
+
+    <!-- Bottom Navigation -->
+    <fragment
+        android:id="@+id/bottomNavFragment"
+        android:name="com.example.loginapp.fragments.BottomNavFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
