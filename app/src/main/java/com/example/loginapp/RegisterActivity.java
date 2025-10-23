@@ -1,74 +1,8 @@
-/*
-package com.example.loginapp;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-
-public class RegisterActivity extends AppCompatActivity {
-
-    private EditText usernameInput, emailInput, passwordInput, confirmPasswordInput;
-    private Button registerBtn;
-    private TextView tvBackToLogin;
-    private Spinner roleSpinner;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
-        usernameInput = findViewById(R.id.username_input);
-        emailInput = findViewById(R.id.email_input);
-        passwordInput = findViewById(R.id.password_input);
-        confirmPasswordInput = findViewById(R.id.confirm_password_input);
-        registerBtn = findViewById(R.id.register_btn);
-        tvBackToLogin = findViewById(R.id.tvBackToLogin);
-        roleSpinner = findViewById(R.id.role_spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.user_roles,
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        roleSpinner.setAdapter(adapter);
-
-        registerBtn.setOnClickListener(v -> {
-            String username = usernameInput.getText().toString();
-            String email = emailInput.getText().toString();
-            String password = passwordInput.getText().toString();
-            String confirmPassword = confirmPasswordInput.getText().toString();
-
-            if (!password.equals(confirmPassword)) {
-                Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
-            } else{
-                Toast.makeText(this, "Registered successfully!", Toast.LENGTH_SHORT).show();
-
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        tvBackToLogin.setOnClickListener(v -> {
-            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-            finish();
-        });
-    }
-
-}*/
-
 package com.example.loginapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
+// import android.content.SharedPreferences; // No longer needed here
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -81,10 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginapp.api.AuthApiService;
 import com.example.loginapp.api.ApiClient;
-import com.example.loginapp.model.LoginResponse;
+// No longer need LoginResponse, User, or Gson here
 import com.example.loginapp.model.RegisterRequest;
-import com.example.loginapp.model.User;
-import com.google.gson.Gson;
+import com.example.loginapp.model.RegisterResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,9 +32,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    private static final String PREFS_NAME = "app_prefs";
-    private static final String PREFS_USER_KEY = "user";
-    private static final String PREFS_TOKEN_KEY = "token";
+    // These are not needed in RegisterActivity anymore
+    // private static final String PREFS_NAME = "app_prefs";
+    // private static final String PREFS_USER_KEY = "user";
+    // private static final String PREFS_TOKEN_KEY = "token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
             String confirmPassword = confirmPasswordInput.getText().toString().trim();
             String role = roleSpinner.getSelectedItem() != null ? roleSpinner.getSelectedItem().toString() : "";
 
-            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || role.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -150,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         tvBackToLogin.setOnClickListener(v -> {
+            // This should go to the login screen, which is MainActivity
             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
             finish();
         });
@@ -159,40 +94,39 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.show();
 
         AuthApiService apiService = ApiClient.getService();
-        Call<LoginResponse> call = apiService.register(request);
+        Call<RegisterResponse> call = apiService.register(request);
 
-        call.enqueue(new Callback<LoginResponse>() {
+        // Corrected Callback to use RegisterResponse
+        call.enqueue(new Callback<RegisterResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful() && response.body() != null) {
-                    LoginResponse loginResponse = response.body();
-                    Toast.makeText(RegisterActivity.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    RegisterResponse registerResponse = response.body();
+                    // Display the message from the server (e.g., "Registration successful")
+                    Toast.makeText(RegisterActivity.this, registerResponse.getMessage(), Toast.LENGTH_LONG).show();
 
-                    int userId = loginResponse.getUserId();
-                    // construct User (name/surname unknown here so pass empty strings)
-                    User user = new User(userId, request.getEmail(), "", "", request.getUsername(), request.getRole());
-
-                    // save user and token
-                    SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    Gson gson = new Gson();
-                    editor.putString(PREFS_USER_KEY, gson.toJson(user));
-                    if (loginResponse.getToken() != null) {
-                        editor.putString(PREFS_TOKEN_KEY, loginResponse.getToken());
+                    // Check the status from the response
+                    if ("success".equalsIgnoreCase(registerResponse.getStatus())) {
+                        // On success, redirect the user to the login screen to sign in
+                        Toast.makeText(RegisterActivity.this, "Registration successful. Please log in.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        finish(); // Finish RegisterActivity so the user can't go back to it
+                    } else {
+                        // Handle cases where registration was not successful but the server responded
+                        // For example, if the username or email is already taken
+                        Toast.makeText(RegisterActivity.this, "Registration failed: " + registerResponse.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                    editor.apply();
-
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Registration failed: " + response.code(), Toast.LENGTH_LONG).show();
+                    // Handle unsuccessful responses (e.g., 404, 500)
+                    Toast.makeText(RegisterActivity.this, "Registration failed with code: " + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<RegisterResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                // Handle network errors or other failures
                 Toast.makeText(RegisterActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
