@@ -27,10 +27,10 @@ public class ChatFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<User> mockUsers = new ArrayList<>();
-        mockUsers.add(new User(1, "alice@example.com", "Alice", "Smith", "AliceS"));
-        mockUsers.add(new User(2, "bob@example.com", "Bob",  "Jones", "BobJ"));
-        mockUsers.add(new User(3, "carol@example.com", "Carol",  "White", "CarolW"));
-        mockUsers.add(new User(4, "dave@example.com", "Dave",  "Brown", "DaveB"));
+        mockUsers.add(new User(1, "alice@example.com", "Alice", "Smith", "AliceS", "cool"));
+        mockUsers.add(new User(2, "bob@example.com", "Bob",  "Jones", "BobJ", "epic"));
+        mockUsers.add(new User(3, "carol@example.com", "Carol",  "White", "CarolW", "awesome"));
+        mockUsers.add(new User(4, "dave@example.com", "Dave",  "Brown", "DaveB", "test"));
 
         recyclerView.setAdapter(new ChatListAdapter(getContext(), mockUsers));
 

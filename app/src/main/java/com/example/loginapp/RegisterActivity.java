@@ -101,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner roleSpinner;
 
     // Change to your real endpoint (use HTTPS)
-    private static final String REGISTER_URL = "https://your-server.com/register.php";
+    private static final String REGISTER_URL = "https://afrimart.virtuocloud.co.za/api/register.php";
 
     private ProgressDialog progressDialog;
     private RequestQueue requestQueue;
