@@ -79,20 +79,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.loginapp.api.AuthApiService;
+import com.example.loginapp.api.ApiClient;
+import com.example.loginapp.model.LoginResponse;
+import com.example.loginapp.model.RegisterRequest;
+import com.example.loginapp.model.User;
+import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -101,13 +97,11 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvBackToLogin;
     private Spinner roleSpinner;
 
-    // Change to your real endpoint (use HTTPS)
-    private static final String REGISTER_URL = "https://afrimart.virtuocloud.co.za/api/register.php";
-
     private ProgressDialog progressDialog;
-    private RequestQueue requestQueue;
 
     private static final String PREFS_NAME = "app_prefs";
+    private static final String PREFS_USER_KEY = "user";
+    private static final String PREFS_TOKEN_KEY = "token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roleSpinner.setAdapter(adapter);
 
-        requestQueue = Volley.newRequestQueue(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Registering...");
@@ -138,11 +131,11 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(v -> {
             String username = usernameInput.getText().toString().trim();
             String email = emailInput.getText().toString().trim();
-            String password = passwordInput.getText().toString();
-            String confirmPassword = confirmPasswordInput.getText().toString();
-            String role = roleSpinner.getSelectedItem().toString();
+            String password = passwordInput.getText().toString().trim();
+            String confirmPassword = confirmPasswordInput.getText().toString().trim();
+            String role = roleSpinner.getSelectedItem() != null ? roleSpinner.getSelectedItem().toString() : "";
 
-            if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -152,9 +145,8 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // Optionally: validate email format, password strength, etc.
-
-            registerUser(username, email, password, role);
+            RegisterRequest request = new RegisterRequest(username, email, password, role);
+            registerWithRetrofit(request);
         });
 
         tvBackToLogin.setOnClickListener(v -> {
@@ -163,75 +155,46 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String username, String email, String password, String role) {
+    private void registerWithRetrofit(RegisterRequest request) {
         progressDialog.show();
 
-        // Prepare JSON payload
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("username", username);
-            jsonBody.put("email", email);
-            jsonBody.put("password", password);
-            jsonBody.put("role", role);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error creating JSON request.", Toast.LENGTH_SHORT).show();
-            progressDialog.dismiss();
-            return;
-        }
+        AuthApiService apiService = ApiClient.getService();
+        Call<LoginResponse> call = apiService.register(request);
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                REGISTER_URL,
-                jsonBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject json) {
-                        progressDialog.dismiss();
-                        boolean success = json.optBoolean("success", false);
-                        String message = json.optString("message", "Unknown response");
-
-                        if (success) {
-                            JSONObject user = json.optJSONObject("user");
-                            String token = json.optString("token", "");
-
-                            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                            SharedPreferences.Editor editor = prefs.edit();
-                            if (token != null && !token.isEmpty()) editor.putString("auth_token", token);
-                            if (user != null) {
-                                editor.putString("UserID", user.optString("UserID", ""));
-                                editor.putString("username", user.optString("username", ""));
-                                editor.putString("email", user.optString("email", ""));
-                                editor.putString("role", user.optString("role", ""));
-                            }
-                            editor.apply();
-
-                            Toast.makeText(RegisterActivity.this, "Registered successfully!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Registration failed: " + message, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
-                        String errorMsg = (error.getMessage() != null) ? error.getMessage() : "Network error";
-                        Toast.makeText(RegisterActivity.this, "Error: " + errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                }
-        ) {
+        call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json; charset=UTF-8");
-                return headers;
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful() && response.body() != null) {
+                    LoginResponse loginResponse = response.body();
+                    Toast.makeText(RegisterActivity.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    int userId = loginResponse.getUserId();
+                    // construct User (name/surname unknown here so pass empty strings)
+                    User user = new User(userId, request.getEmail(), "", "", request.getUsername(), request.getRole());
+
+                    // save user and token
+                    SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    Gson gson = new Gson();
+                    editor.putString(PREFS_USER_KEY, gson.toJson(user));
+                    if (loginResponse.getToken() != null) {
+                        editor.putString(PREFS_TOKEN_KEY, loginResponse.getToken());
+                    }
+                    editor.apply();
+
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Registration failed: " + response.code(), Toast.LENGTH_LONG).show();
+                }
             }
-        };
 
-        requestQueue.add(jsonRequest);
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(RegisterActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
 }
