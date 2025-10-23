@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/agricom_logo"
+        android:padding="10dp"
+        android:textColor="#FFF"/>
+
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="#AAA"/>
+</LinearLayout>
