@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">AgriCom-IT</string>
     <string name="todo">TODO</string>
+    <string name="placeholder_due_date">placeholder due date</string>
+    <string name="placeholder_status">placeholder status</string>
     <string-array name="user_roles">
         <item>User</item>
         <item>Admin</item>

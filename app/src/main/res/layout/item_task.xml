@@ -5,49 +5,61 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="?android:attr/selectableItemBackground">
-
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+    android:background="@drawable/border_style">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="4dp">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvDueDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:textColor="#666" />
-
-        <TextView
-            android:id="@+id/tvStatus"
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF5722" />
+            android:gravity="start"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:id="@+id/buttonDelete"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_delete"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Task"
-            app:tint="@android:color/holo_red_dark" />
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
 
+            <TextView
+                android:id="@+id/tvDueDate"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_due_date"
+                android:layout_weight="1"
+                android:textColor="#666"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_status"
+                android:textSize="14sp"
+                android:textColor="#FF5722" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/buttonDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@android:drawable/ic_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete Task"
+                app:tint="@android:color/holo_red_dark" />
+
+        </LinearLayout>
     </LinearLayout>
+
+
+
 </LinearLayout>
