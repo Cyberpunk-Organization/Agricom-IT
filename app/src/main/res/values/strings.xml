@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoginApp</string>
+    <string name="app_name">AgriCom-IT</string>
     <string name="todo">TODO</string>
     <string-array name="user_roles">
         <item>User</item>
