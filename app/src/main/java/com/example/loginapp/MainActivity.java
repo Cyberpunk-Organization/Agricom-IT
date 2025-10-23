@@ -1,5 +1,7 @@
 package com.example.loginapp;
 
+import static com.example.loginapp.api.ApiClient.retrofit;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +22,6 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-
-
 
     private EditText usernameInput;
     private EditText passwordInput;

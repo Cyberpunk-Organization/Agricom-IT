@@ -28,12 +28,12 @@
 <!--        <activity-->
 <!--            android:name=".MainPageActivity"-->
 <!--            android:exported="false" />-->
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".DashboardActivity"/>
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
