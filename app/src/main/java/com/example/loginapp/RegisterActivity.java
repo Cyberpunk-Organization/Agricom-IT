@@ -84,6 +84,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -165,71 +166,72 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(String username, String email, String password, String role) {
         progressDialog.show();
 
-        StringRequest sr = new StringRequest(Request.Method.POST, REGISTER_URL,
-                new Response.Listener<String>() {
+        // Prepare JSON payload
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("username", username);
+            jsonBody.put("email", email);
+            jsonBody.put("password", password);
+            jsonBody.put("role", role);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error creating JSON request.", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+            return;
+        }
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                REGISTER_URL,
+                jsonBody,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject json) {
                         progressDialog.dismiss();
-                        try {
-                            JSONObject json = new JSONObject(response);
-                            boolean success = json.optBoolean("success", false);
-                            String message = json.optString("message", "Unknown response from server");
+                        boolean success = json.optBoolean("success", false);
+                        String message = json.optString("message", "Unknown response");
 
-                            if (success) {
-                                // Example expected JSON: { success:true, message:"", user:{id,username,email,role}, token:"..." }
-                                JSONObject user = json.optJSONObject("user");
-                                String token = json.optString("token", "");
+                        if (success) {
+                            JSONObject user = json.optJSONObject("user");
+                            String token = json.optString("token", "");
 
-                                // Save token and user info in SharedPreferences (do not store password)
-                                SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                                SharedPreferences.Editor editor = prefs.edit();
-                                if (token != null && !token.isEmpty()) {
-                                    editor.putString("auth_token", token);
-                                }
-                                if (user != null) {
-                                    editor.putString("UserID", user.optString("UserID", ""));
-                                    editor.putString("username", user.optString("username", ""));
-                                    editor.putString("email", user.optString("email", ""));
-                                    editor.putString("role", user.optString("role", ""));
-                                }
-                                editor.apply();
-
-                                Toast.makeText(RegisterActivity.this, "Registered successfully!", Toast.LENGTH_SHORT).show();
-
-                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                                finish();
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Registration failed: " + message, Toast.LENGTH_LONG).show();
+                            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            if (token != null && !token.isEmpty()) editor.putString("auth_token", token);
+                            if (user != null) {
+                                editor.putString("UserID", user.optString("UserID", ""));
+                                editor.putString("username", user.optString("username", ""));
+                                editor.putString("email", user.optString("email", ""));
+                                editor.putString("role", user.optString("role", ""));
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(RegisterActivity.this, "Invalid server response.", Toast.LENGTH_LONG).show();
+                            editor.apply();
+
+                            Toast.makeText(RegisterActivity.this, "Registered successfully!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Registration failed: " + message, Toast.LENGTH_LONG).show();
                         }
                     }
-                }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        String errorMsg = (error.getMessage() != null) ? error.getMessage() : "Network error";
+                        Toast.makeText(RegisterActivity.this, "Error: " + errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                }
+        ) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                String errMsg = error.getMessage();
-                if (errMsg == null) errMsg = "Network error";
-                Toast.makeText(RegisterActivity.this, "Error: " + errMsg, Toast.LENGTH_LONG).show();
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+                return headers;
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // Send POST params expected by your PHP
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("email", email);
-                params.put("password", password); // send over HTTPS only
-                params.put("role", role);
-                return params;
-            }
-
-            // If you need to set headers (e.g., for JSON), override getBodyContentType or getHeaders()
         };
 
-        // Optionally set retry policy, timeout
-        requestQueue.add(sr);
+        requestQueue.add(jsonRequest);
     }
+
 }
