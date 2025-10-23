@@ -26,9 +26,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "https://afrimart.virtuocloud.co.za";
+    private static final String BASE_URL = "https://afrimart.virtuocloud.co.za/api/";
     // keep retrofit private if you don't want it referenced elsewhere
-    private static Retrofit retrofit = null;
+    public static Retrofit retrofit = null;
 
     // make this public static so other classes can call ApiClient.getService()
     public static AuthApiService getService() {

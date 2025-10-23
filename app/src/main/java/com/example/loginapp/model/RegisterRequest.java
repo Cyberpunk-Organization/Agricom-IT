@@ -1,25 +1,29 @@
 package com.example.loginapp.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class RegisterRequest {
-    @SerializedName("username")
+
+
     private String username;
 
-    @SerializedName("email")
+
     private String email;
 
-    @SerializedName("password")
     private String password;
 
-    @SerializedName("role")
     private String role;
 
-    public RegisterRequest(String username, String email, String password, String role) {
+    private String name;
+
+    private String surname;
+
+
+    public RegisterRequest(String name, String surname, String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+//        this.role = role;
+        this.name = name;
+        this.surname = surname;
     }
 
     // getters (optional setters if you need them)

@@ -69,6 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
             String confirmPassword = confirmPasswordInput.getText().toString().trim();
             String role = roleSpinner.getSelectedItem() != null ? roleSpinner.getSelectedItem().toString() : "";
 
+            //TODO: remove hardcoded data and add input boxes!
+            String name = "test111";
+            String surname = "test222";
+
             if (username.isEmpty() || email.isEmpty() || password.isEmpty() || role.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
@@ -79,7 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            RegisterRequest request = new RegisterRequest(username, email, password, role);
+//            RegisterRequest request = new RegisterRequest(name, surname, username, email, password, role);
+            RegisterRequest request = new RegisterRequest(name, surname, username, email, password);
+
             registerWithRetrofit(request);
         });
 
