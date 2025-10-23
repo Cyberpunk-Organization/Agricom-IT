@@ -187,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     editor.putString("auth_token", token);
                                 }
                                 if (user != null) {
-                                    editor.putString("user_id", user.optString("id", ""));
+                                    editor.putString("UserID", user.optString("UserID", ""));
                                     editor.putString("username", user.optString("username", ""));
                                     editor.putString("email", user.optString("email", ""));
                                     editor.putString("role", user.optString("role", ""));
