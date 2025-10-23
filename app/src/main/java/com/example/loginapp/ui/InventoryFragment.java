@@ -55,19 +55,9 @@ public class InventoryFragment extends Fragment {
         adapter = new InventoryAdapter(inventoryList);
         recyclerView.setAdapter(adapter);
 
-        btnAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewItem();
-            }
-        });
+        btnAddItem.setOnClickListener(v -> addNewItem());
 
-        btnSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortItemsByName();
-            }
-        });
+        btnSort.setOnClickListener(v -> sortItemsByName());
 
         return view;
     }
