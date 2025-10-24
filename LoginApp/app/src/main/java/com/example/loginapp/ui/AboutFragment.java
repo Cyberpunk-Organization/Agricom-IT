@@ -1,4 +1,4 @@
-    package com.example.loginapp.ui;
+    package com.example.agricom_it.ui;
 
     import android.os.Bundle;
     import android.view.LayoutInflater;
@@ -9,7 +9,7 @@
     import androidx.annotation.Nullable;
     import androidx.fragment.app.Fragment;
 
-    import com.example.loginapp.R;
+    import com.example.agricom_it.R;
 
     public class AboutFragment extends Fragment {
 

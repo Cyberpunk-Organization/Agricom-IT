@@ -1,4 +1,4 @@
-package com.example.loginapp;
+package com.example.agricom_it;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.loginapp.R;
-import com.example.loginapp.model.Task;
+import com.example.agricom_it.R;
+import com.example.agricom_it.model.Task;
 
 import java.util.List;
 

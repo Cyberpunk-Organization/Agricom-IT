@@ -1,5 +1,7 @@
 package com.example.agricom_it;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.agricom_it.R;
 import com.example.agricom_it.model.User;
 
 import java.util.List;
@@ -16,8 +17,10 @@ import java.util.List;
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
 
     private List<User> userList;
+    private Context context;
 
-    public ChatListAdapter(List<User> userList) {
+    public ChatListAdapter(Context context, List<User> userList) {
+        this.context = context;
         this.userList = userList;
     }
 
@@ -32,7 +35,15 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         User user = userList.get(position);
-        holder.username.setText(user.getUsername()); // assuming your User model has this
+        holder.username.setText(user.getUsername());
+        holder.lastMessage.setText("Tap to view messages");
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ChatConversationActivity.class);
+            intent.putExtra("receiverID", user.getUserID());
+            intent.putExtra("username", user.getUsername());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -41,11 +52,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
     }
 
     static class ChatViewHolder extends RecyclerView.ViewHolder {
-        TextView username;
+        TextView username, lastMessage;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.chat_username);
+            lastMessage = itemView.findViewById(R.id.chat_last_message);
         }
     }
 }

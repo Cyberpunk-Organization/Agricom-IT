@@ -1,4 +1,4 @@
-package com.example.loginapp.model;
+package com.example.agricom_it.model;
 
 public class User {
 

@@ -1,4 +1,4 @@
-package com.example.loginapp;
+package com.example.agricom_it;
 
 import android.content.Intent;
 import android.os.Bundle;

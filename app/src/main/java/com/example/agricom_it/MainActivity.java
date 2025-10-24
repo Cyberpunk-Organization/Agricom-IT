@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +22,10 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     private EditText usernameInput;
     private EditText passwordInput;
     private Button loginBtn;
+    private TextView register_link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,15 @@ public class MainActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.username_input);
         passwordInput = findViewById(R.id.password_input);
         loginBtn = findViewById(R.id.login_btn);
+        register_link = findViewById(R.id.register_link);
 
         loginBtn.setOnClickListener(v -> loginUser());
+        
+        register_link.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            finish();
+        });
+
     }
 
     private void loginUser() {

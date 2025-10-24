@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LoginApp"
+        android:theme="@style/Theme.Agricom_IT"
         tools:targetApi="33"
         android:enableOnBackInvokedCallback="true">
         <meta-data android:name="osmdroid.basePath" android:value="osmdroid" />

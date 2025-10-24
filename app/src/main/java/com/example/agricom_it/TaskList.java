@@ -1,10 +1,8 @@
 package com.example.agricom_it;
 
 import java.util.List;
-//import com.package.utils.TaskClass; // Wrong package see line below for fix
 import com.example.agricom_it.model.Task;
 import com.example.agricom_it.model.User;
-//import com.package.utils.User; // Trying to import other class but not sure if it works
 
 
 public class TaskList extends Task {  // need the user class to work

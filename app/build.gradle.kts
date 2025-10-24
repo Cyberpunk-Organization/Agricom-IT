@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.loginapp"
+    namespace = "com.example.agricom_it"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.loginapp"
+        applicationId = "com.example.agricom_it"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
