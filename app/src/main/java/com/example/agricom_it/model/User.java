@@ -2,12 +2,14 @@ package com.example.agricom_it.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     //TODO: integrate with api? Else add sql controls to retrieve data
     //TODO: Get the user roles
-    @SerializedName("userID")
-    private int UserID;
+    @SerializedName("id")
+    private int id;
     @SerializedName("Email")
     private String Email;
     @SerializedName("Name")
@@ -21,17 +23,17 @@ public class User {
 
 
     //-------------------------------------------------------------[Constructor]
-    public User() {};
-    public User(int UserID,String Email ,String Name,String Surname, String Username, String Role) {
-        this.UserID = UserID;
-        this.Email = Email;
-        this.Name = Name;
-        this.Surname = Surname;
-        this.Username = Username;
-        this.Role = Role;
-    }
+//    public User() {};
+//    public User(int UserID,String Email ,String Name,String Surname, String Username, String Role) {
+//        this.id = UserID;
+//        this.Email = Email;
+//        this.Name = Name;
+//        this.Surname = Surname;
+//        this.Username = Username;
+//        this.Role = Role;
+//    }
     //---------------------------------------------------------------[getUserID]
-    public int getUserID(){return this.UserID;}
+    public int getUserID(){return id;}
     public String getEmail(){return this.Email;}
     public String getName(){return this.Name;}
     public String getSurname(){return this.Surname;}

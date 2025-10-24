@@ -1,7 +1,9 @@
 package com.example.agricom_it.ui;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +28,14 @@ import java.util.List;
 
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
+import com.example.agricom_it.model.LoginResponse;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.example.agricom_it.model.LoginResponse;
+
+
 
 public class InventoryFragment extends Fragment {
 
@@ -38,13 +45,32 @@ public class InventoryFragment extends Fragment {
     private Button btnAddItem, btnSort;
     private boolean sortAscending = true;
 
+    private final AuthApiService apiService = ApiClient.getService();
+
+    private final String TAG = "InventoryFragment";
+    private int userID = -1;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState)
+    {
 
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
+
+        Log.d(TAG, "onCreateView called"); //TODO: This is logged.
+
+        Bundle args = getArguments();
+
+        Log.d(TAG, "Arguments received: " + args);
+
+        if ( args != null && args.containsKey("userID") )
+        {
+            Log.d(TAG, "Received userID: " + args.getInt("userID"));
+            userID = args.getInt("userID", -1);
+        }
+
 
         recyclerView = view.findViewById(R.id.rvInventory);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

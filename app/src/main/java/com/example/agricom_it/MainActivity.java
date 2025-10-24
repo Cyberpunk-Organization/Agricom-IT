@@ -20,6 +20,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,10 +69,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response)
             {
+
                 if (response.isSuccessful() && response.body() != null)
                 {
 
                     LoginResponse loginResponse = response.body();
+
+//                    Log.d("API_SUCCESS", "LoginResponse received: " + loginResponse);
+//
+//                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//                    String json = gson.toJson(loginResponse);
+//
+//                    Log.d("API_SUCCESS", "LoginResponse JSON: " + json);
+//                    Log.d("API_SUCCESS", "User: " + loginResponse.getUser());
 
                     String message = loginResponse.getMessage();
                     if (message == null || message.trim().isEmpty()) {
@@ -78,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                    Log.d("API_SUCCESS", "Status: " + loginResponse.getStatus());
-                    Log.d("API_SUCCESS", "Message: " + loginResponse.getMessage());
-
-                    Log.d("API_SUCCESS", "Token: " + loginResponse.getToken());
-                    Log.d("API_SUCCESS", "User ID: " + loginResponse.getUserId());
+//                    Log.d("API_SUCCESS", "Status: " + loginResponse.getStatus());
+//                    Log.d("API_SUCCESS", "Message: " + loginResponse.getMessage());
+//
+//                    Log.d("API_SUCCESS", "Token: " + loginResponse.getToken());
+                    Log.d("API_SUCCESS", "User ID: " + loginResponse.getID());
 
 //                    String message = loginResponse.getMessage();
 //                    if (message == null || message.trim().isEmpty()) {
@@ -94,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Login successful. Welcome!", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+
+                        LoginResponse lr = loginResponse;
+                        intent.putExtra("login_id", lr.getID());
+
                         startActivity(intent);
                         finish();
                     }

@@ -10,6 +10,7 @@ import com.example.agricom_it.model.RegisterResponse;
 import java.util.Date;
 import java.util.List;
 import com.example.agricom_it.model.Task;
+import android.util.Log;
 
 
 import retrofit2.Call;
@@ -29,7 +30,7 @@ public interface AuthApiService {
     Call<RegisterResponse> register( @Body RegisterRequest request);
 
 
-    @GET("inventory")
+    @GET("inventory.php")
     Call<String> AddItem( @Body String name, @Body Double cost );
     Call<List<InventoryItem>> UpdateItemName( @Body int ID, @Body String name );
     Call<String> GetItem( @Body int ID );
@@ -42,11 +43,11 @@ public interface AuthApiService {
     Call<String> AddInventory( @Body int FarmID, @Body int ReportID );
     Call<String> UpdateInventory( @Body int FarmID, @Body int InventoryID );
 
-    @GET("farms")
+    @GET("farms.php")
     Call<String> AddFarm(@Body int FarmerID );
     Call<Integer> GetFarmID(@Body int FarmerID );
 
-    @GET("tasks")
+    @GET("tasks.php")
     Call<String> AddTask(@Body Date Duedate, @Body boolean isDone, @Body Task task );
     Call<String> UpdateTask(@Body Date Duedate, @Body boolean isDone, @Body Task task, @Body int TaskID );
     Call<String> RemoveTask(@Body int TaskID );
