@@ -1,10 +1,12 @@
 package com.example.agricom_it.ui;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ public class InventoryFragment extends Fragment {
     private InventoryAdapter adapter;
     private List<InventoryItem> inventoryList;
     private Button btnAddItem, btnSort;
+    private boolean sortAscending = true;
 
     @Nullable
     @Override
@@ -46,8 +49,8 @@ public class InventoryFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rvInventory);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        btnAddItem =view.findViewById(R.id.btnAddItem);
-        btnSort = view.findViewById(R.id.btnSort);
+        btnAddItem =view.findViewById(R.id.btn_add_item);
+        btnSort = view.findViewById(R.id.btn_sort_toggle);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -58,28 +61,76 @@ public class InventoryFragment extends Fragment {
 
         btnAddItem.setOnClickListener(v -> addNewItem());
 
-        btnSort.setOnClickListener(v -> sortItemsByName());
+        btnSort.setOnClickListener(v -> toggleSortByName());
 
         return view;
     }
 
     // Add Item Functionality
     private void addNewItem() {
+        // Inflate a simple dialog layout (you can create it or use AlertDialog builder)
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_item, null);
+        builder.setView(dialogView)
+                .setTitle("Add New Inventory Item")
+                .setPositiveButton("Add", null)   // we override later
+                .setNegativeButton("Cancel", (d, w) -> d.dismiss());
 
-        InventoryItem newItem = new InventoryItem("New Item" + (inventoryList.size() + 1), "Misc", 1);
-        inventoryList.add(newItem);
-        adapter.notifyItemInserted(inventoryList.size() - 1);
+        EditText etName     = dialogView.findViewById(R.id.et_item_name);
+        EditText etQuantity = dialogView.findViewById(R.id.et_item_quantity);
 
-        Toast.makeText(getContext(), "New item added!", Toast.LENGTH_SHORT).show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
+        // Override positive button after show() so we can validate
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String qtyStr = etQuantity.getText().toString().trim();
+
+            if (name.isEmpty()) {
+                etName.setError("Name required");
+                return;
+            }
+            int quantity = 1;
+            if (!qtyStr.isEmpty()) {
+                try { quantity = Integer.parseInt(qtyStr); }
+                catch (NumberFormatException e) {
+                    etQuantity.setError("Invalid number");
+                    return;
+                }
+            }
+            if (quantity <= 0) {
+                etQuantity.setError("Quantity > 0");
+                return;
+            }
+
+            // ---- create the item -------------------------------------------------
+            InventoryItem newItem = new InventoryItem(name, "Misc", quantity);
+            inventoryList.add(newItem);
+            adapter.notifyItemInserted(inventoryList.size() - 1);
+
+            Toast.makeText(requireContext(), "Item added!", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
     }
+    private void toggleSortByName() {
+        sortAscending = !sortAscending;     // flip
 
-    // Sort Button Functionality
-    private void sortItemsByName() {
-        Collections.sort(inventoryList, Comparator.comparing(InventoryItem::getName));
+        Comparator<InventoryItem> comparator = Comparator.comparing(InventoryItem::getName);
+        if (!sortAscending) {
+            comparator = comparator.reversed();
+        }
+
+        Collections.sort(inventoryList, comparator);
         adapter.notifyDataSetChanged();
 
-        Toast.makeText(getContext(), "Items sorted by name", Toast.LENGTH_SHORT).show();
+        // Update button text
+        Button btnSort = requireView().findViewById(R.id.btn_sort_toggle);
+        btnSort.setText(sortAscending ? "Sort: A to Z" : "Sort: Z to A");
+
+        Toast.makeText(requireContext(),
+                "Sorted " + (sortAscending ? "A to Z" : "Z to A"),
+                Toast.LENGTH_SHORT).show();
     }
 }
 

@@ -21,24 +21,21 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
-            android:id="@+id/btnAddItem"
+            android:id="@+id/btn_add_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green"
             android:text="Add Item" />
-
         <View
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="0dp"/>
-
         <Button
-            android:id="@+id/btnSort"
+            android:id="@+id/btn_sort_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:backgroundTint="@color/green"
-            android:text="Sort" />
+            android:text="Sort: A to Z" />
     </LinearLayout>
 
     <!-- 🔹 Table Header -->
