@@ -37,8 +37,8 @@ public interface AuthApiService {
     Call<String> AddItemToInventory( @Body int InventoryID, @Body int ItemID, @Body int Quantity );
     Call<String> UpdateItemQuantity( @Body int InventoryID, @Body int ItemID, @Body int Quantity );
     Call<String> RemoveItemFromInventory( @Body int InventoryID, @Body int ItemID );
-    Call<String> GetItemsFromInventory( @Body int InventoryID );
-    Call<String> GetItemQuantity( @Body int InventoryID, @Body int ItemID );
+//    Call<String> GetItemsFromInventory( @Body int InventoryID );
+//    Call<String> GetItemQuantity( @Body int InventoryID, @Body int ItemID );
     Call<String> AddInventory( @Body int FarmID, @Body int ReportID );
     Call<String> UpdateInventory( @Body int FarmID, @Body int InventoryID );
 
