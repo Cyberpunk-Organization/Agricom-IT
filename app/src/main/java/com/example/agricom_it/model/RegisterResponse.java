@@ -8,27 +8,27 @@ import com.google.gson.annotations.SerializedName;
  */
 public class RegisterResponse {
 
-    @SerializedName("status")
-    private String status;
+    @SerializedName("ok")
+    private String ok;
 
-    @SerializedName("message")
-    private String message;
+    @SerializedName("error")
+    private String error;
 
     // Getters
     public String getStatus() {
-        return status;
+        return ok;
     }
 
     public String getMessage() {
-        return message;
+        return error;
     }
 
     // Setters (optional, but good practice)
     public void setStatus(String status) {
-        this.status = status;
+        this.ok = ok;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.error = error;
     }
 }

@@ -123,7 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
 
                     // Check the status from the response
-                    if ("success".equalsIgnoreCase(registerResponse.getStatus())) {
+                    if ("true".equalsIgnoreCase(registerResponse.getStatus()))
+                    {
                         // On success, redirect the user to the login screen to sign in
                         Toast.makeText(RegisterActivity.this, "Registration successful. Please log in.", Toast.LENGTH_SHORT).show();
 
