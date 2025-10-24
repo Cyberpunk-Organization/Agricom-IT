@@ -62,19 +62,51 @@ public class MainActivity extends AppCompatActivity {
         Call<LoginResponse> call = apiService.login(loginRequest);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    LoginResponse loginResponse = response.body();
-                    Toast.makeText(MainActivity.this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response)
+            {
+                if (response.isSuccessful() && response.body() != null)
+                {
 
-                    Log.i("API_SUCCESS", "Token: " + loginResponse.getToken());
-                    Log.i("API_SUCCESS", "User ID: " + loginResponse.getUserId());
+                    LoginResponse loginResponse = response.body();
+
+                    String message = loginResponse.getMessage();
+                    if (message == null || message.trim().isEmpty()) {
+                        message = "Login successful!";
+                    }
+
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                    Log.d("API_SUCCESS", "Status: " + loginResponse.getStatus());
+                    Log.d("API_SUCCESS", "Message: " + loginResponse.getMessage());
+
+                    Log.d("API_SUCCESS", "Token: " + loginResponse.getToken());
+                    Log.d("API_SUCCESS", "User ID: " + loginResponse.getUserId());
+
+//                    String message = loginResponse.getMessage();
+//                    if (message == null || message.trim().isEmpty()) {
+//                        message = "Login successful!";
+//                    }
+
+                    if ("true".equalsIgnoreCase(loginResponse.getStatus()))
+                    {
+                        Toast.makeText(MainActivity.this, "Login successful. Welcome!", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else
+                    {
+                        Toast.makeText(MainActivity.this, "Login failed with code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
 
                     // TODO: Navigate to DashboardActivity or save token
-                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else{
+//                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+//                    startActivity(intent);
+//                    finish();
+                }
+                else
+                {
                     Toast.makeText(MainActivity.this, "Login failed: " + response.code(), Toast.LENGTH_SHORT).show();
                     Log.e("API_ERROR", "Response Code:" + response.code());
                 }

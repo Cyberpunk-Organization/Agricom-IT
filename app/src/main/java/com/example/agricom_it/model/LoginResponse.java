@@ -1,12 +1,20 @@
 package com.example.agricom_it.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginResponse {
-    private String message;
+    @SerializedName("error")
+    private String error;
+    @SerializedName("token")
     private String token;
+    @SerializedName("userId")
     private int userId;
 
+    @SerializedName("ok")
+    private String ok;
+
     public String getMessage() {
-        return message;
+        return error;
     }
 
     public String getToken() {
@@ -15,5 +23,9 @@ public class LoginResponse {
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getStatus() {
+        return ok;
     }
 }
