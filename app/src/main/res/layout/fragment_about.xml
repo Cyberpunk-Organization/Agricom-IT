@@ -30,7 +30,8 @@
             android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tvMessage"
@@ -40,7 +41,8 @@
             android:textSize="14sp"
             android:gravity="center"
             android:layout_marginTop="12dp"
-            android:lineSpacingExtra="2dp" />
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tvSpecialTitle"
@@ -50,7 +52,8 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
 
         <!-- Company 1 container -->
         <LinearLayout
@@ -62,7 +65,8 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:background="@android:color/white"
-            android:elevation="2dp">
+            android:elevation="2dp"
+            >
 
             <ImageView
                 android:id="@+id/EvolutionAnywhere_logo"
@@ -84,14 +88,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Provided the server infrastructure for this project."
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"/>
 
                 <Button
                     android:id="@+id/EvolutionAnywhere_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Visit website"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/blue"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -119,21 +126,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="12dp">
+                android:layout_marginStart="12dp"
+                android:textColor="@color/black">
 
                 <TextView
                     android:id="@+id/VirtuoCloud_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Provided permission to use the domain hosting services."
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"/>
 
                 <Button
                     android:id="@+id/VirtuoCloud_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Visit website"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/blue"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -145,7 +156,8 @@
             android:layout_marginTop="6dp"
             android:text="A heartfelt thank you to the directors - not only powering this platform, but also for the invaluable knowledge, guidance, and support throughout our academic journey."
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 </ScrollView>
