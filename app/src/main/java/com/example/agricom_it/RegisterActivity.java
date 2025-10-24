@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 // import android.content.SharedPreferences; // No longer needed here
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -111,8 +112,15 @@ public class RegisterActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful() && response.body() != null) {
                     RegisterResponse registerResponse = response.body();
+                    Log.d("REGISTER", "Status: " + registerResponse.getStatus());
+                    Log.d("REGISTER", "Message: " + registerResponse.getMessage());
                     // Display the message from the server (e.g., "Registration successful")
-                    Toast.makeText(RegisterActivity.this, registerResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    String message = registerResponse.getMessage();
+                    if (message == null || message.trim().isEmpty()) {
+                        message = "Registration successful!";
+                    }
+
+                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
 
                     // Check the status from the response
                     if ("success".equalsIgnoreCase(registerResponse.getStatus())) {
