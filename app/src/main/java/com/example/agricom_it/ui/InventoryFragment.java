@@ -22,6 +22,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.example.agricom_it.api.ApiClient;
+import com.example.agricom_it.api.AuthApiService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class InventoryFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -45,12 +51,7 @@ public class InventoryFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Sample data
         inventoryList = new ArrayList<>();
-        inventoryList.add(new InventoryItem("Wheat", "Crop", 120));
-        inventoryList.add(new InventoryItem("Corn", "Crop", 85));
-        inventoryList.add(new InventoryItem("Cows", "Livestock", 20));
-        inventoryList.add(new InventoryItem("Sheep", "Livestock", 45));
 
         adapter = new InventoryAdapter(inventoryList);
         recyclerView.setAdapter(adapter);
