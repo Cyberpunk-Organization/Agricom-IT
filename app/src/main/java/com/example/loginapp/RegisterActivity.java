@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText usernameInput, emailInput, passwordInput, confirmPasswordInput;
+    private EditText nameInput, surnameInput, usernameInput, emailInput, passwordInput, confirmPasswordInput;
     private Button registerBtn;
     private TextView tvBackToLogin;
     private Spinner roleSpinner;
@@ -43,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        nameInput = findViewById(R.id.name_input);
+        surnameInput = findViewById(R.id.surname_input);
         usernameInput = findViewById(R.id.username_input);
         emailInput = findViewById(R.id.email_input);
         passwordInput = findViewById(R.id.password_input);
@@ -64,15 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setMessage("Registering...");
 
         registerBtn.setOnClickListener(v -> {
+            String name = nameInput.getText().toString().trim();
+            String surname = surnameInput.getText().toString().trim();
             String username = usernameInput.getText().toString().trim();
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
             String confirmPassword = confirmPasswordInput.getText().toString().trim();
             String role = roleSpinner.getSelectedItem() != null ? roleSpinner.getSelectedItem().toString() : "";
 
-            //TODO: remove hardcoded data and add input boxes!
-            String name = "test111";
-            String surname = "test222";
 
             if (username.isEmpty() || email.isEmpty() || password.isEmpty() || role.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
