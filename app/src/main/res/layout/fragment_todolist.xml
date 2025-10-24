@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Add Task"
         android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/green"
         android:layout_marginBottom="10dp"/>
 
 

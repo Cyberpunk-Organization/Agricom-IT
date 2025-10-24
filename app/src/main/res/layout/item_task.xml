@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_due_date"
                 android:layout_weight="1"
-                android:textColor="#666"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <TextView

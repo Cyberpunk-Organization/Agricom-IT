@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:text="Logout"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
     <!-- About button section -->
@@ -40,7 +41,8 @@
             android:layout_height="wrap_content"
             android:text="About"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
     <!-- Divider -->
