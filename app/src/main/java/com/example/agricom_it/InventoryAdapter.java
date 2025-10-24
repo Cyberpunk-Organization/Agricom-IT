@@ -32,7 +32,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
     public void onBindViewHolder(@NonNull InventoryViewHolder holder, int position) {
         InventoryItem item = inventoryList.get(position);
         holder.tvStockName.setText(item.getName());
-        holder.tvCategory.setText(item.getCategory());
         holder.tvCount.setText(String.valueOf(item.getCount()));
     }
 
@@ -47,7 +46,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
         public InventoryViewHolder(@NonNull View itemView) {
             super(itemView);
             tvStockName = itemView.findViewById(R.id.tvStockName);
-            tvCategory = itemView.findViewById(R.id.tvCategory);
             tvCount = itemView.findViewById(R.id.tvCount);
         }
     }

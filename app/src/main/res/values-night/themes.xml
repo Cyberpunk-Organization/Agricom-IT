@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight">
-        <item name="colorPrimary">@color/black</item>
-        <item name="android:colorBackground">@color/white</item>  <!-- For older APIs -->
-        <item name="colorOnPrimary">@color/green</item>
-        <item name="colorAccent">@color/blue</item>
+    <style name="Theme.Agricom_IT" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/green</item>
     </style>
 </resources>

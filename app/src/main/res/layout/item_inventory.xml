@@ -13,16 +13,8 @@
         android:layout_weight="2"
         android:text="Wheat"
         android:textSize="15sp"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/tvCategory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Crop"
-        android:textSize="15sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tvCount"
@@ -31,7 +23,7 @@
         android:layout_weight="1"
         android:text="120"
         android:textSize="15sp"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/black"
         android:gravity="center"/>
 
 </LinearLayout>
