@@ -1,20 +1,20 @@
 package com.example.loginapp.model;
 
 public class LoginRequest {
-    private String email;
-    private String password;
+    private String Username;
+    private String Password;
 
-    public LoginRequest(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public LoginRequest(String Username, String Password) {
+        this.Username = Username;
+        this.Password = Password;
     }
 
     // Getters
-    public String getEmail() {
-        return  email;
+    public String getUsername() {
+        return  Username;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 }

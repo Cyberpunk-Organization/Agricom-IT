@@ -118,7 +118,10 @@ public class RegisterActivity extends AppCompatActivity {
                     if ("success".equalsIgnoreCase(registerResponse.getStatus())) {
                         // On success, redirect the user to the login screen to sign in
                         Toast.makeText(RegisterActivity.this, "Registration successful. Please log in.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        startActivity(intent);
+
                         finish(); // Finish RegisterActivity so the user can't go back to it
                     } else {
                         // Handle cases where registration was not successful but the server responded
