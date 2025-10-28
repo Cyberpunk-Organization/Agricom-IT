@@ -49,8 +49,14 @@ public class BottomNavFragment extends Fragment {
             Log.d(TAG, "UserID in BottomNavFragment: " + userID );
 
             Fragment inventoryF = new InventoryFragment();
-            Bundle inventoryArgs = new Bundle();
-            inventoryArgs.putInt("userID", userID);
+            Fragment todoF = new ToDoListFragment();
+
+//            Bundle inventoryArgs = new Bundle();
+//            inventoryArgs.putInt("userID", userID);
+
+            Bundle infoArgs = new Bundle();
+            infoArgs.putInt("userID", userID);
+
 
             if (id == R.id.nav_home) {
                 fm.beginTransaction().replace(R.id.contentFrame, new HomeFragment()).commit();
@@ -59,7 +65,7 @@ public class BottomNavFragment extends Fragment {
             } else if (id == R.id.nav_settings) {
                 fm.beginTransaction().replace(R.id.contentFrame, new SettingsFragment()).commit();
             }else if (id == R.id.nav_list) {
-                fm.beginTransaction().replace(R.id.contentFrame, new ToDoListFragment()).commit();
+                fm.beginTransaction().replace(R.id.contentFrame, todoF).commit();
             }else if (id == R.id.nav_chat) {
             fm.beginTransaction().replace(R.id.contentFrame, new ChatFragment()).commit();
         }

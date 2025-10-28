@@ -22,6 +22,7 @@ public class User implements Serializable {
     private String Role;
 
 
+    //TODO uncomment if needed.
     //-------------------------------------------------------------[Constructor]
 //    public User() {};
 //    public User(int UserID,String Email ,String Name,String Surname, String Username, String Role) {
@@ -39,5 +40,7 @@ public class User implements Serializable {
     public String getSurname(){return this.Surname;}
     public String getUsername(){return this.Username;}
     public String getRole(){return this.Role;}
+
+    //TODO: id getter from login intent. See DashboardActivity.java line 23 - 35
 
 }

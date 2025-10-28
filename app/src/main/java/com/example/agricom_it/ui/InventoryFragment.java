@@ -35,8 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import com.example.agricom_it.model.LoginResponse;
 
-
-
 public class InventoryFragment extends Fragment {
 
     private RecyclerView recyclerView;
