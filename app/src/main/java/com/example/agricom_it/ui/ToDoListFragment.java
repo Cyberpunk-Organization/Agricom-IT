@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.example.agricom_it.TaskAdapter;
 import com.example.agricom_it.model.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ToDoListFragment extends Fragment {
@@ -27,12 +29,19 @@ public class ToDoListFragment extends Fragment {
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
     private List<Task> taskList;
+    private int userID = -1;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
+
+        if (getArguments() != null && getArguments().containsKey("userID")) {
+            userID = getArguments().getInt("userID", -1);
+        }
 
         editTextTask = view.findViewById(R.id.editTextTask);
         buttonAdd = view.findViewById(R.id.buttonAdd);
@@ -46,10 +55,11 @@ public class ToDoListFragment extends Fragment {
         buttonAdd.setOnClickListener(v -> {
             String desc = editTextTask.getText().toString().trim();
             if (!desc.isEmpty()) {
-                Task task = new Task(taskList.size() + 1, desc, false, null);
+                Task task = new Task(taskList.size() + 1, desc, false, new Date());
                 taskList.add(task);
                 adapter.notifyItemInserted(taskList.size() - 1);
                 editTextTask.setText("");
+                Toast.makeText(getContext(), "Task added locally", Toast.LENGTH_SHORT).show();
             }
         });
 

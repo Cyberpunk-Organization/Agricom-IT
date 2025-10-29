@@ -63,6 +63,5 @@ public interface AuthApiService {
     Call<String> GetTasklistContent(@Body int TaskListID );
 
 
-
-
+    Call<String> addTask(String task, boolean isDone, Date dueDate);
 }

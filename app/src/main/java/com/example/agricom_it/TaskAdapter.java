@@ -18,7 +18,6 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private final List<Task> taskList;
-
     public TaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
     }
@@ -60,9 +59,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 taskList.remove(pos);
                 notifyItemRemoved(pos);
             }
-
-
-
         });
     }
 
