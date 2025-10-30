@@ -30,6 +30,9 @@ public class Task {
     public String getDescription() { return description; }
     public boolean isDone() { return isDone; }
     public Date getDueDate() { return dueDate; }
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
 
     public void setDescription(String description) { this.description = description; }
     public void setDone(boolean done) { isDone = done; }

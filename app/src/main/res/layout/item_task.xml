@@ -31,7 +31,6 @@
                 android:id="@+id/tvDueDate"
                 android:layout_width="95dp"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_due_date"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
@@ -40,7 +39,6 @@
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_status"
                 android:textSize="14sp"
                 android:textColor="#FF5722" />
 

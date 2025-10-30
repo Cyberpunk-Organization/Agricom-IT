@@ -6,17 +6,29 @@
     android:padding="16dp"
     android:background="#FFFFFF">
 
-
-    <EditText
-        android:id="@+id/editTextTask"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter a new task"
-        android:padding="10dp"
-        android:background="@android:drawable/edit_text"
-        android:layout_marginBottom="10dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="1">
+        <EditText
+            android:id="@+id/editTextTask"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:hint="Enter a new task"
+            android:padding="10dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginEnd="8dp"/>
 
-
+        <Button
+            android:id="@+id/btnPickDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="Pick Date" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonAdd"
@@ -26,9 +38,6 @@
         android:backgroundTint="@color/green"
         android:textColor="@color/white"
         android:layout_marginBottom="10dp"/>
-
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTasks"
