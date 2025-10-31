@@ -21,15 +21,16 @@ public class InventoryItem {
     private String data;
 
 
-//    public InventoryItem(String name, int count) {
-//        this.name = name;
-//        this.count = count;
-//    }
+    public InventoryItem(String name, int count)
+    {
+        this.name = name;
+        this.count = count;
+    }
 
     public String getName()
     {
 //        return name;
-        return ;
+        return name;
     }
 ////    public String getCategory() { return category; }
     public int getCount()

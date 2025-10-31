@@ -3,9 +3,11 @@ package com.example.agricom_it.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
-public class ItemResponse implements Serializable {
+public class InventoryResponse implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     @SerializedName("success")
@@ -30,7 +32,17 @@ public class ItemResponse implements Serializable {
     public void setInfo(Map<String, Object> info) { this.info = info; }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "ItemResponse{success=" + success + ", data=" + data + ", error=" + error + ", info=" + info + "}";
+    }
+
+    public List<InventoryItem> getItems()
+    {
+        if (data instanceof List<?>)
+        {
+            return (List<InventoryItem>) data;
+        }
+        return null;
     }
 }

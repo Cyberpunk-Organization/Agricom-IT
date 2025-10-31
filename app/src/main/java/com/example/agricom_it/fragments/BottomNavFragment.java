@@ -36,15 +36,14 @@ public class BottomNavFragment extends Fragment {
             FragmentManager fm = getParentFragmentManager();
             int id = item.getItemId();
 
-            Bundle args = getArguments();
-
-//            Log.d(TAG, "Bottom Nav Created" );
-
-            if ( args != null && args.containsKey("userID") )
-            {
-//                Log.d(TAG, "Received userID: " + args.getInt("userID"));
-                userID = args.getInt("userID", -1);
+            Intent intent = getActivity().getIntent();
+            if (intent != null && intent.hasExtra("login_id")) {
+                Object extra = intent.getSerializableExtra("login_id");
+                LoginResponse loginResponse = null;
+                userID = (int) extra;
+                Log.d(TAG, "Intent: has login_id extra: " + extra);
             }
+//            Log.d(TAG, "Bottom Nav Created" );
 
             Log.d(TAG, "UserID in BottomNavFragment: " + userID );
 
@@ -56,6 +55,9 @@ public class BottomNavFragment extends Fragment {
 
             Bundle infoArgs = new Bundle();
             infoArgs.putInt("userID", userID);
+
+            inventoryF.setArguments(infoArgs);
+            todoF.setArguments(infoArgs);
 
 
             if (id == R.id.nav_home) {
