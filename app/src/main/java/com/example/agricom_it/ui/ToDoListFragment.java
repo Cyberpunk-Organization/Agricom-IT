@@ -22,7 +22,10 @@ import com.example.agricom_it.TaskAdapter;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.Task;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -108,13 +111,24 @@ public class ToDoListFragment extends Fragment {
         Log.d(TAG, "Adding task: " + taskDesc + " | Due: " + DueDate + " | isDone: " + isDone );
 
         Call<ResponseBody> call = apiService.AddTask("AddTask", DueDate, isDone, taskDesc);
-
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call,
                                    @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful())
                 {
+                    try
+                    {
+                        String json = response.body().string();
+                        JsonObject root = new GsonBuilder().create().fromJson( json, JsonObject.class );
+                        Log.d(TAG, "Server response: " + root.toString() );
+                    }
+                    catch (IOException e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+
+
                     Log.d(TAG, "✅ Server response OK");
                     Toast.makeText(getContext(), "Task added to server!", Toast.LENGTH_SHORT).show();
 
