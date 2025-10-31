@@ -22,7 +22,6 @@ import com.example.agricom_it.model.InventoryItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,7 +34,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.example.agricom_it.model.InventoryResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -242,56 +240,259 @@ public class InventoryFragment extends Fragment {
 
     // Add Item Functionality
     private void addNewItem() {
-        // Inflate a simple dialog layout (you can create it or use AlertDialog builder)
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_item, null);
         builder.setView(dialogView)
                 .setTitle("Add New Inventory Item")
-                .setPositiveButton("Add", null)   // we override later
+                .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", (d, w) -> d.dismiss());
 
-        EditText etName     = dialogView.findViewById(R.id.et_item_name);
+        EditText etName = dialogView.findViewById(R.id.et_item_name);
         EditText etQuantity = dialogView.findViewById(R.id.et_item_quantity);
 
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Override positive button after show() so we can validate
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String name = etName.getText().toString().trim();
             String qtyStr = etQuantity.getText().toString().trim();
 
-            if (name.isEmpty())
-            {
+            if (name.isEmpty()) {
                 etName.setError("Name required");
                 return;
             }
             int quantity = 1;
-            if (!qtyStr.isEmpty())
-            {
+            if (!qtyStr.isEmpty()) {
                 try { quantity = Integer.parseInt(qtyStr); }
-                catch (NumberFormatException e)
-                {
+                catch (NumberFormatException e) {
                     etQuantity.setError("Invalid number");
                     return;
                 }
             }
-
-            if (quantity <= 0)
-            {
+            if (quantity <= 0) {
                 etQuantity.setError("Quantity > 0");
                 return;
             }
 
-            // ---- create the item -------------------------------------------------
-//            InventoryItem newItem = new InventoryItem(name, quantity);
-//            inventoryList.add(newItem);
-//            adapter.notifyItemInserted(inventoryList.size() - 1);
+            // 1) Create the inventory item (AddItem)
+            Call<ResponseBody> addItemCall = apiService.AddItem("AddItem", name);
+            int finalQuantity = quantity;
+            int finalQuantity1 = quantity;
+            addItemCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (!response.isSuccessful() || response.body() == null) {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(requireContext(), "Failed to create item", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+                    try {
+                        String json = response.body().string();
+                        Gson gson = new GsonBuilder().create();
+                        JsonObject root = gson.fromJson(json, JsonObject.class);
+                        if (root == null) {
+                            requireActivity().runOnUiThread(() ->
+                                    Toast.makeText(requireContext(), "Bad server response", Toast.LENGTH_SHORT).show());
+                            return;
+                        }
+                        boolean success = root.has("success") && root.get("success").getAsBoolean();
+                        if (!success) {
+                            String err = root.has("error") ? root.get("error").getAsString() : "server error";
+                            requireActivity().runOnUiThread(() ->
+                                    Toast.makeText(requireContext(), "AddItem error: " + err, Toast.LENGTH_SHORT).show());
+                            return;
+                        }
 
+                        JsonElement dataElem = root.get("data");
+                        int itemID;
+                        String returnedName;
+                        if (dataElem != null && dataElem.isJsonObject()) {
+                            JsonObject data = dataElem.getAsJsonObject();
+                            if (data.has("ItemID") && !data.get("ItemID").isJsonNull()) {
+                                itemID = data.get("ItemID").getAsInt();
+                            } else {
+                                itemID = -1;
+                            }
+                            if (data.has("Name") && !data.get("Name").isJsonNull()) {
+                                returnedName = data.get("Name").getAsString();
+                            } else {
+                                returnedName = name;
+                            }
+                        } else {
+                            returnedName = name;
+                            itemID = -1;
+                        }
 
+                        if (itemID <= 0) {
+                            requireActivity().runOnUiThread(() ->
+                                    Toast.makeText(requireContext(), "Invalid ItemID from server", Toast.LENGTH_SHORT).show());
+                            return;
+                        }
 
-            Toast.makeText(requireContext(), "Item added!", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+                        // 2) Get InventoryID for this user
+                        Map<String, Integer> params = new HashMap<>();
+                        params.put("userID", userID);
+                        Call<ResponseBody> getInvCall = apiService.inventory("GetInventoryIDByUserID", params);
+                        getInvCall.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (!response.isSuccessful() || response.body() == null) {
+                                    requireActivity().runOnUiThread(() ->
+                                            Toast.makeText(requireContext(), "Failed to get inventory ID", Toast.LENGTH_SHORT).show());
+                                    return;
+                                }
+                                try {
+                                    String invJson = response.body().string();
+                                    Gson gson = new GsonBuilder().create();
+                                    JsonObject invRoot = gson.fromJson(invJson, JsonObject.class);
+                                    if (invRoot == null) {
+                                        requireActivity().runOnUiThread(() ->
+                                                Toast.makeText(requireContext(), "Bad inventory response", Toast.LENGTH_SHORT).show());
+                                        return;
+                                    }
+                                    boolean invSuccess = invRoot.has("success") && invRoot.get("success").getAsBoolean();
+                                    if (!invSuccess) {
+                                        requireActivity().runOnUiThread(() ->
+                                                Toast.makeText(requireContext(), "Inventory API error", Toast.LENGTH_SHORT).show());
+                                        return;
+                                    }
+
+                                    Integer inventoryID = null;
+                                    JsonElement invData = invRoot.get("data");
+                                    if (invData != null && invData.isJsonObject()) {
+                                        JsonObject invObj = invData.getAsJsonObject();
+                                        if (invObj.has("InventoryID") && !invObj.get("InventoryID").isJsonNull()) {
+                                            inventoryID = invObj.get("InventoryID").getAsInt();
+                                        }
+                                    }
+
+                                    // If inventoryID missing, create inventory (AddInventory)
+                                    if (inventoryID == null) {
+                                        Map<String, Integer> addInvParams = new HashMap<>();
+                                        addInvParams.put("UserID", userID); // note capitalized per PHP AddInventory
+                                        Call<ResponseBody> addInvCall = apiService.inventory("AddInventory", addInvParams);
+                                        addInvCall.enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                if (!response.isSuccessful() || response.body() == null) {
+                                                    requireActivity().runOnUiThread(() ->
+                                                            Toast.makeText(requireContext(), "Failed to create inventory", Toast.LENGTH_SHORT).show());
+                                                    return;
+                                                }
+                                                try {
+                                                    String addInvJson = response.body().string();
+                                                    JsonObject addInvRoot = new GsonBuilder().create().fromJson(addInvJson, JsonObject.class);
+                                                    if (addInvRoot == null || !addInvRoot.has("success") || !addInvRoot.get("success").getAsBoolean()) {
+                                                        requireActivity().runOnUiThread(() ->
+                                                                Toast.makeText(requireContext(), "AddInventory failed", Toast.LENGTH_SHORT).show());
+                                                        return;
+                                                    }
+                                                    JsonElement addInvData = addInvRoot.get("data");
+                                                    Integer newInventoryID = null;
+                                                    if (addInvData != null && addInvData.isJsonObject()) {
+                                                        JsonObject addInvObj = addInvData.getAsJsonObject();
+                                                        if (addInvObj.has("InventoryID") && !addInvObj.get("InventoryID").isJsonNull()) {
+                                                            newInventoryID = addInvObj.get("InventoryID").getAsInt();
+                                                        }
+                                                    }
+                                                    if (newInventoryID == null) {
+                                                        requireActivity().runOnUiThread(() ->
+                                                                Toast.makeText(requireContext(), "Server returned no InventoryID", Toast.LENGTH_SHORT).show());
+                                                        return;
+                                                    }
+                                                    // proceed to add item to inventory
+                                                    addItemToInventoryAndShow(newInventoryID, itemID, finalQuantity, returnedName, dialog);
+                                                } catch (IOException | JsonSyntaxException ex) {
+                                                    Log.e(TAG, "Error parsing AddInventory response", ex);
+                                                    requireActivity().runOnUiThread(() ->
+                                                            Toast.makeText(requireContext(), "Parse error", Toast.LENGTH_SHORT).show());
+                                                }
+                                            }
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                Log.e(TAG, "AddInventory failed", t);
+                                                requireActivity().runOnUiThread(() ->
+                                                        Toast.makeText(requireContext(), "Network error creating inventory", Toast.LENGTH_SHORT).show());
+                                            }
+                                        });
+                                    } else {
+                                        // inventoryID found -> add item to inventory
+                                        addItemToInventoryAndShow(inventoryID, itemID, finalQuantity1, returnedName, dialog);
+                                    }
+
+                                } catch (IOException | JsonSyntaxException ex) {
+                                    Log.e(TAG, "Error parsing GetInventoryID response", ex);
+                                    requireActivity().runOnUiThread(() ->
+                                            Toast.makeText(requireContext(), "Parse error", Toast.LENGTH_SHORT).show());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Log.e(TAG, "GetInventoryID request failed", t);
+                                requireActivity().runOnUiThread(() ->
+                                        Toast.makeText(requireContext(), "Network error getting inventory id", Toast.LENGTH_SHORT).show());
+                            }
+                        });
+
+                    } catch (IOException | JsonSyntaxException ex) {
+                        Log.e(TAG, "Error parsing AddItem response", ex);
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(requireContext(), "Parse error", Toast.LENGTH_SHORT).show());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "AddItem request failed", t);
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(requireContext(), "Network error creating item", Toast.LENGTH_SHORT).show());
+                }
+            });
+        });
+    }
+
+    // helper to call AddItemToInventory then update UI
+    private void addItemToInventoryAndShow(int inventoryID, int itemID, int quantity, String name, AlertDialog dialog) {
+        Call<ResponseBody> addToInv = apiService.addItemToInventory("AddItemToInventory", inventoryID, itemID, quantity);
+        addToInv.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(requireContext(), "Failed to add item to inventory", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+                try {
+                    String json = response.body().string();
+                    JsonObject root = new GsonBuilder().create().fromJson(json, JsonObject.class);
+                    if (root == null || !root.has("success") || !root.get("success").getAsBoolean()) {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(requireContext(), "Server error adding to inventory", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+
+                    requireActivity().runOnUiThread(() -> {
+                        InventoryItem newItem = new InventoryItem(name, quantity);
+                        inventoryList.add(newItem);
+                        adapter.notifyItemInserted(inventoryList.size() - 1);
+                        Toast.makeText(requireContext(), "Item added!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    });
+
+                } catch (IOException | JsonSyntaxException ex) {
+                    Log.e(TAG, "Error parsing AddItemToInventory response", ex);
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(requireContext(), "Parse error", Toast.LENGTH_SHORT).show());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "AddItemToInventory failed", t);
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(requireContext(), "Network error adding to inventory", Toast.LENGTH_SHORT).show());
+            }
         });
     }
     private void toggleSortByName() {
