@@ -10,5 +10,6 @@
 
     <!-- Blue #193E87 (deep navy) -->
     <color name="blue">#1E88E5</color>
+    <color name="red">#DC3545</color>
 
 </resources>
