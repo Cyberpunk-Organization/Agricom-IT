@@ -1,7 +1,7 @@
 package com.example.agricom_it.ui;
 
 import android.app.AlertDialog;
-import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agricom_it.InventoryAdapter;
 import com.example.agricom_it.R;
+import com.example.agricom_it.api.ApiResponse;
 import com.example.agricom_it.model.InventoryItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,12 +30,15 @@ import java.util.List;
 
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
-import com.example.agricom_it.model.LoginResponse;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.example.agricom_it.model.LoginResponse;
+
+import com.example.agricom_it.model.ItemResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class InventoryFragment extends Fragment {
 
@@ -57,17 +62,19 @@ public class InventoryFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
 
-        Log.d(TAG, "onCreateView called"); //TODO: This is logged.
+//        Bundle args = getArguments();
 
-        Bundle args = getArguments();
+//        Log.d(TAG, "Arguments received: " + args);
 
-        Log.d(TAG, "Arguments received: " + args);
+//        if ( args != null && args.containsKey("userID") )
+//        {
+//            Log.d(TAG, "Received userID: " + args.getInt("userID"));
+//            userID = args.getInt("userID", -1);
+//        }
 
-        if ( args != null && args.containsKey("userID") )
-        {
-            Log.d(TAG, "Received userID: " + args.getInt("userID"));
-            userID = args.getInt("userID", -1);
-        }
+
+
+
 
 
         recyclerView = view.findViewById(R.id.rvInventory);
@@ -111,27 +118,36 @@ public class InventoryFragment extends Fragment {
             String name = etName.getText().toString().trim();
             String qtyStr = etQuantity.getText().toString().trim();
 
-            if (name.isEmpty()) {
+            if (name.isEmpty())
+            {
                 etName.setError("Name required");
                 return;
             }
             int quantity = 1;
-            if (!qtyStr.isEmpty()) {
+            if (!qtyStr.isEmpty())
+            {
                 try { quantity = Integer.parseInt(qtyStr); }
-                catch (NumberFormatException e) {
+                catch (NumberFormatException e)
+                {
                     etQuantity.setError("Invalid number");
                     return;
                 }
             }
-            if (quantity <= 0) {
+            if (quantity <= 0)
+            {
                 etQuantity.setError("Quantity > 0");
                 return;
             }
 
             // ---- create the item -------------------------------------------------
-            InventoryItem newItem = new InventoryItem(name, "Misc", quantity);
-            inventoryList.add(newItem);
-            adapter.notifyItemInserted(inventoryList.size() - 1);
+//            InventoryItem newItem = new InventoryItem(name, quantity);
+//            inventoryList.add(newItem);
+//            adapter.notifyItemInserted(inventoryList.size() - 1);
+
+
+
+
+
 
             Toast.makeText(requireContext(), "Item added!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
@@ -157,4 +173,3 @@ public class InventoryFragment extends Fragment {
                 Toast.LENGTH_SHORT).show();
     }
 }
-

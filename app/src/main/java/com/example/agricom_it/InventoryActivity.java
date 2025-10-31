@@ -40,16 +40,6 @@ public class InventoryActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
 
-
-        if ( intent == null )
-        {
-            Log.e(TAG, "Intent is null");
-        }
-        else
-        {
-            Log.d(TAG, "Intent received successfully");
-        }
-
         if (intent != null && intent.hasExtra("login_id"))
         {
             Object extra = intent.getSerializableExtra( "login_id");
@@ -92,6 +82,7 @@ public class InventoryActivity extends AppCompatActivity {
         }
 
 
+        //TODO: check if line 96 to 99 is needed. Similar to BottomNavFragment.java line 57 - 58
         InventoryFragment iFragment = new InventoryFragment();
         Bundle args = new Bundle();
         args.putInt("userID", userID);
