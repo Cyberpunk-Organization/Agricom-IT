@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Map;
 
 
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -41,5 +42,15 @@ public interface AuthApiService {
     @GET("inventory.php")
     Call<ResponseBody> addItemToInventory(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID, @Query("quantity") int quantity);
 
+    @GET("inventory.php")
+    Call<ResponseBody> getInventoryID(@Query("action") String action, @Query("userID") int userID);
 
+    @GET("inventory.php")
+    Call<ResponseBody> updateItemQuantity(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID, @Query("quantity") int quantity);
+
+    @GET("inventory.php")
+    Call<ResponseBody> removeItemFromInventory(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID);
+
+    @GET("tasks.php")
+    Call<ResponseBody> AddTask(@Query("action") String action, @Query("dueDate") String DueDate, @Query("isDone") boolean isDone, @Query("task") String taskDesc );
 }
