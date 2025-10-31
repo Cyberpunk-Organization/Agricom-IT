@@ -1,7 +1,9 @@
 package com.example.agricom_it.ui;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agricom_it.R;
 import com.example.agricom_it.TaskAdapter;
+import com.example.agricom_it.api.ApiClient;
+import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.Task;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class ToDoListFragment extends Fragment {
 
@@ -34,6 +46,8 @@ public class ToDoListFragment extends Fragment {
     private TaskAdapter adapter;
     private List<Task> taskList;
     private int userID = -1;
+    private static final String TAG = "TaskActivity";
+    private final AuthApiService apiService = ApiClient.getService();
 
     @Nullable
     @Override
@@ -42,6 +56,12 @@ public class ToDoListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
+
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("userID"))
+        {
+            userID = args.getInt("userID", -1);
+        }
 
         if (getArguments() != null && getArguments().containsKey("userID")) {
             userID = getArguments().getInt("userID", -1);
@@ -73,7 +93,6 @@ public class ToDoListFragment extends Fragment {
                     },
                     year, month, day
             );
-
             datePickerDialog.show();
         });
 
@@ -82,15 +101,45 @@ public class ToDoListFragment extends Fragment {
             Date date = btnPickDate.getText().toString().trim().isEmpty() ? null : new Date();
 
             if (!desc.isEmpty()) {
-                Task task = new Task(taskList.size() + 1, desc, false, date);
-                taskList.add(task);
+                //Task task = new Task(taskList.size() + 1, desc, false, date);
+                //taskList.add(task);
+                AddTaskToServer(desc, date);
                 adapter.notifyItemInserted(taskList.size() - 1);
                 editTextTask.setText("");
-
-                Toast.makeText(getContext(), "Task added locally", Toast.LENGTH_SHORT).show(); //TODO
+                btnPickDate.setText("");
+                Toast.makeText(getContext(), "Task added locally", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Task added locally", Toast.LENGTH_SHORT).show(); //TODO
             }
         });
-
+        if (userID >= 0)
+        {
+            Log.d(TAG, "Loading inventory for userID: " + userID);
+            //loadInventoryForUser(userID);
+        }
         return view;
+    }
+
+    private void AddTaskToServer(String task, Date dueDate) {
+        boolean isDone = false;
+        Call<ResponseBody> call = apiService.Addtask("AddTask", dueDate, isDone, task);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "✅ Task sent to server", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Task added successfully");
+                } else {
+                    Toast.makeText(getContext(), "⚠ Server Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Server error: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "❌ Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Network error", t);
+            }
+        });
     }
 }
