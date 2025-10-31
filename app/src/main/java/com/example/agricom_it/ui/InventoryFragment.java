@@ -51,13 +51,10 @@ public class InventoryFragment extends Fragment {
     private List<InventoryItem> inventoryList;
     private Button btnAddItem, btnSort;
     private boolean sortAscending = true;
-
     private final AuthApiService apiService = ApiClient.getService();
-
     private final String TAG = "InventoryFragment";
     private int userID = -1;
-
-    private interface NameCallback { void onName(String name); }
+    private interface NameCallback { void onName(String name);}
 
     @Nullable
     @Override
@@ -514,7 +511,4 @@ public class InventoryFragment extends Fragment {
                 "Sorted " + (sortAscending ? "A to Z" : "Z to A"),
                 Toast.LENGTH_SHORT).show();
     }
-
 }
-
-
