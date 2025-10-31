@@ -150,14 +150,18 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
             Call<ResponseBody> call = apiService.removeItemFromInventory("RemoveItemFromInventory", finalInventoryID, itemID);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
+                {
+                    if (response.isSuccessful())
+                    {
                         int removedPos = position;
                         inventoryList.remove(removedPos);
                         notifyItemRemoved(removedPos);
                         Toast.makeText(holder.itemView.getContext(), "Item removed", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                    } else {
+                    }
+                    else
+                    {
                         String msg = "Remove failed";
                         try {
                             ResponseBody body = response.errorBody();

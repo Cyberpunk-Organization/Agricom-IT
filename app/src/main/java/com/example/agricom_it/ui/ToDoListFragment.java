@@ -26,6 +26,7 @@ import com.example.agricom_it.model.Task;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -102,17 +103,18 @@ public class ToDoListFragment extends Fragment {
         dialog.show();
     }
 
-    private void addTaskToServer(String taskDesc, String dueDate) {
+    private void addTaskToServer(String taskDesc, String DueDate) {
         boolean isDone = false;
-        Log.d(TAG, "Adding task: " + taskDesc + " | Due: " + dueDate);
+        Log.d(TAG, "Adding task: " + taskDesc + " | Due: " + DueDate + " | isDone: " + isDone );
 
-        Call<ResponseBody> call = apiService.AddTask("AddTask", dueDate, isDone, taskDesc);
+        Call<ResponseBody> call = apiService.AddTask("AddTask", DueDate, isDone, taskDesc);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call,
                                    @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
+                {
                     Log.d(TAG, "✅ Server response OK");
                     Toast.makeText(getContext(), "Task added to server!", Toast.LENGTH_SHORT).show();
 
@@ -120,9 +122,13 @@ public class ToDoListFragment extends Fragment {
                     Task newTask = new Task();
                     newTask.setDescription(taskDesc);
                     newTask.setDone(false);
-                    try {
-                        newTask.setDueDate(serverDateFormat.parse(dueDate));
-                    } catch (Exception e) {
+
+                    try
+                    {
+                        newTask.setDueDate(serverDateFormat.parse(DueDate));
+                    }
+                    catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
 

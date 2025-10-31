@@ -52,5 +52,5 @@ public interface AuthApiService {
     Call<ResponseBody> removeItemFromInventory(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID);
 
     @GET("tasks.php")
-    Call<ResponseBody> Addtask(@Query("action") String action, @Query("DueDate") Date DueDate, @Query("isDone") boolean isDone, @Query("Task") String Task );
+    Call<ResponseBody> AddTask(@Query("action") String action, @Query("DueDate") String DueDate, @Query("isDone") boolean isDone, @Query("Task") String Task );
 }
