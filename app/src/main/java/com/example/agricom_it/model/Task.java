@@ -17,6 +17,7 @@ public class Task {
     @SerializedName("DueDate")
     private Date dueDate;
 
+
     public Task() {}
 
     public Task(int taskID, String description, boolean isDone, Date dueDate) {
@@ -40,4 +41,7 @@ public class Task {
     public boolean complete() {
         return isDone = true;
     }
+
+    public void setId(int taskID) { this.taskID = taskID; }
+    public int getId() { return taskID; }
 }

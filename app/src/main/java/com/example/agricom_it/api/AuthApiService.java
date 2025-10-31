@@ -15,6 +15,8 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -53,4 +55,16 @@ public interface AuthApiService {
 
     @GET("tasks.php")
     Call<ResponseBody> AddTask(@Query("action") String action, @Query("dueDate") String DueDate, @Query("isDone") boolean isDone, @Query("task") String taskDesc );
+
+    @GET("tasks.php")
+    Call<ResponseBody> GetTaskListID(@Query("action") String action, @Query("workerID") int workerID);
+
+    @GET("tasks.php")
+    Call<ResponseBody> AddTaskList(@Query("action") String action, @Query("workerID") int workerID);
+
+    @GET("tasks.php")
+    Call<ResponseBody> AddTaskToTasklist(@Query("action") String action, @Query("taskListID") int taskListID, @Query("taskID") int taskID);
+
+    @GET("tasks.php")
+    Call<ResponseBody> GetTasksFromTasklist(@Query("action") String action, @Query("taskListID") int taskListID);
 }
