@@ -71,10 +71,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
     ==========================================================================*/
     /*
     IMPORTANT: Do not touch this function if you want to create/initialize
-    inventory items. This function is only for updating/removing items from
+    inventory items.
+    This function is only for updating/removing items from
     the inventory.
 
-    DO NOT USE CHANGE THE VARIABLES BELOW.
+    DO NOT CHANGE THE VARIABLES BELOW.
     */
     private void showEditDialog(InventoryItem item, int position, InventoryViewHolder holder) {
         View dialogView = LayoutInflater.from(holder.itemView.getContext())
