@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient android:type="linear" android:angle="100"
-        android:startColor="#0D558E" android:endColor="#05CA0D"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#3F9B0B" />
+        </shape>
+    </item>
+
+    <item
+        android:bottom="0dp"
+        android:gravity="bottom"
+        android:drawable="@drawable/wave_bottom_1" />
+    <item
+        android:bottom="0dp"
+        android:gravity="bottom"
+        android:drawable="@drawable/wave_bottom_2" />
+</layer-list>
+
+    <!--this is our blue-->
+<!--    android:startColor="#0D558E-->
+<!--for green gradient use this -->
+<!--    android:endColor="#05CA0D"-->
+<!--    #3F9B0B-->
