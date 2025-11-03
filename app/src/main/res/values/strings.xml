@@ -8,6 +8,15 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login_here">Login here</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password_reg">Password</string>
+    <string name="email">Email</string>
+    <string name="username_reg">Username</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
     <string-array name="user_roles">
         <item>User</item>
         <item>Admin</item>

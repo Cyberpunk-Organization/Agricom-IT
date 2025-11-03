@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    android:gravity="top"
+    android:gravity="center_vertical"
     android:padding="20dp"
     tools:context=".MainActivity">
 
@@ -76,7 +76,7 @@
                 android:text="@string/register_here"
                 android:clickable="true"
                 android:textSize="18sp"
-                android:textColor="@color/blue"
+                android:textColor="@color/white"
                 android:layout_marginStart="5dp"/>
         </LinearLayout>
 
