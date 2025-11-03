@@ -6,7 +6,14 @@
             <solid android:color="#3F9B0B" />
         </shape>
     </item>
-
+    <item
+        android:bottom="0dp"
+        android:gravity="top"
+        android:drawable="@drawable/wave_top_2" />
+    <item
+        android:bottom="0dp"
+        android:gravity="top"
+        android:drawable="@drawable/wave_top" />
     <item
         android:bottom="0dp"
         android:gravity="bottom"
