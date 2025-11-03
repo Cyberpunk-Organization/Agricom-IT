@@ -79,8 +79,6 @@ public class HomeFragment extends Fragment {
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(permissions, REQUEST_PERMISSIONS_REQUEST_CODE);
                 return;
-            }else {
-                Toast.makeText(requireContext(), "Map requires location permissions", Toast.LENGTH_SHORT).show();
             }
         }
     }
