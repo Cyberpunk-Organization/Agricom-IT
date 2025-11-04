@@ -3,7 +3,7 @@
     <string name="todo">TODO</string>
     <string name="placeholder_due_date">placeholder due date</string>
     <string name="placeholder_status">placeholder status</string>
-    <string name="does_not_have_an_account">Dont have an acount?</string>
+    <string name="does_not_have_an_account">Don\'t have an account?</string>
     <string name="register_here">Register here.</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
