@@ -22,7 +22,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.9"
         android:layout_margin="0dp"
-        android:background="@drawable/rounded_corner"
+        android:background="@color/white"
         android:elevation="2dp"/>
 
     <!-- Bottom Navigation -->

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_gravity="bottom"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:elevation="8dp"
     app:itemBackground="@android:color/transparent"
     app:itemIconTint="@color/green"

@@ -1,15 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="black">#FF000000</color>
-
-    <color name="white">#FFFFFFFF</color>
-
-
-    <color name="green">#4CAF50</color>
-
-    <!-- Blue #193E87 (deep navy) -->
+    <color name="black">#FFFFFF</color> <!-- text on dark -->
+    <color name="white">#2A2828</color>   <!-- background -->
+    <color name="white_off">#565353</color>
+    <color name="green">#3A813D</color>
     <color name="blue">#1E88E5</color>
-    <color name="red">#DC3545</color>
-
+    <color name="light_green">#549756</color>
+    <color name="red">#EF5350</color>
 </resources>

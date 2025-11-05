@@ -2,10 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Logout button section -->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/settings_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="12dp"-->
+<!--        android:background="?attr/selectableItemBackground"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Settings"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/black"/>-->
+<!--    </LinearLayout>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Appearance"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingVertical="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dark Mode" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_dark_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            app:thumbTint="@color/light_green"
+            app:trackTint="@color/green"/>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/logout_layout"
         android:layout_width="match_parent"
@@ -25,7 +73,6 @@
             android:textColor="@color/black"/>
     </LinearLayout>
 
-    <!-- About button section -->
     <LinearLayout
         android:id="@+id/about_layout"
         android:layout_width="match_parent"
@@ -45,7 +92,6 @@
             android:textColor="@color/black"/>
     </LinearLayout>
 
-    <!-- Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

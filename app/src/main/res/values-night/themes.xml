@@ -1,9 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Agricom_IT" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.Agricom_IT" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Keep the same structure, change only colors -->
         <item name="colorPrimary">@color/blue</item>
-        <item name="android:colorBackground">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/green</item>
+        <item name="android:colorBackground">@color/black</item>
+
+        <!-- Copy shape and typography definitions too -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.Corner.Full</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.Corner.Full</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.Corner.Full</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
+        <item name="android:buttonStyle">@style/Widget.MaterialComponents.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
     </style>
 </resources>
