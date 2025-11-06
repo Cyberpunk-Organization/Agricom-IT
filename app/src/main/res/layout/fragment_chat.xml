@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FFF8">
+    android:background="@color/white">
 
     <!--Search Bar-->
     <LinearLayout
@@ -56,7 +56,7 @@
         android:textSize="18sp"
         android:layout_marginStart="16dp"
         android:layout_below="@id/search_bar"
-        android:textColor="#222"/>
+        android:textColor="@color/black"/>
 
     <!--List of Conversations-->
     <androidx.recyclerview.widget.RecyclerView

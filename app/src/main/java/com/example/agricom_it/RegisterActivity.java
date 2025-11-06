@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.drawable.Drawable;
+import androidx.core.content.ContextCompat;
+import android.content.res.Configuration;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,10 +61,23 @@ public class RegisterActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.user_roles,
-                android.R.layout.simple_spinner_item
+                R.layout.spinner_item
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item); // dropdown rows
         roleSpinner.setAdapter(adapter);
+
+        Drawable popupBg = ContextCompat.getDrawable(this, R.drawable.spinner_popup_frame);
+        if (popupBg != null) {
+            roleSpinner.setPopupBackgroundDrawable(popupBg);
+        }
+
+        int uiMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (uiMode == Configuration.UI_MODE_NIGHT_YES) {
+            roleSpinner.setPopupBackgroundResource(R.color.black);
+        } else {
+            roleSpinner.setPopupBackgroundResource(R.color.white);
+        }
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);

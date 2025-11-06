@@ -108,14 +108,16 @@
             android:padding="14dp"
             android:inputType="textPassword"/>
 
-        <Spinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/role_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:spinnerMode="dropdown"
             android:background="@drawable/rounded_corner"
-            android:padding="12dp"
-            android:spinnerMode="dropdown"/>
+            android:padding="14dp"
+            app:popupTheme="@style/SpinnerPopupTheme"
+            android:popupBackground="@drawable/spinner_popup_frame" />
 
         <Button
             android:id="@+id/register_btn"
@@ -137,14 +139,14 @@
                 android:text="@string/already_have_an_account"
                 android:clickable="true"
                 android:textSize="16sp"
-                android:textColor="@color/black" />
+                android:textColor="#000000" />
             <TextView
                 android:id="@+id/tvBackToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_here"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="#FFFFFF"
                 android:layout_marginStart="5dp"/>
         </LinearLayout>
 
