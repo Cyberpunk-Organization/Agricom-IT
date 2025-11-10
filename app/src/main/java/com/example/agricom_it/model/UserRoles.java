@@ -6,7 +6,6 @@ public class UserRoles {
     private int RolesID;
     private int UserID;
     private String RolesType;
-
     public UserRoles(){};
 
     public UserRoles(int RolesID,int UserID, String RolesType){
