@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1048137632337",
+    "project_id": "agricon-it",
+    "storage_bucket": "agricon-it.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048137632337:android:b5ed311ba1601656804670",
+        "android_client_info": {
+          "package_name": "com.example.agricom_it"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs1XLHc6FgxMBzRJKYK4XzWUTMXonQmx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

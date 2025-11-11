@@ -14,6 +14,7 @@ import com.example.agricom_it.R;
 import com.example.agricom_it.model.LoginResponse;
 import com.example.agricom_it.model.User;
 import com.example.agricom_it.ui.ChatFragment;
+import com.example.agricom_it.ui.ChatListFragment;
 import com.example.agricom_it.ui.HomeFragment;
 import com.example.agricom_it.ui.InventoryFragment;
 import com.example.agricom_it.ui.SettingsFragment;
@@ -49,6 +50,8 @@ public class BottomNavFragment extends Fragment {
 
             Fragment inventoryF = new InventoryFragment();
             Fragment todoF = new ToDoListFragment();
+//            Fragment chatF = new ChatFragment();
+            Fragment chatListF = new ChatListFragment();
 
 //            Bundle inventoryArgs = new Bundle();
 //            inventoryArgs.putInt("userID", userID);
@@ -58,6 +61,7 @@ public class BottomNavFragment extends Fragment {
 
             inventoryF.setArguments(infoArgs);
             todoF.setArguments(infoArgs);
+            chatListF.setArguments(infoArgs);
 
 
             if (id == R.id.nav_home) {
@@ -69,7 +73,7 @@ public class BottomNavFragment extends Fragment {
             }else if (id == R.id.nav_list) {
                 fm.beginTransaction().replace(R.id.contentFrame, todoF).commit();
             }else if (id == R.id.nav_chat) {
-            fm.beginTransaction().replace(R.id.contentFrame, new ChatFragment()).commit();
+            fm.beginTransaction().replace(R.id.contentFrame, chatListF).commit();
         }
             return true;
         });

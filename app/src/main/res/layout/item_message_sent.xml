@@ -1,22 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/txtMessage"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="end"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:background="@drawable/bg_sent"
+    android:padding="8dp"
+    android:layout_margin="8dp"
+    android:textColor="#fff"/>
 
-    <TextView
-        android:id="@+id/message_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_style"
-        android:padding="10dp"
-        android:textColor="#FFF"/>
 
-    <TextView
-        android:id="@+id/message_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        android:textColor="#AAA"/>
-</LinearLayout>
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:gravity="end"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="8dp">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/message_text"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/border_style"-->
+<!--        android:padding="10dp"-->
+<!--        android:textColor="#FFF"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/message_time"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="10sp"-->
+<!--        android:textColor="#AAA"/>-->
+<!--</LinearLayout>-->
+
+

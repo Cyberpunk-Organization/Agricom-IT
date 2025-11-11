@@ -33,6 +33,8 @@ public interface AuthApiService {
     @POST("register.php")
     Call<RegisterResponse> register( @Body RegisterRequest request);
 
+
+//  INVENTORY
     @GET("inventory.php")
     Call<ResponseBody> getItem(@Query("action") String cmd, @Query("itemID") int itemID);
     @GET("inventory.php")
@@ -53,6 +55,7 @@ public interface AuthApiService {
     @GET("inventory.php")
     Call<ResponseBody> removeItemFromInventory(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID);
 
+//  TASKS
     @GET("tasks.php")
     Call<ResponseBody> AddTask(@Query("action") String action, @Query("dueDate") String DueDate, @Query("isDone") boolean isDone, @Query("task") String taskDesc );
 
@@ -67,4 +70,15 @@ public interface AuthApiService {
 
     @GET("tasks.php")
     Call<ResponseBody> GetTasksFromTasklist(@Query("action") String action, @Query("taskListID") int taskListID);
+
+//  USERS
+    @GET("users.php")
+    Call<ResponseBody> GetUserByID(@Query("action") String action, @Query("userID") int userID);
+
+    @GET("users.php")
+    Call<ResponseBody> GetUserIdFromUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
+
+
+
+
 }

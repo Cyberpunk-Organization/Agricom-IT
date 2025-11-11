@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+//    id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -43,10 +45,14 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.preference)
     implementation(libs.volley)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("org.osmdroid:osmdroid-android:6.1.18")
+
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }

@@ -26,13 +26,13 @@ public class ChatConversationActivity extends AppCompatActivity {
         RecyclerView messagesRecycler = findViewById(R.id.messages_recycler);
         messagesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Message> mockMessages = new ArrayList<>();
-        mockMessages.add(new Message(1, currentUserId, receiverId, "Hey " + username + "!"));
-        mockMessages.add(new Message(2, receiverId, currentUserId, "Hey there!"));
-        mockMessages.add(new Message(3, currentUserId, receiverId, "How’s your day?"));
-        mockMessages.add(new Message(4, receiverId, currentUserId, "Pretty good, thanks!"));
-
-        MessageAdapter adapter = new MessageAdapter(mockMessages, currentUserId);
-        messagesRecycler.setAdapter(adapter);
+//        List<Message> mockMessages = new ArrayList<>();
+//        mockMessages.add(new Message(1, currentUserId, receiverId, "Hey " + username + "!"));
+//        mockMessages.add(new Message(2, receiverId, currentUserId, "Hey there!"));
+//        mockMessages.add(new Message(3, currentUserId, receiverId, "How’s your day?"));
+//        mockMessages.add(new Message(4, receiverId, currentUserId, "Pretty good, thanks!"));
+//
+//        MessageAdapter adapter = new MessageAdapter(mockMessages, currentUserId);
+//        messagesRecycler.setAdapter(adapter);
     }
 }
