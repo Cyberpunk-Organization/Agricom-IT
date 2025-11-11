@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="@android:color/white">
 
-    <!-- 🟢 Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,8 +15,8 @@
             android:id="@+id/map_context_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Farm Locations"
-            android:textSize="24sp"
+            android:text="Farm Map"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:gravity="center" />
@@ -26,22 +25,13 @@
             android:id="@+id/map_context_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Explore and add your own farm areas."
-            android:textSize="16sp"
+            android:text="Tap to add comments or draw areas on your map."
+            android:textSize="15sp"
             android:textColor="@android:color/black"
             android:gravity="center"
             android:layout_marginTop="4dp" />
     </LinearLayout>
 
-    <!-- 🗺️ Map Section -->
-    <org.osmdroid.views.MapView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="15dp" />
-
-    <!-- 🧭 Control Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,24 +40,30 @@
         android:padding="8dp">
 
         <Button
-            android:id="@+id/btn_add_point"
+            android:id="@+id/btn_add_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Point" />
+            android:text="Add Area" />
 
         <Button
-            android:id="@+id/btn_add_polygon"
+            android:id="@+id/btn_save_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Polygon"
-            android:layout_marginStart="8dp" />
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="12dp"
+            android:text="Save Area" />
     </LinearLayout>
 
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="12dp" />
+
+    <Button
+        android:id="@+id/btn_recenter_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="Recenter Map"/>
 </LinearLayout>
