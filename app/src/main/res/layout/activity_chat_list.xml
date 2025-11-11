@@ -25,7 +25,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FFF8">
+    android:background="@color/white">
 
     <!--Search Bar-->
     <LinearLayout
@@ -35,43 +35,40 @@
         android:orientation="horizontal"
         android:background="@drawable/rounded_corner"
         android:layout_margin="16dp"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:weightSum="1">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_search"
+                app:tint="#388E3C"
+                android:layout_weight="0"/>
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Search Conversation"
-                android:textColorHint="@color/white"
-                android:background="@color/black"
-                android:paddingStart="8dp"/>
-
-<!--            TODO: Robin fix the colours above please-->
-
-            <!--    Start a new chat-->
+                android:textColorHint="@color/white_off"
+                android:background="@android:drawable/edit_text"
+                android:paddingStart="8dp"
+                android:layout_weight="0.6"
+                android:layout_marginEnd="8dp"/>
             <Button
                 android:id="@+id/btnStartChat"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Start new chat"/>
+                android:text="Start new chat"
+                android:layout_weight="0.4"/>
         </LinearLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerChatLists"
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_search"
-            app:tint="#388E3C" />
-
-
     </LinearLayout>
     <!--Most Recent Label-->
     <TextView

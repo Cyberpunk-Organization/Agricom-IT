@@ -20,6 +20,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+firebase-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
