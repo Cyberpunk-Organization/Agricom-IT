@@ -20,6 +20,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText passwordInput;
     private Button loginBtn;
     private TextView register_link;
+
+    private final String TAG = "MainActivity";
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
