@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agricom_it.model.Message;
-import com.example.agricom_it.R;
 import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
@@ -68,8 +67,8 @@ public class MessageAdapter
     public void onBindViewHolder( @NonNull RecyclerView.ViewHolder holder, int position )
     {
         Message m = items.get(position);
-        String text = m.getMessageContent()!=null ? m.getMessageContent() : "";
-        String time = formatTimestamp(m.getTimeSent());
+        String text = m.getText()!=null ? m.getText() : "";
+        String time = formatTimestamp(m.getTimestamp());
         if( holder instanceof SentHolder )
         {
             ((SentHolder) holder).txtMessage.setText(text);

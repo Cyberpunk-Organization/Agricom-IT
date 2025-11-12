@@ -49,7 +49,7 @@ public class ChatListFragment extends Fragment
     private final String TAG = "ChatListFragment";
     private ChatRepository repo;
     private ChatListAdapter adapter;
-    private int currentUserId = 1; // set from auth/session
+    private int currentUserId = -1; // set from auth/session
     private Button btnStartChat;
     private final AuthApiService apiService = ApiClient.getService();
 
@@ -59,6 +59,9 @@ public class ChatListFragment extends Fragment
             @Nullable Bundle savedInstanceState )
     {
         // reuse the existing layout; consider creating a fragment-specific layout if preferred
+        currentUserId = getArguments() != null ? getArguments().getInt("userID", -1) : -1;
+
+
         return inflater.inflate(R.layout.activity_chat_list, container, false);
     }
 
@@ -86,13 +89,14 @@ public class ChatListFragment extends Fragment
                 }
             }
             i.putExtra("otherUserId", other);
+            i.putExtra("userID", currentUserId);
             startActivity(i);
         });
 
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         rv.setAdapter(adapter);
 
-        repo = new ChatRepository();
+        repo = new ChatRepository( getContext() );
 
         repo.listenForUserChats(currentUserId, chat->
         {
@@ -211,16 +215,6 @@ public class ChatListFragment extends Fragment
     private void startNewChatWith( int otherUserId )
     {
 
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//
-//        if( auth.getCurrentUser()==null )
-//        {
-//            Log.e(TAG, "User not authenticated");
-//            showToastOnUiThread("You must be logged in to start a chat");
-//            return;
-//        }
-
-
         Log.d(TAG, "Starting new chat between "+currentUserId+" and "+otherUserId);
 
         int a = Math.min(currentUserId, otherUserId);
@@ -241,6 +235,8 @@ public class ChatListFragment extends Fragment
 
                 i.putExtra("chatId", newChatId);
                 i.putExtra("otherUserId", otherUserId);
+                i.putExtra("userID", currentUserId);
+
 
                 Log.d(TAG, "Extra: " + i.getExtras() );
 

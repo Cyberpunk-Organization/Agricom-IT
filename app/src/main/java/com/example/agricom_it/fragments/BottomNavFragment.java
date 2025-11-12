@@ -38,11 +38,19 @@ public class BottomNavFragment extends Fragment {
             int id = item.getItemId();
 
             Intent intent = getActivity().getIntent();
-            if (intent != null && intent.hasExtra("login_id")) {
+            if (intent != null && intent.hasExtra("login_id"))
+            {
                 Object extra = intent.getSerializableExtra("login_id");
                 LoginResponse loginResponse = null;
                 userID = (int) extra;
+
+//                intent.putExtra("login_id", userID);
+
                 Log.d(TAG, "Intent: has login_id extra: " + extra);
+            }
+            else
+            {
+                Log.d(TAG, "Intent: no login_id extra found");
             }
 //            Log.d(TAG, "Bottom Nav Created" );
 
