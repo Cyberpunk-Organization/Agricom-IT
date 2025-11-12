@@ -5,6 +5,8 @@ import com.example.agricom_it.model.LoginRequest;
 import com.example.agricom_it.model.RegisterRequest;
 import com.example.agricom_it.model.LoginResponse;
 import com.example.agricom_it.model.RegisterResponse;
+//import com.example.agricom_it.model.MapComment;
+//import com.example.agricom_it.model.MapArea;
 
 
 import java.util.Date;
@@ -78,7 +80,11 @@ public interface AuthApiService {
     @GET("users.php")
     Call<ResponseBody> GetUserIdByUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
 
+// MAP APi
 
-
-
+//    @GET("map.php")
+//    Call<ResponseBody> SaveMapComment(@Query("action") String action, @Query("") MapComment comment);
+//
+//    @GET("map.php")
+//    Call<ResponseBody> GetMapComments(@Query("action") String action, @Body MapArea area);
 }

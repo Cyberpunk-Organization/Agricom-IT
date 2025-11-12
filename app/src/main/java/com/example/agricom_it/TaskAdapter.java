@@ -107,7 +107,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.tvTaskDesc.setTextColor(0xFF888888); // gray text
         } else {
             holder.tvTaskDesc.setPaintFlags(holder.tvTaskDesc.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.tvTaskDesc.setTextColor(0xFF000000); // black text
         }
     }
 

@@ -22,6 +22,7 @@ import com.example.agricom_it.databinding.FragmentHomeBinding;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.tileprovider.modules.MapTileApproximater;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
@@ -32,6 +33,10 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -44,6 +49,7 @@ public class HomeFragment extends Fragment {
     private boolean addingArea = false;
     private final List<GeoPoint> areaPoints = new ArrayList<>();
     private final List<Marker> tempMarkers = new ArrayList<>();
+//    private MapApiServices apiService;
 
     @Nullable
     @Override
@@ -63,6 +69,8 @@ public class HomeFragment extends Fragment {
 
         mapView = binding.map;
         mapView.setMultiTouchControls(true);
+
+//        apiService = RetrofitClient.getInstance().create(ApiService.class);
 
         btnAddArea = view.findViewById(R.id.btn_add_area);
         btnSaveArea = view.findViewById(R.id.btn_save_area);
