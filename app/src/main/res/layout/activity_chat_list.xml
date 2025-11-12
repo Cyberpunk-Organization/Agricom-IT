@@ -53,8 +53,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Search Conversation"
-                android:textColorHint="@color/white_off"
-                android:background="@android:drawable/edit_text"
+                android:textColorHint="@color/black"
+                android:background="@drawable/rounded_corner"
                 android:paddingStart="8dp"
                 android:layout_weight="0.6"
                 android:layout_marginEnd="8dp"/>
@@ -63,14 +63,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Start new chat"
-                android:layout_weight="0.4"/>
+                android:layout_weight="0.4"
+                android:backgroundTint="@color/blue"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerChatLists"
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
     </LinearLayout>
-    <!--Most Recent Label-->
+
     <TextView
         android:id="@+id/most_recent_label"
         android:layout_width="wrap_content"
@@ -80,9 +81,8 @@
         android:textSize="18sp"
         android:layout_marginStart="16dp"
         android:layout_below="@id/search_bar"
-        android:textColor="#222"/>
+        android:textColor="@color/black"/>
 
-    <!--List of Conversations-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_list_recycler"
         android:layout_width="match_parent"

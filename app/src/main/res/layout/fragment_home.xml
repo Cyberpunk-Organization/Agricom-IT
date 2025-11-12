@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/map_context_title"
@@ -18,7 +19,7 @@
             android:text="Farm Map"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/black"
             android:gravity="center" />
 
         <TextView
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="Tap to add comments or draw areas on your map."
             android:textSize="15sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/black"
             android:gravity="center"
             android:layout_marginTop="4dp" />
     </LinearLayout>
@@ -37,7 +38,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:background="@color/white">
 
         <Button
             android:id="@+id/btn_add_area"
@@ -58,7 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="12dp" />
+        android:layout_margin="12dp"
+        android:background="@color/white"/>
 
     <Button
         android:id="@+id/btn_recenter_map"
