@@ -24,11 +24,15 @@ import com.example.agricom_it.R;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.repo.ChatRepository;
+import com.example.agricom_it.ui.ChatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.AuthResult;
 
 import org.json.JSONObject;
 
@@ -39,7 +43,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChatListFragment extends Fragment {
+public class ChatListFragment extends Fragment
+{
 
     private final String TAG = "ChatListFragment";
     private ChatRepository repo;
@@ -50,29 +55,31 @@ public class ChatListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState )
+    {
         // reuse the existing layout; consider creating a fragment-specific layout if preferred
         return inflater.inflate(R.layout.activity_chat_list, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    public void onViewCreated( @NonNull View view, @Nullable Bundle savedInstanceState )
     {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d(TAG, "Fragment created with currentUserId: " + currentUserId);
+        Log.d(TAG, "Fragment created with currentUserId: "+currentUserId);
 
         RecyclerView rv = view.findViewById(R.id.recyclerChatLists);
         btnStartChat = view.findViewById(R.id.btnStartChat);
 
-        adapter = new ChatListAdapter(currentUserId, chatSummary -> {
+        adapter = new ChatListAdapter(currentUserId, chatSummary->
+        {
             Intent i = new Intent(requireContext(), ChatActivity.class);
             i.putExtra("chatId", chatSummary.chatId);
             int other = -1;
-            for (int p : chatSummary.participants)
+            for( int p : chatSummary.participants )
             {
-                if (p != currentUserId)
+                if( p!=currentUserId )
                 {
                     other = p;
                     break;
@@ -87,14 +94,15 @@ public class ChatListFragment extends Fragment {
 
         repo = new ChatRepository();
 
-        repo.listenForUserChats(currentUserId, chat ->
+        repo.listenForUserChats(currentUserId, chat->
         {
-            if (getActivity() != null) {
-                getActivity().runOnUiThread(() -> adapter.add(chat));
+            if( getActivity()!=null )
+            {
+                getActivity().runOnUiThread(()->adapter.add(chat));
             }
         });
 
-        btnStartChat.setOnClickListener(v -> showNewChatDialog());
+        btnStartChat.setOnClickListener(v->showNewChatDialog());
     }
 
     private void showNewChatDialog()
@@ -107,10 +115,10 @@ public class ChatListFragment extends Fragment {
                 .setTitle("Start new chat")
                 .setMessage("Enter other username or email:")
                 .setView(input)
-                .setPositiveButton("Start", (d, which) ->
+                .setPositiveButton("Start", ( d, which )->
                 {
                     String inputIdentifier = input.getText().toString().trim();
-                    if (inputIdentifier.isEmpty())
+                    if( inputIdentifier.isEmpty() )
                     {
                         Log.d(TAG, "No identifier entered");
                         return;
@@ -122,27 +130,28 @@ public class ChatListFragment extends Fragment {
                     {
                         int other = Integer.parseInt(inputIdentifier);
                         parsedNumber = true;
-                        Log.d(TAG, "Starting new chat with numeric user id: " + other);
+                        Log.d(TAG, "Starting new chat with numeric user id: "+other);
                         startNewChatWith(other);
                     }
-                    catch (NumberFormatException ignored)
+                    catch( NumberFormatException ignored )
                     {
                         // not numeric -> resolve by username/email
                     }
 
-                    if (!parsedNumber)
+                    if( !parsedNumber )
                     {
-                        Log.d(TAG, "Resolving identifier to user id: " + inputIdentifier);
+                        Log.d(TAG, "Resolving identifier to UserID: "+inputIdentifier);
 
                         // NOTE: adjust the action string ("getUserId") if your backend expects a different action name
-                        Call<ResponseBody> call = apiService.GetUserIdFromUsernameOrEmail("GetUserIdFromUsernameOrEmail", inputIdentifier);
+                        Call<ResponseBody> call = apiService.GetUserIdByUsernameOrEmail("GetUserIdByUsernameOrEmail", inputIdentifier);
                         call.enqueue(new Callback<ResponseBody>()
                         {
                             @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                if (!response.isSuccessful() || response.body() == null)
+                            public void onResponse( Call<ResponseBody> call, Response<ResponseBody> response )
+                            {
+                                if( !response.isSuccessful() || response.body()==null )
                                 {
-                                    Log.e(TAG, "GetUserIdFromUsernameOrEmail failed: " + (response != null ? response.code() : "null"));
+                                    Log.e(TAG, "GetUserIdByUsernameOrEmail failed: "+(response!=null ? response.code() : "null"));
                                     return;
                                 }
 
@@ -151,58 +160,43 @@ public class ChatListFragment extends Fragment {
                                 {
                                     json = response.body().string();
                                 }
-                                catch (IOException e)
+                                catch( IOException e )
                                 {
                                     throw new RuntimeException(e);
                                 }
 
                                 Gson gson = new GsonBuilder().create();
-                                Log.d(TAG, "User JSON: " + json);
+                                Log.d(TAG, "User JSON: "+json);
 
                                 JsonObject root = gson.fromJson(json, JsonObject.class);
-                                if (root == null) {
+                                if( root==null )
+                                {
                                     Log.e(TAG, "User JSON root null");
                                     return;
                                 }
 
                                 JsonElement dataElem = root.get("data");
 
-                                if ( dataElem.isJsonArray() )
+                                Log.d(TAG, "Data element: "+dataElem.toString());
+
+                                try
                                 {
-                                    JsonArray arr = dataElem.getAsJsonArray();
-                                    if (arr.size() > 0 && arr.get(0).isJsonObject())
-                                    {
-                                        JsonObject userObj = arr.get(0).getAsJsonObject();
-                                        if (userObj.has("UserID") && !userObj.get("UserID").isJsonNull())
-                                        {
-                                            int otherUserId = userObj.get("UserID").getAsInt();
-                                            Log.d(TAG, "Resolved user id: " + otherUserId);
-                                            startNewChatWith(otherUserId);
-                                        }
-                                        else
-                                        {
-                                            Log.e(TAG, "UserID not found in response");
-                                            showToastOnUiThread("User not found");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Log.e(TAG, "Unexpected data format in response");
-                                        showToastOnUiThread("User not found");
-                                    }
+                                    int otherUserId = dataElem.getAsInt();
+                                    Log.d(TAG, "Resolved user id: "+otherUserId);
+                                    startNewChatWith(otherUserId);
                                 }
-                                else
+                                catch( Exception e )
                                 {
-                                    Log.e(TAG, "Unexpected data type for user resolution");
+                                    Log.e(TAG, "Error parsing user ID", e);
                                     showToastOnUiThread("User not found");
                                 }
 
                             }
 
                             @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t)
+                            public void onFailure( Call<ResponseBody> call, Throwable t )
                             {
-                                if (!isAdded()) return;
+                                if( !isAdded() ) return;
                                 Log.e(TAG, "API call failed", t);
                                 showToastOnUiThread("Network error resolving user");
                             }
@@ -214,39 +208,64 @@ public class ChatListFragment extends Fragment {
         dialog.show();
     }
 
-    private void startNewChatWith(int otherUserId)
+    private void startNewChatWith( int otherUserId )
     {
+
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//
+//        if( auth.getCurrentUser()==null )
+//        {
+//            Log.e(TAG, "User not authenticated");
+//            showToastOnUiThread("You must be logged in to start a chat");
+//            return;
+//        }
+
+
+        Log.d(TAG, "Starting new chat between "+currentUserId+" and "+otherUserId);
+
         int a = Math.min(currentUserId, otherUserId);
         int b = Math.max(currentUserId, otherUserId);
-        String newChatId = "chat_" + a + "_" + b;
 
-        repo.createChat(newChatId, java.util.Arrays.asList(currentUserId, otherUserId), success ->
+        String newChatId = "chat_"+a+"_"+b;
+
+        repo.createChat(newChatId, java.util.Arrays.asList(currentUserId, otherUserId), success->
         {
-            if (success)
+            if( success )
             {
+                Log.d(TAG, "Create chat "+ newChatId +" success: "+success);
+                //TODO: GOT HERE. REMOVE THIS COMMENT WHEN DONE.
+
                 Intent i = new Intent(requireContext(), ChatActivity.class);
+
+//                Intent i = new Intent( ChatActivity, ChatActivity.class)
+
                 i.putExtra("chatId", newChatId);
                 i.putExtra("otherUserId", otherUserId);
-                startActivity(i);
+
+                Log.d(TAG, "Extra: " + i.getExtras() );
+
+                requireActivity().startActivity(i);
+
             }
             else
             {
+                Log.d(TAG, "Chat Creation Failed");
                 // failure handling omitted for brevity
             }
         });
     }
 
-    private void showToastOnUiThread(String message)
+    private void showToastOnUiThread( String message )
     {
-        if (getActivity() == null) return;
-        getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show());
+        if( getActivity()==null ) return;
+        getActivity().runOnUiThread(()->Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public void onDestroyView()
     {
         super.onDestroyView();
-        if (repo != null)
+        if( repo!=null )
         {
             repo.removeChatsListener();
         }

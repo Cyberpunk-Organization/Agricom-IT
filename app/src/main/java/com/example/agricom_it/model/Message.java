@@ -42,6 +42,8 @@
 // Java
 package com.example.agricom_it.model;
 
+
+
 public class Message {
     private int messageId;
     private int senderId;
@@ -59,6 +61,13 @@ public class Message {
         this.messageContent = messageContent;
         this.dateSent = dateSent;
         this.timeSent = timeSent;
+    }
+
+    public Message( int i, String text, Object ts )
+    {
+        this.messageId = i;
+        this.messageContent = text;
+        this.timeSent = ts.toString();
     }
 
     public int getMessageId() { return messageId; }

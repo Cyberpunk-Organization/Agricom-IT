@@ -21,7 +21,7 @@
         <meta-data android:name="osmdroid.basePath" android:value="osmdroid" />
         <meta-data android:name="osmdroid.tileCache" android:value="tile" />
         <activity
-            android:name=".ChatConversationActivity"
+            android:name=".ui.ChatActivity"
             android:exported="false" />
 <!--        <activity-->
 <!--            android:name=".DashboardActivity"-->

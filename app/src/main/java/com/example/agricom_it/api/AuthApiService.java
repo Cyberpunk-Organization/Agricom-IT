@@ -78,7 +78,7 @@ public interface AuthApiService {
     Call<ResponseBody> GetUserByID(@Query("action") String action, @Query("userID") int userID);
 
     @GET("users.php")
-    Call<ResponseBody> GetUserIdFromUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
+    Call<ResponseBody> GetUserIdByUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
 
 // MAP APi
 
