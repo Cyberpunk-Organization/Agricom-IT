@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <!-- Search row: EditText + Start button -->
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
+        android:weightSum="1"
+        android:gravity="center_vertical">
 
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_search"
+            android:layout_weight="0"
+            app:tint="@color/green" />
         <EditText
                 android:id="@+id/editSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:hint="Search Conversation"
                 android:inputType="text"
                 android:padding="8dp" />
 
         <Button
                 android:id="@+id/btnStartChat"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Start new chat"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.4"/>
     </LinearLayout>
 
     <TextView
@@ -37,7 +47,8 @@
             android:text="Most Recent"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/black"/>
 
     <!-- Main RecyclerView used by ChatListFragment -->
     <androidx.recyclerview.widget.RecyclerView
@@ -46,5 +57,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp"
+            android:background="@drawable/rounded_corner"/>
 </LinearLayout>
