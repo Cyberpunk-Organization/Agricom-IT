@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import com.example.agricom_it.MainActivity;
 import com.example.agricom_it.R;
 
+import java.io.File;
+
 public class SettingsFragment extends Fragment {
 
     private SwitchCompat switchDarkMode;
@@ -57,9 +59,12 @@ public class SettingsFragment extends Fragment {
 
         view.findViewById(R.id.logout_layout).setOnClickListener(v -> {
             Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();
+            clearCacheOnly();
             Intent intent = new Intent(requireActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
             startActivity(intent);
-            requireActivity().finish(); // Optional: close current activity
+            requireActivity().finishAffinity();
         });
 
         view.findViewById(R.id.about_layout).setOnClickListener(v -> {
@@ -71,5 +76,28 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+    private void clearCacheOnly(){
+        try{
+            File cacheDir = requireContext().getCacheDir();
+            deleteDir(cacheDir);
+
+            File externalCache = requireContext().getExternalCacheDir();
+            deleteDir(externalCache);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private boolean deleteDir(File dir){
+        if(dir != null && dir.isDirectory()){
+            String[] children = dir.list();
+            if (children != null){
+                for (String child : children){
+                    boolean success = deleteDir(new File(dir, child));
+                    if(!success) return false;
+                }
+            }
+        }
+        return dir != null && dir.delete();
     }
 }
