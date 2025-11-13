@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
     private int userID = -1;
     private int mapID = -1;
 
-    private Button btnAddArea, btnSaveArea;
+    private Button btnAddArea, btnSaveArea, btnRecenterMap;
     private boolean addingArea = false;
 
     private final List<GeoPoint> areaPoints = new ArrayList<>();
@@ -88,6 +88,7 @@ public class HomeFragment extends Fragment {
 
         btnAddArea = view.findViewById(R.id.btn_add_area);
         btnSaveArea = view.findViewById(R.id.btn_save_area);
+        btnRecenterMap = view.findViewById(R.id.btn_recenter_map);
 
         requestPermissionsIfNecessary(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -140,6 +141,14 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(requireContext(), "Area saved!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(requireContext(), "Add at least 3 points for an area", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnRecenterMap.setOnClickListener(view -> {
+            GeoPoint myLocation = myLocationOverlay.getMyLocation();
+            if (myLocation != null) {
+                IMapController mapController = mapView.getController();
+                mapController.setZoom(17.0);
+                mapController.setCenter(myLocation);
             }
         });
     }
