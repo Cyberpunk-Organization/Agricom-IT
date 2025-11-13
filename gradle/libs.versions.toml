@@ -21,6 +21,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 firebase-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version = "22.3.0" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore", version = "25.0.0"}
 
 
 [plugins]

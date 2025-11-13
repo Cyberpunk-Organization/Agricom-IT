@@ -3,12 +3,14 @@ package com.example.agricom_it.ui;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -17,12 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.agricom_it.R;
+import com.example.agricom_it.api.ApiClient;
+import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.databinding.FragmentHomeBinding;
+import com.example.agricom_it.model.MapArea;
+import com.example.agricom_it.model.MapComment;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
-import org.osmdroid.tileprovider.modules.MapTileApproximater;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
@@ -34,6 +39,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,12 +50,18 @@ public class HomeFragment extends Fragment {
     private MapView mapView;
     private MyLocationNewOverlay myLocationOverlay;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private static final String TAG = "HomeFragment";
 
-    private Button btnAddArea, btnSaveArea, btnRecenter;
+    private int userID = -1;
+    private int mapID = -1;
+
+    private Button btnAddArea, btnSaveArea;
     private boolean addingArea = false;
+
     private final List<GeoPoint> areaPoints = new ArrayList<>();
     private final List<Marker> tempMarkers = new ArrayList<>();
-//    private MapApiServices apiService;
+
+    private final AuthApiService apiService = ApiClient.getService();
 
     @Nullable
     @Override
@@ -64,17 +76,18 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getArguments() != null && getArguments().containsKey("userID")) {
+            userID = getArguments().getInt("userID", -1);
+        }
+
         Configuration.getInstance().load(requireContext(),
                 androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext()));
 
         mapView = binding.map;
         mapView.setMultiTouchControls(true);
 
-//        apiService = RetrofitClient.getInstance().create(ApiService.class);
-
         btnAddArea = view.findViewById(R.id.btn_add_area);
         btnSaveArea = view.findViewById(R.id.btn_save_area);
-        btnRecenter = view.findViewById(R.id.btn_recenter_map);
 
         requestPermissionsIfNecessary(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -84,6 +97,29 @@ public class HomeFragment extends Fragment {
         setupMyLocationOverlay();
         setupMapClickListener();
         setupButtons();
+
+        getMapIDFromServer();
+    }
+
+    private void getMapIDFromServer() {
+        Call<ResponseBody> call = apiService.GetMapID("GetMapId", userID);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Map ID fetched successfully");
+                    // You could parse JSON if backend sends { "mapID": 123 }
+                    // mapID = parsed value;
+                } else {
+                    Log.e(TAG, "Failed to fetch map ID: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.e(TAG, "Error fetching map ID: " + t.getMessage());
+            }
+        });
     }
 
     private void setupButtons() {
@@ -97,27 +133,15 @@ public class HomeFragment extends Fragment {
         btnSaveArea.setOnClickListener(v -> {
             if (addingArea && areaPoints.size() > 2) {
                 addPolygon(areaPoints);
+                saveAreaToServer(areaPoints);
                 clearTempMarkers();
+                addingArea = false;
+                areaPoints.clear();
                 Toast.makeText(requireContext(), "Area saved!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(requireContext(), "Add at least 3 points for an area", Toast.LENGTH_SHORT).show();
             }
-            addingArea = false;
-            areaPoints.clear();
         });
-
-        btnRecenter.setOnClickListener(view -> {
-            recenterMap();
-        });
-    }
-
-    private void recenterMap(){
-        GeoPoint myLocation = myLocationOverlay.getMyLocation();
-        if (myLocation != null) {
-            IMapController mapController = mapView.getController();
-            mapController.setZoom(17.0);
-            mapController.setCenter(myLocation);
-        }
     }
 
     private void setupMapClickListener() {
@@ -143,7 +167,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void showAddCommentDialog(GeoPoint point) {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Add Comment");
 
         final EditText input = new EditText(requireContext());
@@ -151,9 +175,10 @@ public class HomeFragment extends Fragment {
         builder.setView(input);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
-            String comment = input.getText().toString().trim();
-            if (!comment.isEmpty()) {
-                addMarker(point, comment);
+            String commentText = input.getText().toString().trim();
+            if (!commentText.isEmpty()) {
+                addMarker(point, commentText);
+                saveCommentToServer(point, commentText);
             } else {
                 Toast.makeText(requireContext(), "Comment cannot be empty", Toast.LENGTH_SHORT).show();
             }
@@ -163,12 +188,58 @@ public class HomeFragment extends Fragment {
         builder.show();
     }
 
+    private void saveCommentToServer(GeoPoint point, String comment) {
+        MapComment mapComment = new MapComment(userID, mapID, point.getLatitude(), point.getLongitude(), comment);
+        Call<ResponseBody> call = apiService.SaveMapComment("SaveMapComment", mapComment);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Comment saved to server", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Failed to save comment (server)", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), "Server error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveAreaToServer(List<GeoPoint> points) {
+        StringBuilder coords = new StringBuilder();
+        for (GeoPoint p : points) {
+            coords.append(p.getLatitude()).append(",").append(p.getLongitude()).append(";");
+        }
+
+        MapArea area = new MapArea(userID, mapID, coords.toString());
+        Call<ResponseBody> call = apiService.SaveMapArea("SaveMapArea", area);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Area saved to server", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Failed to save area", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), "Server error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private Marker addMarker(GeoPoint point, String title) {
         Marker marker = new Marker(mapView);
         marker.setPosition(point);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         marker.setTitle(title);
-        marker.setSnippet("Lat: " + point.getLatitude() + ", Lon: " + point.getLongitude());
         mapView.getOverlays().add(marker);
         mapView.invalidate();
         return marker;
@@ -185,8 +256,8 @@ public class HomeFragment extends Fragment {
     private void addPolygon(List<GeoPoint> points) {
         Polygon polygon = new Polygon();
         polygon.setPoints(points);
-        polygon.getFillPaint().setColor(0x40FF46A2);
-        polygon.getOutlinePaint().setColor(0x404F0048);
+        polygon.getFillPaint().setColor(0x401970A9);
+        polygon.getOutlinePaint().setColor(0xFF1970A9);
         polygon.getOutlinePaint().setStrokeWidth(5f);
         mapView.getOverlays().add(polygon);
         mapView.invalidate();

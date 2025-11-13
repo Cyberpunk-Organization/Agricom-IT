@@ -2,6 +2,8 @@ package com.example.agricom_it.api;
 
 import com.example.agricom_it.R;
 import com.example.agricom_it.model.LoginRequest;
+import com.example.agricom_it.model.MapArea;
+import com.example.agricom_it.model.MapComment;
 import com.example.agricom_it.model.RegisterRequest;
 import com.example.agricom_it.model.LoginResponse;
 import com.example.agricom_it.model.RegisterResponse;
@@ -33,18 +35,22 @@ public interface AuthApiService {
     // POST to register.php using form-encoded fields (no RegisterRequest POJO needed)
 //    @FormUrlEncoded
     @POST("register.php")
-    Call<RegisterResponse> register( @Body RegisterRequest request);
+    Call<RegisterResponse> register(@Body RegisterRequest request);
 
 
-//  INVENTORY
+    //  INVENTORY
     @GET("inventory.php")
     Call<ResponseBody> getItem(@Query("action") String cmd, @Query("itemID") int itemID);
+
     @GET("inventory.php")
     Call<ResponseBody> inventory(@Query("action") String action, @QueryMap Map<String, Integer> params);
+
     @GET("inventory.php")
     Call<ResponseBody> getInventoryItems(@Query("action") String action, @Query("userID") int userID);
+
     @GET("inventory.php")
     Call<ResponseBody> AddItem(@Query("action") String action, @Query("name") String name);
+
     @GET("inventory.php")
     Call<ResponseBody> addItemToInventory(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID, @Query("quantity") int quantity);
 
@@ -57,9 +63,9 @@ public interface AuthApiService {
     @GET("inventory.php")
     Call<ResponseBody> removeItemFromInventory(@Query("action") String action, @Query("inventoryID") int inventoryID, @Query("itemID") int itemID);
 
-//  TASKS
+    //  TASKS
     @GET("tasks.php")
-    Call<ResponseBody> AddTask(@Query("action") String action, @Query("dueDate") String DueDate, @Query("isDone") boolean isDone, @Query("task") String taskDesc );
+    Call<ResponseBody> AddTask(@Query("action") String action, @Query("dueDate") String DueDate, @Query("isDone") boolean isDone, @Query("task") String taskDesc);
 
     @GET("tasks.php")
     Call<ResponseBody> GetTaskListID(@Query("action") String action, @Query("workerID") int workerID);
@@ -73,18 +79,21 @@ public interface AuthApiService {
     @GET("tasks.php")
     Call<ResponseBody> GetTasksFromTasklist(@Query("action") String action, @Query("taskListID") int taskListID);
 
-//  USERS
+    //  USERS
     @GET("users.php")
     Call<ResponseBody> GetUserByID(@Query("action") String action, @Query("userID") int userID);
 
     @GET("users.php")
     Call<ResponseBody> GetUserIdByUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
 
-// MAP APi
+    // MAP APi
+    @GET("map.php")
+    Call<ResponseBody> GetMapID(@Query("action") String action, @Query("mapID") int mapID);
 
-//    @GET("map.php")
-//    Call<ResponseBody> SaveMapComment(@Query("action") String action, @Query("") MapComment comment);
-//
-//    @GET("map.php")
-//    Call<ResponseBody> GetMapComments(@Query("action") String action, @Body MapArea area);
+    @POST("map.php")
+    Call<ResponseBody> SaveMapComment(@Query("action") String action, @Body MapComment comment);
+
+    // Save a polygon area
+    @POST("map.php")
+    Call<ResponseBody> SaveMapArea(@Query("action") String action, @Body MapArea area);
 }
