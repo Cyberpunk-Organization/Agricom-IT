@@ -13,10 +13,10 @@ import com.example.agricom_it.model.LoginResponse;
 import com.example.agricom_it.ui.ToDoListFragment;
 
 public class TaskActivity extends AppCompatActivity {
-
     private static final String TAG = "TaskActivity";
     private final AuthApiService apiService = ApiClient.getService();
 
+    //------------------------------------------------------------------------------------[onCreate]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +24,6 @@ public class TaskActivity extends AppCompatActivity {
 
         int userID = -1;
         Intent intent = getIntent();
-
-        Log.d(TAG, "onCreate: TaskActivity started");
 
         if (intent != null && intent.hasExtra("login_id")) {
             Object extra = intent.getSerializableExtra("login_id");
@@ -63,7 +61,5 @@ public class TaskActivity extends AppCompatActivity {
                     .replace(R.id.taskContainer, toDoListFragment)
                     .commit();
         }
-
-        Log.d(TAG, "Task fragment initialized for userID = " + userID);
     }
 }

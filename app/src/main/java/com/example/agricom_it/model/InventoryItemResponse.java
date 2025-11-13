@@ -14,36 +14,43 @@ public class InventoryItemResponse implements Serializable
     @SerializedName("error")
     private String error;
 
+    //-----------------------------------------------------------------------------------[isSuccess]
     public boolean isSuccess()
     {
         return success;
     }
 
+    //----------------------------------------------------------------------------------[setSuccess]
     public void setSuccess(boolean success)
     {
         this.success = success;
     }
 
+    //-------------------------------------------------------------------------------------[getData]
     public InventoryItem getData()
     {
         return data;
     }
 
+    //-------------------------------------------------------------------------------------[setData]
     public void setData(InventoryItem data)
     {
         this.data = data;
     }
 
+    //------------------------------------------------------------------------------------[getError]
     public String getError()
     {
         return error;
     }
 
+    //------------------------------------------------------------------------------------[setError]
     public void setError(String error)
     {
         this.error = error;
     }
 
+    //------------------------------------------------------------------------------------[toString]
     @Override
     public String toString() {
         return "InventoryItemResponse{" +

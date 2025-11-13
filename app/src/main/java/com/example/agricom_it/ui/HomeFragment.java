@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,10 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.agricom_it.R;
 import com.example.agricom_it.api.ApiClient;
@@ -45,24 +44,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
-
     private FragmentHomeBinding binding;
     private MapView mapView;
     private MyLocationNewOverlay myLocationOverlay;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private static final String TAG = "HomeFragment";
-
     private int userID = -1;
     private int mapID = -1;
-
     private Button btnAddArea, btnSaveArea, btnRecenterMap;
     private boolean addingArea = false;
-
     private final List<GeoPoint> areaPoints = new ArrayList<>();
     private final List<Marker> tempMarkers = new ArrayList<>();
-
     private final AuthApiService apiService = ApiClient.getService();
 
+    //--------------------------------------------------------------------------------[onCreateView]
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -72,6 +67,7 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
+    //-------------------------------------------------------------------------------[onViewCreated]
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -102,6 +98,7 @@ public class HomeFragment extends Fragment {
         getMapIDFromServer();
     }
 
+    //--------------------------------------------------------------------------[getMapIDFromServer]
     private void getMapIDFromServer() {
         Call<ResponseBody> call = apiService.GetMapID("GetMapId", userID);
         call.enqueue(new Callback<ResponseBody>() {
@@ -123,6 +120,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //--------------------------------------------------------------------------------[setupButtons]
     private void setupButtons() {
         btnAddArea.setOnClickListener(v -> {
             addingArea = true;
@@ -153,6 +151,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //-----------------------------------------------------------------------[setupMapClickListener]
     private void setupMapClickListener() {
         MapEventsReceiver mReceive = new MapEventsReceiver() {
             @Override
@@ -175,6 +174,7 @@ public class HomeFragment extends Fragment {
         mapView.getOverlays().add(new MapEventsOverlay(mReceive));
     }
 
+    //------------------------------------------------------------------------[showAddCommentDialog]
     private void showAddCommentDialog(GeoPoint point) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Add Comment");
@@ -197,6 +197,7 @@ public class HomeFragment extends Fragment {
         builder.show();
     }
 
+    //-------------------------------------------------------------------------[saveCommentToServer]
     private void saveCommentToServer(GeoPoint point, String comment) {
         MapComment mapComment = new MapComment(userID, mapID, point.getLatitude(), point.getLongitude(), comment);
         Call<ResponseBody> call = apiService.SaveMapComment("SaveMapComment", mapComment);
@@ -218,6 +219,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //----------------------------------------------------------------------------[saveAreaToServer]
     private void saveAreaToServer(List<GeoPoint> points) {
         StringBuilder coords = new StringBuilder();
         for (GeoPoint p : points) {
@@ -244,6 +246,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //-----------------------------------------------------------------------------------[addMarker]
     private Marker addMarker(GeoPoint point, String title) {
         Marker marker = new Marker(mapView);
         marker.setPosition(point);
@@ -254,6 +257,7 @@ public class HomeFragment extends Fragment {
         return marker;
     }
 
+    //----------------------------------------------------------------------------[clearTempMarkers]
     private void clearTempMarkers() {
         for (Marker m : tempMarkers) {
             mapView.getOverlays().remove(m);
@@ -262,6 +266,7 @@ public class HomeFragment extends Fragment {
         mapView.invalidate();
     }
 
+    //----------------------------------------------------------------------------------[addPolygon]
     private void addPolygon(List<GeoPoint> points) {
         Polygon polygon = new Polygon();
         polygon.setPoints(points);
@@ -272,6 +277,7 @@ public class HomeFragment extends Fragment {
         mapView.invalidate();
     }
 
+    //----------------------------------------------------------------------[setupMyLocationOverlay]
     private void setupMyLocationOverlay() {
         myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireContext()), mapView);
         myLocationOverlay.enableMyLocation();
@@ -292,6 +298,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //---------------------------------------------------------------[requestPermissionsIfNecessary]
     private void requestPermissionsIfNecessary(String[] permissions) {
         for (String permission : permissions) {
             if (ActivityCompat.checkSelfPermission(requireContext(), permission)
@@ -302,6 +309,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    //------------------------------------------------------------------[onRequestPermissionsResult]
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -315,18 +323,21 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    //------------------------------------------------------------------------------------[onResume]
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
     }
 
+    //-------------------------------------------------------------------------------------[onPause]
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
     }
 
+    //-------------------------------------------------------------------------------[onDestroyView]
     @Override
     public void onDestroyView() {
         super.onDestroyView();

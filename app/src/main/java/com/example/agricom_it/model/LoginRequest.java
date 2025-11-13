@@ -4,16 +4,18 @@ public class LoginRequest {
     private String Username;
     private String Password;
 
+    //--------------------------------------------------------------------------------[LoginRequest]
     public LoginRequest(String Username, String Password) {
         this.Username = Username;
         this.Password = Password;
     }
 
-    // Getters
+    //---------------------------------------------------------------------------------[getUsername]
     public String getUsername() {
-        return  Username;
+        return Username;
     }
 
+    //---------------------------------------------------------------------------------[getPassword]
     public String getPassword() {
         return Password;
     }

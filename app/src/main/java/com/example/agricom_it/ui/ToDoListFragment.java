@@ -41,7 +41,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ToDoListFragment extends Fragment {
-
     private EditText editTextTask;
     private Button buttonAdd;
     private Button btnPickDate;
@@ -50,25 +49,21 @@ public class ToDoListFragment extends Fragment {
     private List<Task> taskList;
     private String selectedDate = "";
     private static final String TAG = "ToDoListFragment";
-
     private final AuthApiService apiService = ApiClient.getService();
     private final SimpleDateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private int currentTaskListId = -1;
     private int userID = -1;
 
-
+    //--------------------------------------------------------------------------------[onCreateView]
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
-
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
         Bundle args = getArguments();
-        if (args != null && args.containsKey("userID"))
-        {
+        if (args != null && args.containsKey("userID")) {
             userID = args.getInt("userID", -1);
         }
 
@@ -82,29 +77,21 @@ public class ToDoListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-
-
         btnPickDate.setOnClickListener(v -> showDatePicker());
-        Log.d(TAG, "onCreateView");
-
         ensureTasklistExistsAndLoad();
 
         buttonAdd.setOnClickListener(v -> {
             String description = editTextTask.getText().toString().trim();
 
-            if (description.isEmpty() || selectedDate.isEmpty())
-            {
+            if (description.isEmpty() || selectedDate.isEmpty()) {
                 Toast.makeText(getContext(), "Please enter task and select a date", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (currentTaskListId <= 0)
-            {
+            if (currentTaskListId <= 0) {
                 // Ensure tasklist then add
                 ensureTasklistExists(() -> addTaskToServer(description, selectedDate));
-            }
-            else
-            {
+            } else {
                 addTaskToServer(description, selectedDate);
             }
         });
@@ -112,6 +99,7 @@ public class ToDoListFragment extends Fragment {
         return view;
     }
 
+    //------------------------------------------------------------------------------[showDatePicker]
     private void showDatePicker() {
         final Calendar calendar = Calendar.getInstance();
 
@@ -132,42 +120,33 @@ public class ToDoListFragment extends Fragment {
         dialog.show();
     }
 
-    private void ensureTasklistExistsAndLoad()
-    {
+    //------------------------------------------------------------------------[ensureTasklistExists]
+    private void ensureTasklistExistsAndLoad() {
         ensureTasklistExists(this::loadTasksForCurrentTasklist);
     }
 
+    //------------------------------------------------------------------------[ensureTasklistExists]
     private void ensureTasklistExists(Runnable onDone) {
-        Log.d(TAG, "ensureTasklistExists called");
-
         int workerId = userID;
-        if (workerId <= 0)
-        {
+        if (workerId <= 0) {
             Log.e(TAG, "Invalid worker id");
             return;
         }
 
-        Log.d(TAG, "WorkerID: " + workerId);
-
-        Call<ResponseBody> call = apiService.GetTaskListID("GetTaskListID", userID );
-        Log.d(TAG, "GetTaskListID call created");
+        Call<ResponseBody> call = apiService.GetTaskListID("GetTaskListID", userID);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response)
-            {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.d(TAG, "GetTaskListID response received");
-                if (!response.isSuccessful())
-                {
+                if (!response.isSuccessful()) {
                     Log.e(TAG, "GetTaskListID server error: " + response.code());
                     return;
                 }
-                try
-                {
+                try {
                     String json = response.body().string();
                     JsonObject root = new GsonBuilder().create().fromJson(json, JsonObject.class);
                     JsonElement data = root.get("data");
-                    if (data != null && !data.isJsonNull())
-                    {
+                    if (data != null && !data.isJsonNull()) {
                         // tasks.php returns plain column value - may be string/number
                         int taskListId = data.getAsInt();
                         currentTaskListId = taskListId;
@@ -176,32 +155,25 @@ public class ToDoListFragment extends Fragment {
                     }
                     // not found -> create
                     Call<ResponseBody> addCall = apiService.AddTaskList("AddTaskList", workerId);
-                    addCall.enqueue(new Callback<ResponseBody>()
-                    {
+                    addCall.enqueue(new Callback<ResponseBody>() {
                         @Override
-                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response)
-                        {
-                            if (!response.isSuccessful())
-                            {
+                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                            if (!response.isSuccessful()) {
                                 Log.e(TAG, "AddTaskList server error: " + response.code());
                                 return;
                             }
-                            try
-                            {
+                            try {
                                 String json = response.body().string();
                                 JsonObject root = new GsonBuilder().create().fromJson(json, JsonObject.class);
                                 JsonElement data = root.get("data");
-                                if (data != null && data.isJsonObject())
-                                {
+                                if (data != null && data.isJsonObject()) {
                                     JsonObject obj = data.getAsJsonObject();
-                                    if (obj.has("TaskListID"))
-                                    {
+                                    if (obj.has("TaskListID")) {
                                         currentTaskListId = obj.get("TaskListID").getAsInt();
                                         if (onDone != null) onDone.run();
                                     }
                                 }
-                            } catch (IOException e)
-                            {
+                            } catch (IOException e) {
                                 Log.e(TAG, "AddTaskList parse error", e);
                             }
                         }
@@ -224,6 +196,7 @@ public class ToDoListFragment extends Fragment {
         });
     }
 
+    //-----------------------------------------------------------------[loadTasksForCurrentTasklist]
     private void loadTasksForCurrentTasklist() {
         if (currentTaskListId <= 0) return;
         Call<ResponseBody> call = apiService.GetTasksFromTasklist("GetTasksFromTasklist", currentTaskListId);
@@ -250,7 +223,8 @@ public class ToDoListFragment extends Fragment {
                                 try {
                                     Date d = serverDateFormat.parse(o.get("DueDate").getAsString());
                                     t.setDueDate(d);
-                                } catch (Exception ignored) {}
+                                } catch (Exception ignored) {
+                                }
                             }
                             if (o.has("TaskID")) t.setId(o.get("TaskID").getAsInt());
                             taskList.add(t);
@@ -269,35 +243,28 @@ public class ToDoListFragment extends Fragment {
         });
     }
 
+    //-----------------------------------------------------------------------------[addTaskToServer]
     private void addTaskToServer(String taskDesc, String DueDate) {
         boolean isDone = false;
-        Log.d(TAG, "Adding task: " + taskDesc + " | Due: " + DueDate + " | isDone: " + isDone );
 
-        // AddTask first
         Call<ResponseBody> call = apiService.AddTask("AddTask", DueDate, isDone ? true : false, taskDesc);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call,
                                    @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful())
-                {
-                    Log.d(TAG, "Processing AddTask response");
-                    try
-                    {
+                if (response.isSuccessful()) {
+                    try {
                         String json = response.body().string();
-                        JsonObject root = new GsonBuilder().create().fromJson( json, JsonObject.class );
+                        JsonObject root = new GsonBuilder().create().fromJson(json, JsonObject.class);
                         JsonElement data = root.get("data");
                         int createdTaskId;
                         if (data != null && data.isJsonObject()) {
                             JsonObject obj = data.getAsJsonObject();
                             if (obj.has("TaskID")) createdTaskId = obj.get("TaskID").getAsInt();
-                            else
-                            {
+                            else {
                                 createdTaskId = -1;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             createdTaskId = -1;
                         }
 
@@ -307,14 +274,12 @@ public class ToDoListFragment extends Fragment {
                         } else {
                             linkTaskToTasklist(createdTaskId, taskDesc, DueDate);
                         }
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
 
 
-                    Log.d(TAG, "✅ Server response OK");
+                    Log.i(TAG, "Server response OK");
                     Toast.makeText(getContext(), "Task added to server!", Toast.LENGTH_SHORT).show();
 
                     // Add to local list to show in RecyclerView
@@ -322,12 +287,9 @@ public class ToDoListFragment extends Fragment {
                     newTask.setDescription(taskDesc);
                     newTask.setDone(false);
 
-                    try
-                    {
+                    try {
                         newTask.setDueDate(serverDateFormat.parse(DueDate));
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -339,34 +301,33 @@ public class ToDoListFragment extends Fragment {
                     btnPickDate.setText("Select Date");
                     selectedDate = "";
                 } else {
-                    Log.e(TAG, "⚠ Server error: " + response.code());
+                    Log.e(TAG, "Server error: " + response.code());
                     Toast.makeText(getContext(), "Server error: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Log.e(TAG, "❌ Network error", t);
+                Log.e(TAG, "Network error", t);
                 Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    //--------------------------------------------------------------------------[linkTaskToTasklist]
     private void linkTaskToTasklist(int createdTaskId, String desc, String dueDate) {
         if (createdTaskId <= 0 || currentTaskListId <= 0) {
             Log.e(TAG, "Invalid ids for linking task. taskListId=" + currentTaskListId + " taskId=" + createdTaskId);
             return;
         }
         Call<ResponseBody> call = apiService.AddTaskToTasklist("AddTaskToTasklist", currentTaskListId, createdTaskId);
-        call.enqueue(new Callback<ResponseBody>()
-        {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (!response.isSuccessful()) {
                     Log.e(TAG, "AddTaskToTasklist server error: " + response.code());
                     return;
                 }
-                Log.d(TAG, "Task linked to tasklist successfully.");
                 // optionally refresh the list
                 loadTasksForCurrentTasklist();
             }
@@ -377,6 +338,4 @@ public class ToDoListFragment extends Fragment {
             }
         });
     }
-
-
 }

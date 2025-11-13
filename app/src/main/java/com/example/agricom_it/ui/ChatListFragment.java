@@ -83,7 +83,6 @@ public class ChatListFragment extends Fragment {
 
         repo = new ChatRepository(getContext());
 
-
         if (currentUserId == -1) {
             Log.w(TAG, "currentUserId not set. Pass userID in fragment arguments.");
         } else {

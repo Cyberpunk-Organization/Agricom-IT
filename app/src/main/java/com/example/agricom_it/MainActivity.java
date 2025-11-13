@@ -17,26 +17,22 @@ import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.LoginRequest;
 import com.example.agricom_it.model.LoginResponse;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-
-
 public class MainActivity extends AppCompatActivity {
-
     private EditText usernameInput;
     private EditText passwordInput;
     private Button loginBtn;
     private TextView register_link;
-
     private final String TAG = "MainActivity";
-
     private FirebaseAuth mAuth;
 
+    //------------------------------------------------------------------------------------[onCreate]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +51,10 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        //TODO: check where to place this try-catch block
         try
         {
             FirebaseApp.initializeApp(this);
-            Log.d(TAG, "Firebase initialized successfully.");
+            Log.i(TAG, "Firebase initialized successfully.");
         }
         catch(Exception e)
         {
@@ -67,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //-----------------------------------------------------------------------------------[loginUser]
     private void loginUser() {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
@@ -77,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         LoginRequest loginRequest = new LoginRequest(username, password);
-
         AuthApiService apiService = ApiClient.getService();
 
         Call<LoginResponse> call = apiService.login(loginRequest);
@@ -85,26 +80,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response)
             {
-
                 if (response.isSuccessful() && response.body() != null)
                 {
-
                     LoginResponse loginResponse = response.body();
 
                     String message = loginResponse.getMessage();
                     if (message == null || message.trim().isEmpty()) {
-                        message = "Login successful!";
+                        message = "Login successful. Welcome!";
                     }
 
                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                    Log.d("API_SUCCESS", "User ID: " + loginResponse.getID());
-
-
                     if ("true".equalsIgnoreCase(loginResponse.getStatus()))
                     {
-                        Toast.makeText(MainActivity.this, "Login successful. Welcome!", Toast.LENGTH_SHORT).show();
-
+//                        Toast.makeText(MainActivity.this, "Login successful. Welcome!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
 
                         LoginResponse lr = loginResponse;
@@ -117,11 +106,6 @@ public class MainActivity extends AppCompatActivity {
                     {
                         Toast.makeText(MainActivity.this, "Login failed with code: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
-
-                    // TODO: Navigate to DashboardActivity or save token
-//                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-//                    startActivity(intent);
-//                    finish();
                 }
                 else
                 {
@@ -134,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("API_FAILURE", "Error: ", t);
-
             }
         });
     }

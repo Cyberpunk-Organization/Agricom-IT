@@ -1,22 +1,25 @@
 package com.example.agricom_it.model;
 
-//class for the purpose of the farm zone that need to worked on
-
 public class ZoneRole {
     private int PurposeID;
     private String Purpose;
 
-    public ZoneRole(){};
+    //------------------------------------------------------------------------------------[ZoneRole]
+    public ZoneRole() {}
 
-    public ZoneRole(int PurposeID,String Purpose){
-      this.PurposeID = PurposeID;
-      this.Purpose = Purpose;
-    };
+    //------------------------------------------------------------------------------------[ZoneRole]
+    public ZoneRole(int PurposeID, String Purpose) {
+        this.PurposeID = PurposeID;
+        this.Purpose = Purpose;
+    }
 
-    public int GetPurposeID(){return PurposeID;}
+    //--------------------------------------------------------------------------------[getPurposeID]
+    public int getPurposeID() { return PurposeID; }
 
-    public String GetPurpose(){return Purpose;}
+    //----------------------------------------------------------------------------------[getPurpose]
+    public String getPurpose() { return Purpose; }
 
-    public void setPurpose(String Purpose){this.Purpose = Purpose;}
+    //----------------------------------------------------------------------------------[setPurpose]
+    public void setPurpose(String Purpose) { this.Purpose = Purpose; }
 
 }

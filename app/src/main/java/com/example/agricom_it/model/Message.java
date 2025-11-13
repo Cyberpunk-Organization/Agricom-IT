@@ -1,12 +1,13 @@
 package com.example.agricom_it.model;
 
 import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.Date;
 
-public class Message
-{
+public class Message {
     private int messageId;
     private int senderId;
     private int id;
@@ -15,11 +16,10 @@ public class Message
     private Date timestamp; // HH:mm:ss
 
     //-------------------------------------------------------------------------------------[Message]
-    public Message() { }
+    public Message() {}
 
     //-------------------------------------------------------------------------------------[Message]
-    public Message( DocumentSnapshot snap)
-    {
+    public Message(DocumentSnapshot snap) {
         if (snap == null) return;
 
         this.id = Integer.parseInt(snap.getId());
@@ -32,9 +32,9 @@ public class Message
 
         // Firestore stores timestamps as com.google.firebase.Timestamp
         Object tsObj = snap.get("timestamp");
-        if (tsObj instanceof Timestamp ) {
+        if (tsObj instanceof Timestamp) {
             this.timestamp = ((Timestamp) tsObj).toDate();
-        } else if (tsObj instanceof Date ) {
+        } else if (tsObj instanceof Date) {
             this.timestamp = (Date) tsObj;
         } else {
             this.timestamp = null;
@@ -64,8 +64,8 @@ public class Message
         this.timestamp = timeSent;
     }
 
-    public Message( int i, String text, Date ts )
-    {
+    //-------------------------------------------------------------------------------------[Message]
+    public Message(int i, String text, Date ts) {
         this.messageId = i;
         this.text = text;
         this.timestamp = ts;
@@ -86,7 +86,7 @@ public class Message
     public int getMessageId() { return messageId; }
 
     //--------------------------------------------------------------------------------[setMessageId]
-    public void setMessageId(int messageId) { this.messageId = messageId; }
+    public void setMessageId(int messageId) { this.messageId = messageId;}
 
     //---------------------------------------------------------------------------------[getSenderId]
     public int getSenderId() { return senderId; }
@@ -98,13 +98,13 @@ public class Message
     public int getId() { return id; }
 
     //---------------------------------------------------------------------------------------[setId]
-    public void setId(int id ) { this.id = id; }
+    public void setId(int id) { this.id = id; }
 
     //-------------------------------------------------------------------------------------[getText]
     public String getText() { return text; }
 
     //-------------------------------------------------------------------------------------[setText]
-    public void setText(String text ) { this.text = text; }
+    public void setText(String text) { this.text = text; }
 
     //---------------------------------------------------------------------------------[getDateSent]
     public String getDateSent() { return dateSent; }
@@ -116,7 +116,7 @@ public class Message
     public Date getTimestamp() { return timestamp; }
 
     //--------------------------------------------------------------------------------[setTimestamp]
-    public void setTimestamp(Date timestamp ) { this.timestamp = timestamp; }
+    public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
 
     //------------------------------------------------------------------------------------[toString]
     @NonNull

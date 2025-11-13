@@ -32,15 +32,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
     private List<InventoryItem> inventoryList;
     private final Integer finalInventoryID;
     private final AuthApiService apiService = ApiClient.getService();
-
     private final String TAG = "InventoryAdapter";
 
-
+    //----------------------------------------------------------------------------[InventoryAdapter]
     public InventoryAdapter(List<InventoryItem> inventoryList, Integer finalInventoryID) {
         this.inventoryList = inventoryList;
         this.finalInventoryID = finalInventoryID;
     }
 
+    //--------------------------------------------------------------------------[onCreateViewHolder]
     @NonNull
     @Override
     public InventoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,6 +49,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
         return new InventoryViewHolder(view);
     }
 
+    //----------------------------------------------------------------------------[onBindViewHolder]
     @Override
     public void onBindViewHolder(@NonNull InventoryViewHolder holder, int position) {
         InventoryItem item = inventoryList.get(position);
@@ -61,11 +62,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
 
     }
 
+    //--------------------------------------------------------------------------------[getItemCount]
     @Override
     public int getItemCount() {
         return inventoryList.size();
     }
-
 
     /*==========================================================================
                                        NOTE!
@@ -78,17 +79,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
 
     DO NOT CHANGE THE VARIABLES BELOW.
     */
+    //------------------------------------------------------------------------------[showEditDialog]
     private void showEditDialog(InventoryItem item, int position, InventoryViewHolder holder) {
         View dialogView = LayoutInflater.from(holder.itemView.getContext())
                 .inflate(R.layout.dialog_edit_inventory_item, null);
 
         TextView tvItemName = dialogView.findViewById(R.id.tvItemName);
         EditText etQuantity = dialogView.findViewById(R.id.etQuantity);
-
         Button btnUpdate = dialogView.findViewById(R.id.btnUpdate);
         Button btnRemove = dialogView.findViewById(R.id.btnRemove);
-
-        Log.d(TAG, "InventoryID: " + finalInventoryID );
 
         tvItemName.setText(item.getName());
         etQuantity.setText(String.valueOf(item.getCount()));
@@ -113,8 +112,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
             }
 
             int inventoryItemId = item.getItemID(); // content id (if used elsewhere)
-            if (inventoryItemId < 0)
-            {
+            if (inventoryItemId < 0) {
                 Toast.makeText(holder.itemView.getContext(), "Invalid inventory item id", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -122,39 +120,34 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
             int inventoryID = inventoryList.get(position).getInventoryID(); // inventory id
             // NOTE: server's UpdateQuantity expects InventoryID + ItemID + Quantity.
             Call<ResponseBody> call = apiService.updateItemQuantity("UpdateQuantity", finalInventoryID, item.getItemID(), newQuantity);
-            Log.d(TAG, "Updating itemID: " + item.getItemID() + " in inventoryID: " + finalInventoryID + " to quantity: " + newQuantity );
-
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful())
-                    {
+                    if (response.isSuccessful()) {
                         item.setCount(newQuantity);
                         notifyItemChanged(position);
                         Toast.makeText(holder.itemView.getContext(), "Quantity updated", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                    }
-                    else
-                    {
+                    } else {
                         String msg = "Update failed";
-                        try
-                        {
+                        try {
                             ResponseBody body = response.errorBody();
                             if (body != null) msg = body.string();
+                        } catch (IOException ignored) {
                         }
-                        catch (IOException ignored) {}
                         Toast.makeText(holder.itemView.getContext(), msg, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "Network error during quantity update", t);
                     Toast.makeText(holder.itemView.getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         });
 
-         btnRemove.setOnClickListener(view -> {
+        btnRemove.setOnClickListener(view -> {
             int itemID = item.getItemID(); // product/item id
             if (itemID < 0) {
                 Toast.makeText(holder.itemView.getContext(), "Invalid item id", Toast.LENGTH_SHORT).show();
@@ -164,29 +157,28 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
             Call<ResponseBody> call = apiService.removeItemFromInventory("RemoveItemFromInventory", finalInventoryID, itemID);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
-                {
-                    if (response.isSuccessful())
-                    {
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
                         int removedPos = position;
                         inventoryList.remove(removedPos);
                         notifyItemRemoved(removedPos);
                         Toast.makeText(holder.itemView.getContext(), "Item removed", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                    }
-                    else
-                    {
+                    } else {
                         String msg = "Remove failed";
                         try {
                             ResponseBody body = response.errorBody();
                             if (body != null) msg = body.string();
-                        } catch (IOException ignored) {}
+                        } catch (IOException ignored) {
+                            Log.e(TAG, "Error reading error body", ignored);
+                        }
                         Toast.makeText(holder.itemView.getContext(), msg, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "Network error during item removal", t);
                     Toast.makeText(holder.itemView.getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
@@ -195,8 +187,9 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
         dialog.show();
     }
 
+    //-------------------------------------------------------------------------[InventoryViewHolder]
     public static class InventoryViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStockName, tvCategory, tvCount;
+        TextView tvStockName, tvCount;
 
         public InventoryViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -7,6 +7,7 @@ public class MapComment {
     private double longitude;
     private String comment;
 
+    //----------------------------------------------------------------------------------[MapComment]
     public MapComment(int userID, int mapID, double latitude, double longitude, String comment) {
         this.userID = userID;
         this.mapID = mapID;

@@ -12,6 +12,7 @@ import com.example.agricom_it.databinding.FragmentTopBarBinding;
 public class TopBarFragment extends Fragment {
     private FragmentTopBarBinding binding;
 
+    //--------------------------------------------------------------------------------[onCreateView]
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class TopBarFragment extends Fragment {
         return binding.getRoot();
     }
 
+    //-------------------------------------------------------------------------------[onDestroyView]
     @Override
     public void onDestroyView() {
         super.onDestroyView();

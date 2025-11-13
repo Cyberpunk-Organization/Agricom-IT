@@ -26,8 +26,7 @@ public class ChatSummary {
     private final String TAG = "ChatSummary";
 
     //---------------------------------------------------------------------------------[ChatSummary]
-    public ChatSummary() {
-    }
+    public ChatSummary() {}
 
     //---------------------------------------------------------------------------------[ChatSummary]
     public ChatSummary(String chatId, List<Integer> participants) {

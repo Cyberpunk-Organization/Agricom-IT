@@ -22,11 +22,12 @@ import com.example.agricom_it.R;
 import java.io.File;
 
 public class SettingsFragment extends Fragment {
-
     private SwitchCompat switchDarkMode;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
+
+    //--------------------------------------------------------------------------------[onCreateView]
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,24 +78,28 @@ public class SettingsFragment extends Fragment {
 
         return view;
     }
-    private void clearCacheOnly(){
-        try{
+
+    //------------------------------------------------------------------------------[clearCacheOnly]
+    private void clearCacheOnly() {
+        try {
             File cacheDir = requireContext().getCacheDir();
             deleteDir(cacheDir);
 
             File externalCache = requireContext().getExternalCacheDir();
             deleteDir(externalCache);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private boolean deleteDir(File dir){
-        if(dir != null && dir.isDirectory()){
+
+    //-----------------------------------------------------------------------------------[deleteDir]
+    private boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            if (children != null){
-                for (String child : children){
+            if (children != null) {
+                for (String child : children) {
                     boolean success = deleteDir(new File(dir, child));
-                    if(!success) return false;
+                    if (!success) return false;
                 }
             }
         }

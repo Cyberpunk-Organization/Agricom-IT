@@ -80,8 +80,6 @@ public class ChatRepository {
         final DocumentReference doc = db.collection("chats").document(chatId);
 
         try {
-            Log.d(TAG, "Fetching document for chatId: " + chatId);
-
             doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -126,7 +124,6 @@ public class ChatRepository {
 
     //---------------------------------------------------------------------------------[sendMessage]
     public void sendMessage(@NonNull String chatId, int senderId, @NonNull String text, @NonNull SimpleCallback cb) {
-        Log.d(TAG, "sendMessage: entry");
         try {
             try {
                 if (FirebaseApp.getApps(appContext).isEmpty()) {
@@ -170,12 +167,10 @@ public class ChatRepository {
 
                             db.collection("chats").document(chatId)
                                     .update("lastMessageTimestamp", FieldValue.serverTimestamp())
-                                    .addOnSuccessListener(aVoid ->
-                                    {
-                                        Log.d(TAG, "Updated lastMessageTimestamp for chatId: " + chatId);
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.i(TAG, "Updated lastMessageTimestamp for chatId: " + chatId);
                                     })
-                                    .addOnFailureListener(e ->
-                                    {
+                                    .addOnFailureListener(e -> {
                                         Log.w(TAG, "Failed to update lastMessageTimestamp for chatId: " + chatId, e);
                                     });
 
@@ -201,8 +196,7 @@ public class ChatRepository {
         }
     }
 
-    //-
-    // helper to safely call callback on main thread
+    //--------------------------------------------------------------------------------[safeCallback]
     private void safeCallback(final boolean success, @NonNull final SimpleCallback cb) {
         try {
             if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -387,8 +381,7 @@ public class ChatRepository {
 
                         // fetch username async, then run continuation (fetchOtherUsername posts callback on main thread)
                         if (api != null) {
-                            cs.fetchOtherUsername(api, userId, username ->
-                            {
+                            cs.fetchOtherUsername(api, userId, username -> {
                                 continuation.run();
                             });
                         } else {

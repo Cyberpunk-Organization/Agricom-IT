@@ -15,23 +15,21 @@ public class LoginResponse implements Serializable {
     @SerializedName("id")
     private int id;
 
-
+    //----------------------------------------------------------------------------------[getMessage]
     public String getMessage() {
         return error;
     }
 
+    //------------------------------------------------------------------------------------[getToken]
     public String getToken() {
         return token;
     }
 
+    //-----------------------------------------------------------------------------------[getStatus]
     public String getStatus() {
         return ok;
     }
 
-    public int getID()
-    {
-        return id;
-//        return user != null ? user.getUserID() : -1;
-    }
-
+    //---------------------------------------------------------------------------------------[getID]
+    public int getID() { return id; }
 }

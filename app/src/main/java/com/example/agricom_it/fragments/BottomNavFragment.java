@@ -20,10 +20,10 @@ import com.example.agricom_it.ui.ToDoListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BottomNavFragment extends Fragment {
-
     private int userID = -1;
     private static final String TAG = "bNavFragment";
 
+    //--------------------------------------------------------------------------------[onCreateView]
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,31 +36,18 @@ public class BottomNavFragment extends Fragment {
             int id = item.getItemId();
 
             Intent intent = getActivity().getIntent();
-            if (intent != null && intent.hasExtra("login_id"))
-            {
+            if (intent != null && intent.hasExtra("login_id")) {
                 Object extra = intent.getSerializableExtra("login_id");
                 LoginResponse loginResponse = null;
                 userID = (int) extra;
 
-//                intent.putExtra("login_id", userID);
-
-                Log.d(TAG, "Intent: has login_id extra: " + extra);
+            } else {
+                Log.w(TAG, "Intent missing 'login_id'");
             }
-            else
-            {
-                Log.d(TAG, "Intent: no login_id extra found");
-            }
-//            Log.d(TAG, "Bottom Nav Created" );
-
-            Log.d(TAG, "UserID in BottomNavFragment: " + userID );
 
             Fragment inventoryF = new InventoryFragment();
             Fragment todoF = new ToDoListFragment();
-//            Fragment chatF = new ChatFragment();
             Fragment chatListF = new ChatListFragment();
-
-//            Bundle inventoryArgs = new Bundle();
-//            inventoryArgs.putInt("userID", userID);
 
             Bundle infoArgs = new Bundle();
             infoArgs.putInt("userID", userID);
@@ -76,11 +63,11 @@ public class BottomNavFragment extends Fragment {
                 fm.beginTransaction().replace(R.id.contentFrame, inventoryF).commit();
             } else if (id == R.id.nav_settings) {
                 fm.beginTransaction().replace(R.id.contentFrame, new SettingsFragment()).commit();
-            }else if (id == R.id.nav_list) {
+            } else if (id == R.id.nav_list) {
                 fm.beginTransaction().replace(R.id.contentFrame, todoF).commit();
-            }else if (id == R.id.nav_chat) {
-            fm.beginTransaction().replace(R.id.contentFrame, chatListF).commit();
-        }
+            } else if (id == R.id.nav_chat) {
+                fm.beginTransaction().replace(R.id.contentFrame, chatListF).commit();
+            }
             return true;
         });
 

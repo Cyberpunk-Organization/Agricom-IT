@@ -10,27 +10,30 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agricom_it.R;
 import com.example.agricom_it.model.Task;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-
     private final List<Task> taskList;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
+    //---------------------------------------------------------------------------------[TaskAdapter]
     public TaskAdapter(List<Task> taskList, Context context) {
         this.taskList = taskList;
         this.context = context;
     }
 
+    //--------------------------------------------------------------------------[onCreateViewHolder]
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,11 +42,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return new TaskViewHolder(view);
     }
 
+    //----------------------------------------------------------------------------[onBindViewHolder]
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = taskList.get(position);
 
-        // Description
         holder.tvTaskDesc.setText(task.getDescription());
 
         // Checkbox logic
@@ -98,11 +101,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         });
     }
 
+    //--------------------------------------------------------------------------------[getItemCount]
     @Override
     public int getItemCount() {
         return taskList.size();
     }
 
+    //------------------------------------------------------------------------[updateTaskAppearance]
     private void updateTaskAppearance(@NonNull TaskViewHolder holder, boolean isDone) {
         if (isDone) {
             holder.tvTaskDesc.setPaintFlags(holder.tvTaskDesc.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -112,6 +117,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
+    //------------------------------------------------------------------------------[TaskViewHolder]
     static class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView tvTaskDesc, tvDueDate;
         CheckBox checkBox;

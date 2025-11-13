@@ -16,24 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.agricom_it.adapter.InventoryAdapter;
 import com.example.agricom_it.R;
-import com.example.agricom_it.model.InventoryItem;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
+import com.example.agricom_it.adapter.InventoryAdapter;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+import com.example.agricom_it.model.InventoryItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -41,55 +28,62 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class InventoryFragment extends Fragment {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+public class InventoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private InventoryAdapter adapter;
     private List<InventoryItem> inventoryList;
     private Button btnAddItem, btnSort;
     private boolean sortAscending = true;
-
     private final AuthApiService apiService = ApiClient.getService();
-
     private final String TAG = "InventoryFragment";
     private int userID = -1;
 
-    private interface NameCallback { void onName(String name); }
+    //--------------------------------------------------------------------------------[NameCallback]
+    private interface NameCallback {
+        void onName(String name);
+    }
 
+    //--------------------------------------------------------------------------------[onCreateView]
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
 
         Bundle args = getArguments();
-        if (args != null && args.containsKey("userID"))
-        {
+        if (args != null && args.containsKey("userID")) {
             userID = args.getInt("userID", -1);
         }
 
         recyclerView = view.findViewById(R.id.rvInventory);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        btnAddItem =view.findViewById(R.id.btn_add_item);
+        btnAddItem = view.findViewById(R.id.btn_add_item);
         btnSort = view.findViewById(R.id.btn_sort_toggle);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         inventoryList = new ArrayList<>();
-
         int finalInventoryID = -1;
 
-        Call<ResponseBody> inventoryIDcall = apiService.getInventoryID( "GetInventoryIDByUserID", userID );
-        inventoryIDcall.enqueue( new Callback<ResponseBody>()
-        {
+        Call<ResponseBody> inventoryIDcall = apiService.getInventoryID("GetInventoryIDByUserID", userID);
+        inventoryIDcall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse( Call<ResponseBody> call, Response<ResponseBody> response ) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!response.isSuccessful() || response.body() == null) {
                     Log.e(TAG, "getInventoryID failed: " + (response != null ? response.code() : "null"));
                     return;
@@ -119,60 +113,48 @@ public class InventoryFragment extends Fragment {
                             Toast.makeText(requireContext(), "No inventory found for user", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        // InventoryAdapter constructor must accept inventoryID (new InventoryAdapter(list, inventoryID))
+
                         adapter = new InventoryAdapter(inventoryList, finalInventoryID);
                         recyclerView.setAdapter(adapter);
-                        // optionally load items from inventory using finalInventoryID
                     });
-                }
-                catch( IOException | JsonSyntaxException e )
-                {
-                    Log.e( TAG, "parse getInventoryID response", e );
+                } catch (IOException | JsonSyntaxException e) {
+                    Log.e(TAG, "parse getInventoryID response", e);
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t)
-            {
-
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "getInventoryID request failed", t);
             }
-
         });
 
         adapter = new InventoryAdapter(inventoryList, finalInventoryID);
         recyclerView.setAdapter(adapter);
-
         btnAddItem.setOnClickListener(v -> addNewItem());
-
         btnSort.setOnClickListener(v -> toggleSortByName());
 
-        if (userID >= 0)
-        {
-            Log.d(TAG, "Loading inventory for userID: " + userID);
+        if (userID >= 0) {
             loadInventoryForUser(userID);
         }
+
         return view;
     }
 
+    //------------------------------------------------------------------------[loadInventoryForUser]
     private void loadInventoryForUser(int userId) {
         // Request the inventory content rows for this user
         Call<ResponseBody> call = apiService.getInventoryItems("GetItemsFromUserID", userId);
-        call.enqueue(new Callback<ResponseBody>()
-        {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
-            {
-                if (!response.isSuccessful() || response.body() == null)
-                {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful() || response.body() == null) {
                     Toast.makeText(requireContext(), "Failed to load inventory", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "inventory response unsuccessful: " + response.code());
                     return;
                 }
-                try
-                {
+                try {
                     String json = response.body().string();
                     Gson gson = new GsonBuilder().create();
-                    Log.d(TAG, "Inventory JSON: " + json);
 
                     JsonObject root = gson.fromJson(json, JsonObject.class);
                     if (root == null) {
@@ -190,8 +172,6 @@ public class InventoryFragment extends Fragment {
 
                     JsonElement dataElem = root.get("data");
                     if (dataElem == null || dataElem.isJsonNull()) {
-                        // no items
-                        Log.d(TAG, "no inventory items for user " + userId);
                         return;
                     }
 
@@ -206,7 +186,11 @@ public class InventoryFragment extends Fragment {
                             int itemId = row.get("ItemID").getAsInt();
                             int qty = 1;
                             if (row.has("Quantity") && !row.get("Quantity").isJsonNull()) {
-                                try { qty = row.get("Quantity").getAsInt(); } catch (Exception ex) { qty = 1; }
+                                try {
+                                    qty = row.get("Quantity").getAsInt();
+                                } catch (Exception ex) {
+                                    qty = 1;
+                                }
                             }
                             qtyByItemId.put(itemId, qtyByItemId.getOrDefault(itemId, 0) + qty);
                         }
@@ -239,6 +223,7 @@ public class InventoryFragment extends Fragment {
         });
     }
 
+    //----------------------------------------------------------------------------[fetchItemDetails]
     private void fetchItemDetails(int itemId, int quantity) {
         Call<ResponseBody> call = apiService.getItem("GetItem", itemId);
         call.enqueue(new Callback<ResponseBody>() {
@@ -269,14 +254,11 @@ public class InventoryFragment extends Fragment {
                             name = dataObj.get("name").getAsString();
                         }
                     } else {
-                        // if data null, server may have returned info found=false
-                        Log.d(TAG, "getItem data null for id " + itemId);
+                        Log.e(TAG, "getItem data null for id " + itemId);
                     }
 
                     final String finalName = name;
                     requireActivity().runOnUiThread(() -> {
-                        // create InventoryItem using existing constructor used elsewhere
-                        // earlier code showed InventoryItem(String name, int quantity) usage
                         InventoryItem newItem = new InventoryItem(finalName, quantity);
                         newItem.setItemID(itemId);
                         inventoryList.add(newItem);
@@ -295,7 +277,7 @@ public class InventoryFragment extends Fragment {
         });
     }
 
-    // Add Item Functionality
+    //----------------------------------------------------------------------------------[addNewItem]
     private void addNewItem() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_item, null);
@@ -320,8 +302,9 @@ public class InventoryFragment extends Fragment {
             }
             int quantity = 1;
             if (!qtyStr.isEmpty()) {
-                try { quantity = Integer.parseInt(qtyStr); }
-                catch (NumberFormatException e) {
+                try {
+                    quantity = Integer.parseInt(qtyStr);
+                } catch (NumberFormatException e) {
                     etQuantity.setError("Invalid number");
                     return;
                 }
@@ -335,7 +318,7 @@ public class InventoryFragment extends Fragment {
             final int finalQuantity = quantity;
             final String enteredName = name;
 
-            // 0) Check if an item with this name already exists using GetItemID
+            // Check if an item with this name already exists using GetItemID
             Call<ResponseBody> getItemIdCall = apiService.AddItem("GetItemID", enteredName);
             getItemIdCall.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -380,9 +363,7 @@ public class InventoryFragment extends Fragment {
                             }
                         }
 
-                        // If we have an existing itemID (> 0), skip creating a new inventory_item row
                         if (existingItemID > 0) {
-                            // Use existing item entry -> proceed to add to inventory
                             proceedToGetInventoryAndAdd(existingItemID, returnedName, finalQuantity, dialog);
                         } else {
                             // Not found -> create the item then proceed (AddItem)
@@ -401,6 +382,7 @@ public class InventoryFragment extends Fragment {
                                         if (addRoot == null) {
                                             requireActivity().runOnUiThread(() ->
                                                     Toast.makeText(requireContext(), "Bad server response", Toast.LENGTH_SHORT).show());
+                                            Log.e(TAG, "AddItem response null");
                                             return;
                                         }
                                         boolean addSuccess = addRoot.has("success") && addRoot.get("success").getAsBoolean();
@@ -430,7 +412,6 @@ public class InventoryFragment extends Fragment {
                                             return;
                                         }
 
-                                        // proceed to add to inventory using the newly created ItemID
                                         proceedToGetInventoryAndAdd(newItemID, createdName, finalQuantity, dialog);
 
                                     } catch (IOException | JsonSyntaxException ex) {
@@ -465,7 +446,8 @@ public class InventoryFragment extends Fragment {
             });
         });
     }
-    // helper to call AddItemToInventory then update UI
+
+    //-------------------------------------------------------------------[addItemToInventoryAndShow]
     private void addItemToInventoryAndShow(int inventoryID, int itemID, int quantity, String name, AlertDialog dialog) {
         Call<ResponseBody> addToInv = apiService.addItemToInventory("AddItemToInventory", inventoryID, itemID, quantity);
         addToInv.enqueue(new Callback<ResponseBody>() {
@@ -510,6 +492,7 @@ public class InventoryFragment extends Fragment {
         });
     }
 
+    //-----------------------------------------------------------------[proceedToGetInventoryAndAdd]
     private void proceedToGetInventoryAndAdd(int itemID, String itemName, int quantity, AlertDialog dialog) {
         Map<String, Integer> params = new HashMap<>();
         params.put("userID", userID);
@@ -614,6 +597,7 @@ public class InventoryFragment extends Fragment {
         });
     }
 
+    //----------------------------------------------------------------------------[toggleSortByName]
     private void toggleSortByName() {
         sortAscending = !sortAscending;     // flip
 
@@ -633,63 +617,6 @@ public class InventoryFragment extends Fragment {
                 "Sorted " + (sortAscending ? "A to Z" : "Z to A"),
                 Toast.LENGTH_SHORT).show();
     }
-
-    private void initAdapterWithInventoryID(int userId) {
-        Call<ResponseBody> call = apiService.getInventoryID("GetInventoryIDByUserID", userId);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    Log.e(TAG, "getInventoryID failed: " + (response != null ? response.code() : "null"));
-                    return;
-                }
-                try {
-                    String json = response.body().string();
-                    JsonObject root = new GsonBuilder().create().fromJson(json, JsonObject.class);
-                    if (root == null) return;
-
-                    boolean success = root.has("success") && root.get("success").getAsBoolean();
-                    if (!success) {
-                        Log.e(TAG, "getInventoryID returned success=false");
-                        return;
-                    }
-
-                    Integer inventoryID = null;
-                    JsonElement dataElem = root.get("data");
-                    if (dataElem != null && dataElem.isJsonObject()) {
-                        JsonObject dataObj = dataElem.getAsJsonObject();
-                        if (dataObj.has("InventoryID") && !dataObj.get("InventoryID").isJsonNull()) {
-                            inventoryID = dataObj.get("InventoryID").getAsInt();
-                        }
-                    }
-
-                    final Integer finalInventoryID = inventoryID;
-                    requireActivity().runOnUiThread(() -> {
-                        if (finalInventoryID == null) {
-                            Toast.makeText(requireContext(), "No inventory found for user", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        // InventoryAdapter constructor must accept inventoryID (new InventoryAdapter(list, inventoryID))
-                        adapter = new InventoryAdapter(inventoryList, finalInventoryID);
-                        recyclerView.setAdapter(adapter);
-                        // optionally load items from inventory using finalInventoryID
-                    });
-
-                } catch (IOException | JsonSyntaxException e) {
-                    Log.e(TAG, "parse getInventoryID response", e);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "getInventoryID request failed", t);
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(requireContext(), "Network error getting inventory id", Toast.LENGTH_SHORT).show()
-                );
-            }
-        });
-    }
-
 }
 
 
