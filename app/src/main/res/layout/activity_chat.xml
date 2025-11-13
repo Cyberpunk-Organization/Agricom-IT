@@ -37,7 +37,7 @@ android:background="@color/white_off">
         android:maxLines="4"
         android:scrollbars="vertical" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btnSend"
         android:layout_width="40dp"
         android:layout_height="40dp"
