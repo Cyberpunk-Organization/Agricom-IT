@@ -4,6 +4,7 @@ package com.example.agricom_it.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,7 +46,7 @@ public class ChatActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat); // ensure layout has recyclerMessages, editMessage, btnSend
 
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Intent i = getIntent();
         Log.d(TAG, "Intent received: " + i);
         Log.d(TAG, "Intent extras: " + (i != null ? i.getExtras() : "null"));
