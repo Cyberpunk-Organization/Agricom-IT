@@ -1,4 +1,4 @@
-package com.example.agricom_it;
+package com.example.agricom_it.adapter;
 
 import android.app.AlertDialog;
 import android.util.Log;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agricom_it.R;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.InventoryItem;

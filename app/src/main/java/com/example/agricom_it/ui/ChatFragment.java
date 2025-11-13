@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.agricom_it.ChatListAdapter;
+import com.example.agricom_it.adapter.ChatListAdapter;
 import com.example.agricom_it.R;
 import com.example.agricom_it.model.User;
 

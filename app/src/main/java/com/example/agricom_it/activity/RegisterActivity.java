@@ -1,4 +1,4 @@
-package com.example.agricom_it;
+package com.example.agricom_it.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import android.content.res.Configuration;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.agricom_it.MainActivity;
+import com.example.agricom_it.R;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.api.ApiClient;
 // No longer need LoginResponse, User, or Gson here
@@ -28,20 +30,8 @@ import com.example.agricom_it.model.RegisterRequest;
 import com.example.agricom_it.model.RegisterResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import retrofit2.Call;
 import retrofit2.Callback;

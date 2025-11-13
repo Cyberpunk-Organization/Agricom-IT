@@ -1,6 +1,5 @@
 package com.example.agricom_it;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.agricom_it.activity.DashboardActivity;
+import com.example.agricom_it.activity.RegisterActivity;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.LoginRequest;
@@ -23,9 +24,6 @@ import retrofit2.Response;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 
 public class MainActivity extends AppCompatActivity {

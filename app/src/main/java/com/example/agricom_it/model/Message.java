@@ -1,10 +1,8 @@
 package com.example.agricom_it.model;
 
 import androidx.annotation.NonNull;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
-
 import java.util.Date;
 
 public class Message
@@ -16,9 +14,10 @@ public class Message
     private String dateSent; // yyyy-MM-dd
     private Date timestamp; // HH:mm:ss
 
-    public Message() { } // required for Firebase deserialization
+    //-------------------------------------------------------------------------------------[Message]
+    public Message() { }
 
-    // Defensive constructor from DocumentSnapshot
+    //-------------------------------------------------------------------------------------[Message]
     public Message( DocumentSnapshot snap)
     {
         if (snap == null) return;
@@ -42,6 +41,7 @@ public class Message
         }
     }
 
+    //-------------------------------------------------------------------------------------[Message]
     public Message(Object senderIdObj, Object textObj, Object timestampObj) {
         this.senderId = parseIntSafe(senderIdObj, 0);
         this.text = (textObj != null) ? textObj.toString() : "";
@@ -54,16 +54,7 @@ public class Message
         }
     }
 
-    private int parseIntSafe(Object o, int defaultVal) {
-        if (o == null) return defaultVal;
-        if (o instanceof Number) return ((Number) o).intValue();
-        try {
-            return Integer.parseInt(o.toString());
-        } catch (Exception e) {
-            return defaultVal;
-        }
-    }
-
+    //-------------------------------------------------------------------------------------[Message]
     public Message(int messageId, int senderId, int receiverId, String messageContent, String dateSent, Date timeSent) {
         this.messageId = messageId;
         this.senderId = senderId;
@@ -80,24 +71,54 @@ public class Message
         this.timestamp = ts;
     }
 
+    //--------------------------------------------------------------------------------[parseIntSafe]
+    private int parseIntSafe(Object o, int defaultVal) {
+        if (o == null) return defaultVal;
+        if (o instanceof Number) return ((Number) o).intValue();
+        try {
+            return Integer.parseInt(o.toString());
+        } catch (Exception e) {
+            return defaultVal;
+        }
+    }
+
+    //--------------------------------------------------------------------------------[getMessageId]
     public int getMessageId() { return messageId; }
+
+    //--------------------------------------------------------------------------------[setMessageId]
     public void setMessageId(int messageId) { this.messageId = messageId; }
 
+    //---------------------------------------------------------------------------------[getSenderId]
     public int getSenderId() { return senderId; }
+
+    //---------------------------------------------------------------------------------[setSenderId]
     public void setSenderId(int senderId) { this.senderId = senderId; }
 
+    //---------------------------------------------------------------------------------------[getId]
     public int getId() { return id; }
+
+    //---------------------------------------------------------------------------------------[setId]
     public void setId(int id ) { this.id = id; }
 
+    //-------------------------------------------------------------------------------------[getText]
     public String getText() { return text; }
+
+    //-------------------------------------------------------------------------------------[setText]
     public void setText(String text ) { this.text = text; }
 
+    //---------------------------------------------------------------------------------[getDateSent]
     public String getDateSent() { return dateSent; }
+
+    //---------------------------------------------------------------------------------[setDateSent]
     public void setDateSent(String dateSent) { this.dateSent = dateSent; }
 
+    //--------------------------------------------------------------------------------[getTimestamp]
     public Date getTimestamp() { return timestamp; }
+
+    //--------------------------------------------------------------------------------[setTimestamp]
     public void setTimestamp(Date timestamp ) { this.timestamp = timestamp; }
 
+    //------------------------------------------------------------------------------------[toString]
     @NonNull
     @Override
     public String toString() {

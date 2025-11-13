@@ -1,12 +1,10 @@
 // java
-package com.example.agricom_it.ui;
+package com.example.agricom_it.activity;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,19 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.agricom_it.ChatListAdapter; // or your Message adapter
-import com.example.agricom_it.MessageAdapter;
+import com.example.agricom_it.adapter.MessageAdapter;
 import com.example.agricom_it.R;
 import com.example.agricom_it.repo.ChatRepository;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import com.example.agricom_it.model.Message;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
@@ -44,18 +36,12 @@ public class ChatActivity extends AppCompatActivity
 
     private RecyclerView rvMessages;
     private EditText editMessage;
-    private Button btnSend;
+    private ImageButton btnSend;
     private MessageAdapter adapter; // implement a simple adapter for message items
 
     @Override
     protected void onCreate( @Nullable Bundle savedInstanceState )
     {
-        Log.d(TAG, "onCreate for ChatActivity called");
-
-
-
-        Log.d(TAG, "Current User ID: " + currentUserId );
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat); // ensure layout has recyclerMessages, editMessage, btnSend
 

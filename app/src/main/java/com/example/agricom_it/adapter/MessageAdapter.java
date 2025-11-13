@@ -1,5 +1,5 @@
 // java
-package com.example.agricom_it;
+package com.example.agricom_it.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agricom_it.R;
 import com.example.agricom_it.model.Message;
 import com.google.firebase.Timestamp;
 

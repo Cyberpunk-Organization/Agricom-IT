@@ -1,92 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:orientation="vertical"-->
-<!--    android:padding="8dp"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btnStartChat"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Start new chat"/>-->
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerChatLists"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"/>-->
-<!--</LinearLayout>-->
-
-
-<!--    <?xml version="1.0" encoding="utf-8"?>-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <!--Search Bar-->
-    <LinearLayout
-        android:id="@+id/search_bar"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:padding="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/rounded_corner"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        android:weightSum="1">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+    <!-- Search row: EditText + Start button -->
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="#388E3C"
-                android:layout_weight="0"/>
-            <EditText
+            android:layout_marginBottom="8dp">
+
+        <EditText
+                android:id="@+id/editSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Search Conversation"
-                android:textColorHint="@color/black"
-                android:background="@drawable/rounded_corner"
-                android:paddingStart="8dp"
-                android:layout_weight="0.6"
-                android:layout_marginEnd="8dp"/>
-            <Button
+                android:inputType="text"
+                android:padding="8dp" />
+
+        <Button
                 android:id="@+id/btnStartChat"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start new chat"
-                android:layout_weight="0.4"
-                android:backgroundTint="@color/blue"/>
-        </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerChatLists"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+                android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/most_recent_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Most Recent"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginStart="16dp"
-        android:layout_below="@id/search_bar"
-        android:textColor="@color/black"/>
+            android:id="@+id/most_recent_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Most Recent"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
 
+    <!-- Main RecyclerView used by ChatListFragment -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_list_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/most_recent_label"
-        android:padding="16dp"/>
-</RelativeLayout>
+            android:id="@+id/recyclerChatLists"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"/>
+</LinearLayout>

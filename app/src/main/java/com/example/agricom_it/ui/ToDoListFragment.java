@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agricom_it.R;
-import com.example.agricom_it.TaskAdapter;
+import com.example.agricom_it.adapter.TaskAdapter;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.Task;

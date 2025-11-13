@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.agricom_it.InventoryAdapter;
+import com.example.agricom_it.adapter.InventoryAdapter;
 import com.example.agricom_it.R;
 import com.example.agricom_it.model.InventoryItem;
 

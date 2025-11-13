@@ -1,4 +1,4 @@
-package com.example.agricom_it;
+package com.example.agricom_it.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.agricom_it.R;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.LoginResponse;

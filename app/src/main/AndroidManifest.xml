@@ -21,7 +21,7 @@
         <meta-data android:name="osmdroid.basePath" android:value="osmdroid" />
         <meta-data android:name="osmdroid.tileCache" android:value="tile" />
         <activity
-            android:name=".ui.ChatActivity"
+            android:name=".activity.ChatActivity"
             android:exported="false" />
 <!--        <activity-->
 <!--            android:name=".DashboardActivity"-->
@@ -29,9 +29,9 @@
 <!--        <activity-->
 <!--            android:name=".MainPageActivity"-->
 <!--            android:exported="false" />-->
-        <activity android:name=".DashboardActivity"/>
+        <activity android:name=".activity.DashboardActivity"/>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

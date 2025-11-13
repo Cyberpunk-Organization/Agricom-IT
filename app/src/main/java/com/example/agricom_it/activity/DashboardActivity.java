@@ -1,4 +1,4 @@
-package com.example.agricom_it;
+package com.example.agricom_it.activity;
 
 import android.os.Bundle;
 import android.util.Log;

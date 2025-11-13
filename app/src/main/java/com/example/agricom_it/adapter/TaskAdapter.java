@@ -1,4 +1,4 @@
-package com.example.agricom_it;
+package com.example.agricom_it.adapter;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.agricom_it.R;
 import com.example.agricom_it.model.Task;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

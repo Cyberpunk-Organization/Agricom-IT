@@ -12,8 +12,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.agricom_it.R;
 import com.example.agricom_it.model.LoginResponse;
-import com.example.agricom_it.model.User;
-import com.example.agricom_it.ui.ChatFragment;
 import com.example.agricom_it.ui.ChatListFragment;
 import com.example.agricom_it.ui.HomeFragment;
 import com.example.agricom_it.ui.InventoryFragment;
