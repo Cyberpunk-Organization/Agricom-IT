@@ -1,73 +1,83 @@
-//package com.example.agricom_it.model;
-//
-//// This class details the information for a user to send a single message
-//
-//import java.time.LocalDate;
-//import java.time.LocalTime;
-//import java.time.format.DateTimeFormatter;
-//
-//public class Message {
-//    private int MessageID;
-//    private int SenderID;
-//    private int ReceiverID;
-//    private LocalDate DateSent;
-//    private LocalTime TimeSent;
-//    private String MessageContent;
-//
-//    public Message(){};
-//
-//    public Message(int MessageID,int SenderID,int ReceiverID,String MessageContent){
-//        this.MessageID = MessageID;
-//        this.SenderID = SenderID;
-//        this.ReceiverID = ReceiverID;
-//        this.MessageContent = MessageContent;
-//        this.DateSent = LocalDate.now();
-//        this.TimeSent = LocalTime.now();
-//
-//    }
-//
-//    public int GetMessageID() {return MessageID;}
-//    public int GetReceiverID() {return ReceiverID;}
-//    public int GetSenderID() {return SenderID;}
-//    public String GetMessageContent() {return MessageContent;}
-//    public LocalDate GetDateSent() {return DateSent;}
-//    public String GetTimeSent() {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-//        return TimeSent.format(formatter);
-//    }
-//
-//}
-
-
-// Java
 package com.example.agricom_it.model;
 
+import androidx.annotation.NonNull;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-public class Message {
+import java.util.Date;
+
+public class Message
+{
     private int messageId;
     private int senderId;
-    private int receiverId;
-    private String messageContent;
+    private int id;
+    private String text;
     private String dateSent; // yyyy-MM-dd
-    private String timeSent; // HH:mm:ss
+    private Date timestamp; // HH:mm:ss
 
     public Message() { } // required for Firebase deserialization
 
-    public Message(int messageId, int senderId, int receiverId, String messageContent, String dateSent, String timeSent) {
-        this.messageId = messageId;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.messageContent = messageContent;
-        this.dateSent = dateSent;
-        this.timeSent = timeSent;
+    // Defensive constructor from DocumentSnapshot
+    public Message( DocumentSnapshot snap)
+    {
+        if (snap == null) return;
+
+        this.id = Integer.parseInt(snap.getId());
+
+        Object s = snap.get("senderId");
+        this.senderId = parseIntSafe(s, 0);
+
+        String t = snap.contains("text") ? snap.getString("text") : null;
+        this.text = (t != null) ? t : "";
+
+        // Firestore stores timestamps as com.google.firebase.Timestamp
+        Object tsObj = snap.get("timestamp");
+        if (tsObj instanceof Timestamp ) {
+            this.timestamp = ((Timestamp) tsObj).toDate();
+        } else if (tsObj instanceof Date ) {
+            this.timestamp = (Date) tsObj;
+        } else {
+            this.timestamp = null;
+        }
     }
 
-    public Message( int i, String text, Object ts )
+    public Message(Object senderIdObj, Object textObj, Object timestampObj) {
+        this.senderId = parseIntSafe(senderIdObj, 0);
+        this.text = (textObj != null) ? textObj.toString() : "";
+        if (timestampObj instanceof Timestamp) {
+            this.timestamp = ((Timestamp) timestampObj).toDate();
+        } else if (timestampObj instanceof Date) {
+            this.timestamp = (Date) timestampObj;
+        } else {
+            this.timestamp = null;
+        }
+    }
+
+    private int parseIntSafe(Object o, int defaultVal) {
+        if (o == null) return defaultVal;
+        if (o instanceof Number) return ((Number) o).intValue();
+        try {
+            return Integer.parseInt(o.toString());
+        } catch (Exception e) {
+            return defaultVal;
+        }
+    }
+
+    public Message(int messageId, int senderId, int receiverId, String messageContent, String dateSent, Date timeSent) {
+        this.messageId = messageId;
+        this.senderId = senderId;
+        this.id = receiverId;
+        this.text = messageContent;
+        this.dateSent = dateSent;
+        this.timestamp = timeSent;
+    }
+
+    public Message( int i, String text, Date ts )
     {
         this.messageId = i;
-        this.messageContent = text;
-        this.timeSent = ts.toString();
+        this.text = text;
+        this.timestamp = ts;
     }
 
     public int getMessageId() { return messageId; }
@@ -76,16 +86,26 @@ public class Message {
     public int getSenderId() { return senderId; }
     public void setSenderId(int senderId) { this.senderId = senderId; }
 
-    public int getReceiverId() { return receiverId; }
-    public void setReceiverId(int receiverId) { this.receiverId = receiverId; }
+    public int getId() { return id; }
+    public void setId(int id ) { this.id = id; }
 
-    public String getMessageContent() { return messageContent; }
-    public void setMessageContent(String messageContent) { this.messageContent = messageContent; }
+    public String getText() { return text; }
+    public void setText(String text ) { this.text = text; }
 
     public String getDateSent() { return dateSent; }
     public void setDateSent(String dateSent) { this.dateSent = dateSent; }
 
-    public String getTimeSent() { return timeSent; }
-    public void setTimeSent(String timeSent) { this.timeSent = timeSent; }
+    public Date getTimestamp() { return timestamp; }
+    public void setTimestamp(Date timestamp ) { this.timestamp = timestamp; }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Message{id=" + id +
+                ", senderId=" + senderId +
+                ", text=\"" + (text != null ? text : "") + "\"" +
+                ", timestamp=" + (timestamp != null ? timestamp.toString() : "null") +
+                '}';
+    }
 }
 

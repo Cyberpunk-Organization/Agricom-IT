@@ -1,6 +1,8 @@
 // java
 package com.example.agricom_it.ui;
 
+import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,9 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import com.example.agricom_it.model.Message;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity
@@ -32,7 +37,8 @@ public class ChatActivity extends AppCompatActivity
     private static final String TAG = "ChatActivity";
     private String chatId;
     private int otherUserId;
-    private int currentUserId = 1; // replace with real auth/current user
+    private int currentUserId = -1;
+
     private ChatRepository repo;
     private ListenerRegistration messagesListener;
 
@@ -46,11 +52,26 @@ public class ChatActivity extends AppCompatActivity
     {
         Log.d(TAG, "onCreate for ChatActivity called");
 
+
+
+        Log.d(TAG, "Current User ID: " + currentUserId );
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat); // ensure layout has recyclerMessages, editMessage, btnSend
 
+
+        Intent i = getIntent();
+        Log.d(TAG, "Intent received: " + i);
+        Log.d(TAG, "Intent extras: " + (i != null ? i.getExtras() : "null"));
+        Log.d(TAG, "List of extras: " + (i != null && i.getExtras() != null ? i.getExtras().keySet().toString() : "null"));
+
+        currentUserId = getIntent().getIntExtra("userID", -1);
+
+
         chatId = getIntent().getStringExtra("chatId");
         otherUserId = getIntent().getIntExtra("otherUserId", -1);
+
+        Log.i(TAG, "Current User ID: " + currentUserId);
 
         // If you didn't pass current user id, get from your auth/session
         // currentUserId = MySession.getCurrentUserId();
@@ -63,7 +84,7 @@ public class ChatActivity extends AppCompatActivity
         rvMessages.setLayoutManager(new LinearLayoutManager(this));
         rvMessages.setAdapter(adapter);
 
-        repo = new ChatRepository();
+        repo = new ChatRepository( getApplicationContext() );
 
         // Start listening for messages
         messagesListener = repo.listenForMessages(chatId, ( snapshots, e )->

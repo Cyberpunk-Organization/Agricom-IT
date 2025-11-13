@@ -1,5 +1,6 @@
 package com.example.agricom_it;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
+        //TODO: check where to place this try-catch block
+        try
+        {
+            FirebaseApp.initializeApp(this);
+            Log.d(TAG, "Firebase initialized successfully.");
+        }
+        catch(Exception e)
+        {
+            Log.e(TAG, "Error initializing Firebase: ", e);
+        }
     }
 
     private void loginUser() {
@@ -82,14 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
                     LoginResponse loginResponse = response.body();
 
-//                    Log.d("API_SUCCESS", "LoginResponse received: " + loginResponse);
-//
-//                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//                    String json = gson.toJson(loginResponse);
-//
-//                    Log.d("API_SUCCESS", "LoginResponse JSON: " + json);
-//                    Log.d("API_SUCCESS", "User: " + loginResponse.getUser());
-
                     String message = loginResponse.getMessage();
                     if (message == null || message.trim().isEmpty()) {
                         message = "Login successful!";
@@ -97,16 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
-//                    Log.d("API_SUCCESS", "Status: " + loginResponse.getStatus());
-//                    Log.d("API_SUCCESS", "Message: " + loginResponse.getMessage());
-//
-//                    Log.d("API_SUCCESS", "Token: " + loginResponse.getToken());
                     Log.d("API_SUCCESS", "User ID: " + loginResponse.getID());
 
-//                    String message = loginResponse.getMessage();
-//                    if (message == null || message.trim().isEmpty()) {
-//                        message = "Login successful!";
-//                    }
 
                     if ("true".equalsIgnoreCase(loginResponse.getStatus()))
                     {
