@@ -22,7 +22,8 @@
         <meta-data android:name="osmdroid.tileCache" android:value="tile" />
         <activity
             android:name=".activity.ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 <!--        <activity-->
 <!--            android:name=".DashboardActivity"-->
 <!--            android:exported="false" />-->
