@@ -24,12 +24,6 @@
             android:name=".activity.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
-<!--        <activity-->
-<!--            android:name=".DashboardActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".MainPageActivity"-->
-<!--            android:exported="false" />-->
         <activity android:name=".activity.DashboardActivity"/>
         <activity
             android:name=".activity.RegisterActivity"
