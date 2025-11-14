@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,18 +16,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agricom_it.MainActivity;
 import com.example.agricom_it.adapter.MessageAdapter;
 import com.example.agricom_it.R;
+import com.example.agricom_it.api.ApiClient;
+import com.example.agricom_it.api.AuthApiService;
+import com.example.agricom_it.model.ChatSummary;
 import com.example.agricom_it.repo.ChatRepository;
+import com.example.agricom_it.ui.ChatListFragment;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import com.example.agricom_it.model.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
+    private ImageView btn_back;
     private String chatId;
     private int otherUserId;
     private int currentUserId = -1;
@@ -34,6 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText editMessage;
     private ImageButton btnSend;
     private MessageAdapter adapter;
+    private TextView otherUsername;
 
     //------------------------------------------------------------------------------------[onCreate]
     @Override
@@ -43,19 +54,37 @@ public class ChatActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Intent i = getIntent();
+
         currentUserId = getIntent().getIntExtra("userID", -1);
         chatId = getIntent().getStringExtra("chatId");
         otherUserId = getIntent().getIntExtra("otherUserId", -1);
 
+        btn_back = findViewById(R.id.btn_back);
         rvMessages = findViewById(R.id.chat_recycler);
         editMessage = findViewById(R.id.editMessage);
         btnSend = findViewById(R.id.btnSend);
+        otherUsername =findViewById(R.id.other_chat_username);
 
+        ChatSummary cs = new ChatSummary(chatId, List.of(currentUserId, otherUserId), currentUserId);
         adapter = new MessageAdapter(new ArrayList<>(), currentUserId);
         rvMessages.setLayoutManager(new LinearLayoutManager(this));
         rvMessages.setAdapter(adapter);
+        AuthApiService apiService = ApiClient.getService();
+
+        cs.fetchOtherUsername(apiService, currentUserId, username -> {
+            if (username != null){
+                otherUsername.setText(username);
+            }else {
+                otherUsername.setText("");
+            }
+        });
 
         repo = new ChatRepository(getApplicationContext());
+
+        btn_back.setOnClickListener( v -> {
+            Intent intent = new Intent(ChatActivity.this, ChatListFragment.class);
+            startActivity(intent);
+        });
 
         // Start listening for messages
         messagesListener = repo.listenForMessages(chatId, (snapshots, e) ->

@@ -17,6 +17,7 @@
     <string name="username_reg">Username</string>
     <string name="surname">Surname</string>
     <string name="name">Name</string>
+    <string name="back_button">Back Button</string>
     <string-array name="user_roles">
         <item>User</item>
         <item>Admin</item>
