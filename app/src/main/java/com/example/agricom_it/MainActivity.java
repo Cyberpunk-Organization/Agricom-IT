@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Toast.makeText(MainActivity.this, "Login failed with code: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Login failed with code2: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "Login failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     Log.e("API_ERROR", "Response Code:" + response.code());
                 }
             }
