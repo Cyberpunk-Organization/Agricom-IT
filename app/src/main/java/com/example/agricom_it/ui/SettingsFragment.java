@@ -66,7 +66,7 @@ public class SettingsFragment extends Fragment {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 Toast.makeText(getContext(), "Dark mode Disabled", Toast.LENGTH_SHORT).show();
             }
-                });
+        });
 
         view.findViewById(R.id.logout_layout).setOnClickListener(v -> {
             Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();

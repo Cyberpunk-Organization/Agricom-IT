@@ -57,14 +57,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.tvTaskDesc.setText(task.getDescription());
 
         // Checkbox logic
-        holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(task.isDone());
-        updateTaskAppearance(holder, task.isDone());
-
-        holder.checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-            task.setDone(isChecked);
-            updateTaskAppearance(holder, isChecked);
-        });
+//        holder.checkBox.setOnCheckedChangeListener(null);
+//        holder.checkBox.setChecked(task.isDone());
+//        updateTaskAppearance(holder, task.isDone());
+//
+//        holder.checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+//            task.setDone(isChecked);
+//            updateTaskAppearance(holder, isChecked);
+//        });
 
         // Show due date or default text
         if (task.getDueDate() != null) {
@@ -132,7 +132,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             super(itemView);
             tvTaskDesc = itemView.findViewById(R.id.tvDescription);
             tvDueDate = itemView.findViewById(R.id.tvDueDate);
-            checkBox = itemView.findViewById(R.id.checkBox);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
         }
     }
