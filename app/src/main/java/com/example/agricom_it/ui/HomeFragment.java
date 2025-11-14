@@ -21,8 +21,9 @@ import com.example.agricom_it.R;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.databinding.FragmentHomeBinding;
-import com.example.agricom_it.model.MapArea;
-import com.example.agricom_it.model.MapComment;
+import com.example.agricom_it.model.map.Coordinates;
+import com.example.agricom_it.model.map.MapArea;
+import com.example.agricom_it.model.map.MapComment;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -63,6 +64,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateView for HomeFragment called");
+
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -72,6 +76,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        Log.d(TAG, "onViewCreated for HomeFragment called");
         if (getArguments() != null && getArguments().containsKey("userID")) {
             userID = getArguments().getInt("userID", -1);
         }
@@ -130,6 +136,8 @@ public class HomeFragment extends Fragment {
         });
 
         btnSaveArea.setOnClickListener(v -> {
+
+            Log.d(TAG, "Save Area button clicked");
             if (addingArea && areaPoints.size() > 2) {
                 addPolygon(areaPoints);
                 saveAreaToServer(areaPoints);
@@ -199,8 +207,11 @@ public class HomeFragment extends Fragment {
 
     //-------------------------------------------------------------------------[saveCommentToServer]
     private void saveCommentToServer(GeoPoint point, String comment) {
-        MapComment mapComment = new MapComment(userID, mapID, point.getLatitude(), point.getLongitude(), comment);
-        Call<ResponseBody> call = apiService.SaveMapComment("SaveMapComment", mapComment);
+
+        Coordinates coordinates = new Coordinates(point.getLatitude(), point.getLongitude());
+        MapComment mapComment = new MapComment( userID, coordinates, comment);
+
+        Call<ResponseBody> call = apiService.AddMapComment("AddMapComment", userID, mapComment.toJsonString());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -226,9 +237,13 @@ public class HomeFragment extends Fragment {
             coords.append(p.getLatitude()).append(",").append(p.getLongitude()).append(";");
         }
 
-        MapArea area = new MapArea(userID, mapID, coords.toString());
-        Call<ResponseBody> call = apiService.SaveMapArea("SaveMapArea", area);
+        MapArea area = new MapArea( coords.toString() );
 
+        String areaJson = area.toJsonString();
+
+        Log.d(TAG, "Saving area to server: " + areaJson);
+
+        Call<ResponseBody> call = apiService.SaveMapArea("SaveMapArea", userID, areaJson);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

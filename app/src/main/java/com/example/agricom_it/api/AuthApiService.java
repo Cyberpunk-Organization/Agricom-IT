@@ -1,15 +1,14 @@
 package com.example.agricom_it.api;
 
 import com.example.agricom_it.model.LoginRequest;
-import com.example.agricom_it.model.MapArea;
-import com.example.agricom_it.model.MapComment;
+import com.example.agricom_it.model.map.MapArea;
+import com.example.agricom_it.model.map.MapComment;
 import com.example.agricom_it.model.RegisterRequest;
 import com.example.agricom_it.model.LoginResponse;
 import com.example.agricom_it.model.RegisterResponse;
-//import com.example.agricom_it.model.MapComment;
-//import com.example.agricom_it.model.MapArea;
+//import com.example.agricom_it.model.map.MapComment;
+//import com.example.agricom_it.model.map.MapArea;
 
-import java.util.Date;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -73,11 +72,58 @@ public interface AuthApiService {
     Call<ResponseBody> GetUserIdByUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
 
     //-----------------------------------------------------------------------------------------[MAP]
+
     @GET("map.php")
-    Call<ResponseBody> GetMapID(@Query("action") String action, @Query("mapID") int mapID);
-    @POST("map.php")
-    Call<ResponseBody> SaveMapComment(@Query("action") String action, @Body MapComment comment);
-    // Save a polygon area
-    @POST("map.php")
-    Call<ResponseBody> SaveMapArea(@Query("action") String action, @Body MapArea area);
+    Call<ResponseBody> GetMapID(@Query("action") String action, @Query("userID") int userID);
+
+    @GET("map.php")
+    Call<ResponseBody> GetMapData(@Query("action") String action, @Query("mapID") int mapID);
+
+    @GET("map.php")
+    Call<ResponseBody> GetMapAreas(@Query("action") String action, @Query("userID") int userID);
+
+    @GET("map.php")
+    Call<ResponseBody> SaveMapArea(@Query("action") String action, @Query("userID") int userID, @Query("area") String areaJson);
+
+    @GET("map.php")
+    Call<ResponseBody> RemoveMapArea(@Query("action") String action, @Query("userID") int userID, @Query("areaID") String areaID);
+
+    @GET("map.php")
+    Call<ResponseBody> AddMapComment(@Query("action") String action, @Query("userID") int userID, @Query("comment") String commentJson);
+
+    @GET("map.php")
+    Call<ResponseBody> RemoveMapComment(@Query("action") String action, @Query("userID") int userID, @Query("commentID") String commentID);
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
