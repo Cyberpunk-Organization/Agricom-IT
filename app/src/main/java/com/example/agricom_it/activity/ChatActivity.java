@@ -1,5 +1,6 @@
 package com.example.agricom_it.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     private TextView otherUsername;
 
     //------------------------------------------------------------------------------------[onCreate]
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,13 +73,11 @@ public class ChatActivity extends AppCompatActivity {
         rvMessages.setAdapter(adapter);
         AuthApiService apiService = ApiClient.getService();
 
-        cs.fetchOtherUsername(apiService, currentUserId, username -> {
-            if (username != null){
-                otherUsername.setText(username);
-            }else {
-                otherUsername.setText("");
-            }
-        });
+        if (currentUserId == otherUserId) {
+            otherUsername.setText("Me");
+        } else {
+            cs.fetchOtherUsername(apiService, currentUserId, otherUsername::setText);
+        }
 
         repo = new ChatRepository(getApplicationContext());
 
