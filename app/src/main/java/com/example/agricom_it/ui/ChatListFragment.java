@@ -127,6 +127,12 @@ public class ChatListFragment extends Fragment {
                         int other = Integer.parseInt(inputIdentifier);
                         parsedNumber = true;
                         startNewChatWith(other);
+                        //To show a message to prevent a user to chat with themselve
+                        if (other == currentUserId) {
+                            showToastOnUiThread("You cannot start a chat with yourself.");
+                        } else {
+                            startNewChatWith(other);
+                        }
                     } catch (NumberFormatException ignored) {
                         Log.e(TAG, "Identifier is not a numeric user id, treating as username/email");
                     }
@@ -163,6 +169,11 @@ public class ChatListFragment extends Fragment {
                                     int otherUserId = dataElem.getAsInt();
                                     Log.d(TAG, "Resolved user id: " + otherUserId);
                                     startNewChatWith(otherUserId);
+                                    if (otherUserId == currentUserId) {
+                                        showToastOnUiThread("You cannot start a chat with yourself.");
+                                    } else {
+                                        startNewChatWith(otherUserId);
+                                    }
                                 } catch (Exception e) {
                                     Log.e(TAG, "Error parsing user ID", e);
                                     showToastOnUiThread("User not found");
@@ -186,6 +197,12 @@ public class ChatListFragment extends Fragment {
 
     //----------------------------------------------------------------------------[startNewChatWith]
     private void startNewChatWith(int otherUserId) {
+        // Prevent self-chat
+        if (otherUserId == currentUserId) {
+            showToastOnUiThread("You cannot start a chat with yourself.");
+            return;
+        }
+
         int a = Math.min(currentUserId, otherUserId);
         int b = Math.max(currentUserId, otherUserId);
 
@@ -193,6 +210,7 @@ public class ChatListFragment extends Fragment {
 
         repo.createChat(newChatId, java.util.Arrays.asList(currentUserId, otherUserId), success ->
         {
+            if (!isAdded()) return;// safe to call; for Realtime fallback for selfchat
             if (success) {
                 Intent i = new Intent(requireContext(), ChatActivity.class);
 
