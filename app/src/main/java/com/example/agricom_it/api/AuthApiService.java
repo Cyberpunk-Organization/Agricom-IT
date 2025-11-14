@@ -57,6 +57,14 @@ public interface AuthApiService {
     Call<ResponseBody> AddTaskToTasklist(@Query("action") String action, @Query("taskListID") int taskListID, @Query("taskID") int taskID);
     @GET("tasks.php")
     Call<ResponseBody> GetTasksFromTasklist(@Query("action") String action, @Query("taskListID") int taskListID);
+    @GET("tasks.php")
+    Call<ResponseBody> GetTaskByID(@Query("action") String action, @Query("taskID") int taskID);
+
+    //To remove a task from the database, call both RemoveTaskFromTasklist and RemoveTask
+    @GET("tasks.php")
+    Call<ResponseBody> RemoveTaskFromTasklist(@Query("action") String action, @Query("taskListID") int taskListID, @Query("taskID") int taskID);
+    @GET("tasks.php")
+    Call<ResponseBody> RemoveTask(@Query("action") String action, @Query("taskID") int taskID);
 
     //---------------------------------------------------------------------------------------[USERS]
     @GET("users.php")
