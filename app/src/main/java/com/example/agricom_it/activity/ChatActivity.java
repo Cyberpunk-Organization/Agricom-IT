@@ -82,8 +82,7 @@ public class ChatActivity extends AppCompatActivity {
         repo = new ChatRepository(getApplicationContext());
 
         btn_back.setOnClickListener( v -> {
-            Intent intent = new Intent(ChatActivity.this, ChatListFragment.class);
-            startActivity(intent);
+            finish();
         });
 
         // Start listening for messages
