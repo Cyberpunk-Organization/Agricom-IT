@@ -3,6 +3,10 @@ package com.example.agricom_it.model.map;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,27 +96,24 @@ public class MapArea {
     }
 
     //--------------------------------------------------------------------------------[toJsonString]
-    public String toJsonString() {
-        StringBuilder coordsJson = new StringBuilder();
-        coordsJson.append("[");
+    public String toJsonString() throws JSONException {
+        JSONObject obj = new JSONObject();
 
+        obj.put("areaID", (areaID != null) ? areaID : JSONObject.NULL);
+
+        JSONArray arr = new JSONArray();
         if (coordinates != null) {
-            for (int i = 0; i < coordinates.size(); i++) {
-                coordsJson.append(coordinates.get(i).toJsonString());
-                if (i < coordinates.size() - 1) {
-                    coordsJson.append(",");
-                }
+            for (Coordinates c : coordinates) {
+                if (c == null) continue;
+                JSONObject coord = new JSONObject();
+                coord.put("latitude", c.getLatitude());
+                coord.put("longitude", c.getLongitude());
+                arr.put(coord);
             }
         }
 
-        coordsJson.append("]");
-
-        String areaIdJson = (areaID != null) ? ("\"" + areaID + "\"") : "null";
-
-        return "{" +
-                "\"areaID\": " + areaIdJson + "," +
-                "\"coordinates\": " + coordsJson.toString() +
-                "}";
+        obj.put("coordinates", arr);
+        return obj.toString();
     }
 
 

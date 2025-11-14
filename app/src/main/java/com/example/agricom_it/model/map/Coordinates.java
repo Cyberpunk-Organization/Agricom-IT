@@ -1,13 +1,14 @@
 package com.example.agricom_it.model.map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Coordinates {
     private double latitude;
     private double longitude;
 
     //-----------------------------------------------------------------------------------[coordinates]
-    public Coordinates() {
-
-    }
+    public Coordinates() {}
 
     //-----------------------------------------------------------------------------------[coordinates]
     public Coordinates(double latitude, double longitude) {
@@ -37,17 +38,14 @@ public class Coordinates {
 
     //--------------------------------------------------------------------------------[toJsonString]
     public String toJsonString() {
-        return "{" +
-                "\"latitude\": " + latitude + "," +
-                "\"longitude\": " + longitude +
-                "}";
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("latitude", latitude);
+            obj.put("longitude", longitude);
+            return obj.toString();
+        } catch (JSONException e) {
+            return "{}";
+        }
     }
 
-    /*
-    Example JSON format for Coordinates
-    {
-        'latitude': 10,
-        'longitude': 10
-    }
-     */
 }

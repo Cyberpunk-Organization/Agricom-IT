@@ -72,7 +72,6 @@ public interface AuthApiService {
     Call<ResponseBody> GetUserIdByUsernameOrEmail(@Query("action") String action, @Query("identifier") String identifier);
 
     //-----------------------------------------------------------------------------------------[MAP]
-
     @GET("map.php")
     Call<ResponseBody> GetMapID(@Query("action") String action, @Query("userID") int userID);
 
@@ -83,7 +82,7 @@ public interface AuthApiService {
     Call<ResponseBody> GetMapAreas(@Query("action") String action, @Query("userID") int userID);
 
     @GET("map.php")
-    Call<ResponseBody> SaveMapArea(@Query("action") String action, @Query("userID") int userID, @Query("area") String areaJson);
+    Call<ResponseBody> SaveMapArea(@Query("action") String action, @Query("userID") int userID, @Query("area") String area);
 
     @GET("map.php")
     Call<ResponseBody> RemoveMapArea(@Query("action") String action, @Query("userID") int userID, @Query("areaID") String areaID);
