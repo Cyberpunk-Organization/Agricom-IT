@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,21 +43,30 @@ public class SettingsFragment extends Fragment {
 
         switchDarkMode = view.findViewById(R.id.switch_dark_mode);
 
-        boolean isDarkMode = preferences.getBoolean("DarkMode", false);
+        boolean hasUserSetPreference = preferences.contains("DarkMode");
+
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        boolean systemDarkMode = nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+
+        boolean isDarkMode = hasUserSetPreference ? preferences.getBoolean("DarkMode", false) : systemDarkMode;
+
         switchDarkMode.setChecked(isDarkMode);
+
+        AppCompatDelegate.setDefaultNightMode(isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             editor.putBoolean("DarkMode", isChecked);
             editor.apply();
 
-            if (isChecked) {
+            if(isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                Toast.makeText(getContext(), "Dark Mode Enabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Dark mode Enabled", Toast.LENGTH_SHORT).show();
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                Toast.makeText(getContext(), "Dark Mode Disabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Dark mode Disabled", Toast.LENGTH_SHORT).show();
             }
-        });
+                });
 
         view.findViewById(R.id.logout_layout).setOnClickListener(v -> {
             Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();
