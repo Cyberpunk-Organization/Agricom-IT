@@ -13,7 +13,11 @@
             android:background="@drawable/bg_message_sent"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:autoLink="all"
+            android:linksClickable="true"
+            android:textIsSelectable="true"
+            android:textColorLink="@color/dark_blue"/>
 
     <TextView
             android:id="@+id/textTime"

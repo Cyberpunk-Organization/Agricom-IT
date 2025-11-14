@@ -4,6 +4,7 @@
     <color name="white_off">#565353</color>
     <color name="green">#3A813D</color>
     <color name="blue">#1E88E5</color>
+    <color name="dark_blue">#0000D9</color>
     <color name="light_green">#549756</color>
     <color name="red">#EF5350</color>
 </resources>
