@@ -26,11 +26,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private final List<Task> taskList;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private final OnTaskInteractionListener listener;
+
+    //---------------------------------------------------------------------------------[OnTaskInteractionLister]
+    public interface OnTaskInteractionListener {
+        void onTaskDeleteClicked(Task task, int position);
+    }
 
     //---------------------------------------------------------------------------------[TaskAdapter]
-    public TaskAdapter(List<Task> taskList, Context context) {
+    public TaskAdapter(List<Task> taskList, Context context, OnTaskInteractionListener listener ) {
         this.taskList = taskList;
         this.context = context;
+        this.listener = listener;
     }
 
     //--------------------------------------------------------------------------[onCreateViewHolder]
@@ -92,11 +99,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         // Delete button
         holder.buttonDelete.setOnClickListener(v -> {
-            int pos = holder.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                taskList.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, taskList.size());
+            int currentPosition = holder.getAdapterPosition();
+            if (listener != null && currentPosition != RecyclerView.NO_POSITION) {
+                listener.onTaskDeleteClicked(taskList.get(currentPosition), currentPosition);
             }
         });
     }
@@ -131,4 +136,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
         }
     }
+
+    //------------------------------------------------------------------------------[removeTask]
+    public void removeItem(int position) {
+        // Check for a valid position to prevent crashes
+        if (position >= 0 && position < taskList.size()) {
+            taskList.remove(position);
+            notifyItemRemoved(position);
+            // This is important to update the positions of subsequent items
+            notifyItemRangeChanged(position, taskList.size());
+        }
+    }
+
 }

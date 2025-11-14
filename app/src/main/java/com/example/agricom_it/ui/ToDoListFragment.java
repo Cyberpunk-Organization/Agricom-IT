@@ -40,7 +40,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ToDoListFragment extends Fragment {
+//public class ToDoListFragment extends Fragment {
+public class ToDoListFragment extends Fragment implements TaskAdapter.OnTaskInteractionListener {
     private EditText editTextTask;
     private Button buttonAdd;
     private Button btnPickDate;
@@ -73,7 +74,7 @@ public class ToDoListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rvTasks);
 
         taskList = new ArrayList<>();
-        adapter = new TaskAdapter(taskList, getContext());
+        adapter = new TaskAdapter(taskList, getContext(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -338,4 +339,67 @@ public class ToDoListFragment extends Fragment {
             }
         });
     }
+
+    //--------------------------------------------------------------------------------[onTaskDeleteClicked]
+    @Override
+    public void onTaskDeleteClicked(Task task, int position) {
+        Log.d(TAG, "Starting 2-step deletion for task: " + task.getDescription());
+        if (!isAdded()) {
+            return;
+        }
+
+        // Step 1: Remove the task from the task list.
+        // Use the exact method name from your AuthApiService.java
+        Call<ResponseBody> removeLinkCall = apiService.RemoveTaskFromTasklist("RemoveTaskFromTasklist", currentTaskListId, task.getId());
+        removeLinkCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (!isAdded()) return; // Safety check
+
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Step 1/2 SUCCESS: Task unlinked from tasklist.");
+
+                    // Step 2: Now that the link is gone, remove the task itself.
+                    Call<ResponseBody> removeTaskCall = apiService.RemoveTask("RemoveTask", task.getId());
+                    removeTaskCall.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                            if (!isAdded()) return; // Safety check
+
+                            if (response.isSuccessful()) {
+                                Log.d(TAG, "Step 2/2 SUCCESS: Task permanently removed.");
+                                Toast.makeText(getContext(), "Task deleted.", Toast.LENGTH_SHORT).show();
+
+                                // Only now, after all server operations are successful, remove the item from the UI.
+                                adapter.removeItem(position);
+                            } else {
+                                Log.e(TAG, "Step 2/2 FAILED: Could not remove task. Code: " + response.code());
+                                Toast.makeText(getContext(), "Failed to permanently delete task.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                            if (!isAdded()) return;
+                            Log.e(TAG, "Step 2/2 FAILED: Network error on RemoveTask.", t);
+                            Toast.makeText(getContext(), "Network Error on final deletion.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                } else {
+                    Log.e(TAG, "Step 1/2 FAILED: Could not unlink task from list. Code: " + response.code());
+                    // If we can't even unlink it, we shouldn't try to delete it.
+                    Toast.makeText(getContext(), "Failed to delete task.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                if (!isAdded()) return;
+                Log.e(TAG, "Step 1/2 FAILED: Network error on RemoveTaskFromTasklist.", t);
+                Toast.makeText(getContext(), "Network Error.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
