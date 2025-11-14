@@ -33,6 +33,34 @@
     <string name="search_people_to_message">Search people to message</string>
     <string name="clear_search">clear search</string>
     <string name="search_icon">Search Icon</string>
+    <string name="icon_search">Icon Search</string>
+    <string name="agricom_logo">Agricom logo</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="type_a_message">Type a message...</string>
+    <string name="send_button">Send button</string>
+    <string name="item_name">Item name</string>
+    <string name="quantity">Quantity</string>
+    <string name="remove">Remove</string>
+    <string name="update">Update</string>
+    <string name="about_us">About Us</string>
+    <string name="about_us_text">Argicom-IT was developed by Eduvos students: Graham R., Mathews D.T., Amsenga E., Fitzgerald R., Mphonyo T.L., Madilonga M. Argicom-IT is a platform that accommodates farmers\' needs by providing effective communication, inventory management and task management.</string>
+    <string name="special_thanks_to">Special Thanks To:</string>
+    <string name="evolution_desc">Provided the server infrastructure for this project.</string>
+    <string name="visit_website">Visit website</string>
+    <string name="virtuocloud_desc">Provided permission to use the domain hosting services.</string>
+    <string name="thank_you_text">A heartfelt thank you to the directors - not only powering this platform, but also for the invaluable knowledge, guidance, and support throughout our academic journey.</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="logout">Logout</string>
+    <string name="about">About</string>
+    <string name="enter_a_new_task">Enter a new task</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="add_task">Add Task</string>
+    <string name="app_logo">App Logo</string>
+    <string name="icon_user">icon user</string>
+    <string name="user_name">User Name</string>
+    <string name="last_message_preview">Last message preview...</string>
+    <string name="delete_task">Delete Task</string>
     <string-array name="user_roles">
         <item>User</item>
         <item>Admin</item>

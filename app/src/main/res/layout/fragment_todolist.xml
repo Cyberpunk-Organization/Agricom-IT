@@ -17,7 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:hint="Enter a new task"
+            android:autofillHints=""
+            android:hint="@string/enter_a_new_task"
             android:padding="10dp"
             android:background="@android:drawable/edit_text"
             android:layout_marginEnd="8dp"
@@ -28,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:text="Pick Date"
+            android:text="@string/pick_date"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
             />
@@ -38,7 +39,7 @@
         android:id="@+id/buttonAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Task"
+        android:text="@string/add_task"
         android:backgroundTint="@color/green"
         android:textColor="@color/white"
         android:layout_marginBottom="10dp"/>

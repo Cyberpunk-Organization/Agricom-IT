@@ -19,6 +19,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:contentDescription="@string/icon_search"
             android:src="@android:drawable/ic_menu_search"
             android:layout_weight="0"
             app:tint="@color/green" />
@@ -27,6 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
+                android:autofillHints=""
                 android:hint="@string/search_conversation"
                 android:inputType="text"
                 android:padding="8dp" />

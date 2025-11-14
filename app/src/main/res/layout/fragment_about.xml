@@ -26,7 +26,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About Us"
+            android:text="@string/about_us"
             android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -37,7 +37,7 @@
             android:id="@+id/tvMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Argicom-IT was developed by Eduvos students: Graham R., Mathews D.T., Amsenga E., Fitzgerald R., Mphonyo T.L., Madilonga M. Argicom-IT is a platform that accommodates farmers' needs by providing effective communication, inventory management and task management."
+            android:text="@string/about_us_text"
             android:textSize="14sp"
             android:gravity="center"
             android:layout_marginTop="12dp"
@@ -48,7 +48,7 @@
             android:id="@+id/tvSpecialTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Special Thanks To:"
+            android:text="@string/special_thanks_to"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -86,7 +86,7 @@
                     android:id="@+id/EvolutionAnywhere_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Provided the server infrastructure for this project."
+                    android:text="@string/evolution_desc"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/black"/>
 
@@ -94,7 +94,7 @@
                     android:id="@+id/EvolutionAnywhere_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Visit website"
+                    android:text="@string/visit_website"
                     android:layout_marginTop="8dp"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/blue"/>
@@ -132,7 +132,7 @@
                     android:id="@+id/VirtuoCloud_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Provided permission to use the domain hosting services."
+                    android:text="@string/virtuocloud_desc"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/black"/>
 
@@ -140,7 +140,7 @@
                     android:id="@+id/VirtuoCloud_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Visit website"
+                    android:text="@string/visit_website"
                     android:layout_marginTop="8dp"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/blue"/>
@@ -153,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="A heartfelt thank you to the directors - not only powering this platform, but also for the invaluable knowledge, guidance, and support throughout our academic journey."
+            android:text="@string/thank_you_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginBottom="24dp"
             android:textColor="@color/black"/>

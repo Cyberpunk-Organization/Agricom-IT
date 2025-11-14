@@ -12,7 +12,7 @@
             android:id="@+id/et_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Item name" />
+            android:hint="@string/item_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -24,6 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Quantity" />
+            android:hint="@string/quantity" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

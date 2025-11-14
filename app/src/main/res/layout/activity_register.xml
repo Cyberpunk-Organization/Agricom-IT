@@ -14,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
 
         <ImageView
             android:layout_width="200dp"
             android:layout_height="150dp"
+            android:contentDescription="@string/agricom_logo"
             android:src="@drawable/agricom_circle_logo_2"/>
 
         <LinearLayout
@@ -33,6 +35,7 @@
                 android:layout_weight="0.5"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
+                android:autofillHints=""
                 android:hint="@string/name"
                 android:textColorHint="@color/white_off"
                 android:textColor="@color/white"
@@ -47,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:layout_marginTop="15dp"
+                android:autofillHints=""
                 android:hint="@string/surname"
                 android:textColorHint="@color/white_off"
                 android:textColor="@color/white"
@@ -61,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:autofillHints=""
             android:hint="@string/username_reg"
             android:textColorHint="@color/white_off"
             android:textColor="@color/white"
@@ -74,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:autofillHints=""
             android:hint="@string/email"
             android:textColorHint="@color/white_off"
             android:textColor="@color/white"
@@ -87,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:autofillHints=""
             android:hint="@string/password_reg"
             android:textColorHint="@color/white_off"
             android:textColor="@color/white"
@@ -100,6 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:autofillHints=""
             android:hint="@string/confirm_password"
             android:textColorHint="@color/white_off"
             android:textColor="@color/white"
@@ -148,8 +156,7 @@
                 android:textSize="16sp"
                 android:textColor="#FFFFFF"
                 android:layout_marginStart="5dp"/>
+
         </LinearLayout>
-
     </LinearLayout>
-
 </RelativeLayout>
