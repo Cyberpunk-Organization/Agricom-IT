@@ -84,6 +84,9 @@ public class InventoryFragment extends Fragment {
         inventoryIDcall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!isAdded() || getContext() == null) {
+                    return;
+                }
                 if (!response.isSuccessful() || response.body() == null) {
                     Log.e(TAG, "getInventoryID failed: " + (response != null ? response.code() : "null"));
                     return;
@@ -124,6 +127,7 @@ public class InventoryFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (!isAdded()) return;
                 Log.e(TAG, "getInventoryID request failed", t);
             }
         });
@@ -147,6 +151,9 @@ public class InventoryFragment extends Fragment {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!isAdded() || getContext() == null) {
+                    return;
+                }
                 if (!response.isSuccessful() || response.body() == null) {
                     Toast.makeText(requireContext(), "Failed to load inventory", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "inventory response unsuccessful: " + response.code());
@@ -217,6 +224,7 @@ public class InventoryFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (!isAdded() || getContext() == null) return;
                 Log.e(TAG, "inventory request failed", t);
                 Toast.makeText(requireContext(), "Network error loading inventory", Toast.LENGTH_SHORT).show();
             }
@@ -229,6 +237,9 @@ public class InventoryFragment extends Fragment {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!isAdded() || getContext() == null) {
+                    return;
+                }
                 if (!response.isSuccessful() || response.body() == null) {
                     Log.e(TAG, "getItem unsuccessful for id " + itemId + " code:" + (response != null ? response.code() : "null"));
                     return;
