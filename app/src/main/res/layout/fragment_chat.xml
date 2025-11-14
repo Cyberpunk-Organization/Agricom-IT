@@ -20,6 +20,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:contentDescription="@string/search_icon"
             android:src="@android:drawable/ic_menu_search"
             app:tint="#757575" />
 
@@ -29,18 +30,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="Search people to message"
+            android:autofillHints=""
+            android:hint="@string/search_people_to_message"
             android:background="@android:color/transparent"
             android:paddingStart="8dp"
             android:textSize="14sp"
             android:inputType="textPersonName"
-            android:imeOptions="actionSearch"/>
+            android:imeOptions="actionSearch"
+            tools:ignore="RtlSymmetry" />
 
         <!-- Clear Button -->
         <ImageView
             android:id="@+id/clear_search"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:contentDescription="@string/clear_search"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             android:visibility="gone"
             app:tint="#757575" />
@@ -51,7 +55,7 @@
         android:id="@+id/most_recent_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Most Recent"
+        android:text="@string/most_recent"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_marginStart="16dp"

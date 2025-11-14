@@ -27,7 +27,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:hint="Search Conversation"
+                android:hint="@string/search_conversation"
                 android:inputType="text"
                 android:padding="8dp" />
 
@@ -35,7 +35,7 @@
                 android:id="@+id/btnStartChat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Start new chat"
+                android:text="@string/start_new_chat"
                 android:layout_marginStart="8dp"
                 android:layout_weight="0.4"/>
     </LinearLayout>
@@ -44,7 +44,7 @@
             android:id="@+id/most_recent_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Most Recent"
+            android:text="@string/most_recent"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="8dp"

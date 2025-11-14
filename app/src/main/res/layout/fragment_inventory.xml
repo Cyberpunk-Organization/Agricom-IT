@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green"
-            android:text="Add Item"
+            android:text="@string/add_item"
             android:textColor="@color/black"/>
         <View
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green"
-            android:text="Sort: A to Z"
+            android:text="@string/sort_a_to_z"
             android:textColor="@color/black"/>
     </LinearLayout>
 
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="Stock Name"
+            android:text="@string/stock_name"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Count"
+            android:text="@string/count"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>

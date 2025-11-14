@@ -18,6 +18,21 @@
     <string name="surname">Surname</string>
     <string name="name">Name</string>
     <string name="back_button">Back Button</string>
+    <string name="search_conversation">Search Conversation</string>
+    <string name="start_new_chat">Start new chat</string>
+    <string name="most_recent">Most Recent</string>
+    <string name="sort_a_to_z">Sort: A to Z</string>
+    <string name="add_item">Add Item</string>
+    <string name="stock_name">Stock Name</string>
+    <string name="count">Count</string>
+    <string name="farm_map">Farm Map</string>
+    <string name="tap_to_add_comments_or_draw_areas_on_your_map">Tap to add comments or draw areas on your map.</string>
+    <string name="add_area">Add Area</string>
+    <string name="save_area">Save Area</string>
+    <string name="recenter_map">Recenter Map</string>
+    <string name="search_people_to_message">Search people to message</string>
+    <string name="clear_search">clear search</string>
+    <string name="search_icon">Search Icon</string>
     <string-array name="user_roles">
         <item>User</item>
         <item>Admin</item>
