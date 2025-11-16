@@ -106,7 +106,6 @@ public class HomeFragment extends Fragment {
         getMapIDFromServer();
     }
 
-
     //--------------------------------------------------------------------------------[setupButtons]
     private void setupButtons() {
         btnAddArea.setOnClickListener(v -> {

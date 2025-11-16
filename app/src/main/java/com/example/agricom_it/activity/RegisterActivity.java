@@ -119,21 +119,22 @@ public class RegisterActivity extends AppCompatActivity {
         AuthApiService apiService = ApiClient.getService();
         Call<RegisterResponse> call = apiService.register(request);
 
-        // Corrected Callback to use RegisterResponse
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                progressDialog.dismiss();
+
                 if (response.isSuccessful() && response.body() != null) {
                     RegisterResponse registerResponse = response.body();
-
-                    // Display the message from the server (e.g., "Registration successful")
                     String message = registerResponse.getMessage();
                     if (message == null || message.trim().isEmpty()) {
                         message = "Registration successful!";
                     }
+                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();
                 } else {
-                    // Handle unsuccessful responses (e.g., 404, 500)
-                    progressDialog.dismiss();
                     Log.e(TAG, "Registration failed with code: " + response.code());
                     Toast.makeText(RegisterActivity.this, "Registration failed with code: " + response.code(), Toast.LENGTH_LONG).show();
                 }
@@ -142,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
                 progressDialog.dismiss();
-                // Handle network errors or other failures
                 Toast.makeText(RegisterActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

@@ -29,6 +29,9 @@ public class BottomNavFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_nav, container, false);
 
+        Log.d(TAG, "BottomNavFragment created");
+
+
         BottomNavigationView bottomNav = view.findViewById(R.id.bottom_nav);
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment parentFragment = getParentFragment();
