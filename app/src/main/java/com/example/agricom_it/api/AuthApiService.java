@@ -6,8 +6,6 @@ import com.example.agricom_it.model.map.MapComment;
 import com.example.agricom_it.model.RegisterRequest;
 import com.example.agricom_it.model.LoginResponse;
 import com.example.agricom_it.model.RegisterResponse;
-//import com.example.agricom_it.model.map.MapComment;
-//import com.example.agricom_it.model.map.MapArea;
 
 import java.util.Map;
 
@@ -94,35 +92,3 @@ public interface AuthApiService {
     Call<ResponseBody> RemoveMapComment(@Query("action") String action, @Query("userID") int userID, @Query("commentID") String commentID);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

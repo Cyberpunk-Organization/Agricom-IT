@@ -119,33 +119,22 @@ public class RegisterActivity extends AppCompatActivity {
         AuthApiService apiService = ApiClient.getService();
         Call<RegisterResponse> call = apiService.register(request);
 
-        // Corrected Callback to use RegisterResponse
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                progressDialog.dismiss();
+
                 if (response.isSuccessful() && response.body() != null) {
                     RegisterResponse registerResponse = response.body();
-
-                    // Display the message from the server (e.g., "Registration successful")
                     String message = registerResponse.getMessage();
                     if (message == null || message.trim().isEmpty()) {
                         message = "Registration successful!";
                     }
+                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
 
-                    // Check the status from the response
-                    if ("true".equalsIgnoreCase(registerResponse.getStatus())) {
-                        // On success, create the corresponding Firebase user
-                        createFirebaseUser(emailInput.getText().toString().trim(), passwordInput.getText().toString().trim(), usernameInput.getText().toString().trim(), roleSpinner.getSelectedItem().toString());
-                    } else {
-                        // Handle cases where registration was not successful but the server responded
-                        // For example, if the username or email is already taken
-                        progressDialog.dismiss();
-                        Log.e(TAG, "Registration failed: " + registerResponse.getMessage());
-                        Toast.makeText(RegisterActivity.this, "Registration failed: " + registerResponse.getMessage(), Toast.LENGTH_LONG).show();
-                    }
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();
                 } else {
-                    // Handle unsuccessful responses (e.g., 404, 500)
-                    progressDialog.dismiss();
                     Log.e(TAG, "Registration failed with code: " + response.code());
                     Toast.makeText(RegisterActivity.this, "Registration failed with code: " + response.code(), Toast.LENGTH_LONG).show();
                 }
@@ -154,73 +143,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
                 progressDialog.dismiss();
-                // Handle network errors or other failures
                 Toast.makeText(RegisterActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    //--------------------------------------------------------------------------[createFirebaseUser]
-    private void createFirebaseUser(String email, String password, String displayName, String role) {
-        progressDialog.setMessage("Creating Firebase user...");
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task ->
-                {
-                    if (!task.isSuccessful()) {
-                        progressDialog.dismiss();
-                        Toast.makeText(RegisterActivity.this,
-                                "Firebase signup failed: " + (task.getException() != null ? task.getException().getMessage() : ""),
-                                Toast.LENGTH_LONG).show();
-                        Log.e("FirebaseAuth", "createUser failed", task.getException());
-                        return;
-                    }
-
-                    FirebaseUser user = auth.getCurrentUser();
-                    if (user == null) {
-                        progressDialog.dismiss();
-                        Toast.makeText(RegisterActivity.this, "Firebase user is null", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    String uid = user.getUid();
-                    // update display name in Auth profile
-                    com.google.firebase.auth.UserProfileChangeRequest profileUpdates =
-                            new com.google.firebase.auth.UserProfileChangeRequest.Builder()
-                                    .setDisplayName(displayName)
-                                    .build();
-                    user.updateProfile(profileUpdates);
-
-                    // prepare Firestore user doc
-                    java.util.Map<String, Object> userData = new java.util.HashMap<>();
-                    userData.put("uid", uid);
-                    userData.put("displayName", displayName);
-                    userData.put("email", email);
-                    userData.put("role", role);
-                    userData.put("username", usernameInput.getText().toString().trim());
-                    userData.put("createdAt", FieldValue.serverTimestamp());
-
-                    FirebaseFirestore.getInstance()
-                            .collection("users")
-                            .document(uid)
-                            .set(userData)
-                            .addOnSuccessListener(aVoid ->
-                            {
-                                progressDialog.dismiss();
-                                Toast.makeText(RegisterActivity.this, "Registration complete. Please log in.", Toast.LENGTH_SHORT).show();
-
-                                // Navigate to login (MainActivity)
-                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            })
-                            .addOnFailureListener(e ->
-                            {
-                                Log.e(TAG, "Failed saving user doc", e);
-                                progressDialog.dismiss();
-                                Toast.makeText(RegisterActivity.this, "Failed saving user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                            });
-                });
     }
 }
