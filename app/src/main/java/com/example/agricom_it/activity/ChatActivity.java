@@ -210,7 +210,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     //-----------------------------------------------------------------------------------[fetchTenorGIFs]
-    private static final String TENOR_API_KEY = "AIzaSyD9-zd1o-mG3n-2y2PDV14ubCBmmOPiL84";
+    private static final String TENOR_API_KEY = "LOL";
 
     private void fetchTenorGIFs(String query, List<GifItem> gifList, GifAdapter gifAdapter) {
         try {
