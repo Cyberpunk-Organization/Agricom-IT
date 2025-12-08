@@ -1,8 +1,11 @@
 package com.example.agricom_it.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,15 +17,18 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agricom_it.MainActivity;
+import com.example.agricom_it.adapter.GifAdapter;
 import com.example.agricom_it.adapter.MessageAdapter;
 import com.example.agricom_it.R;
 import com.example.agricom_it.api.ApiClient;
 import com.example.agricom_it.api.AuthApiService;
 import com.example.agricom_it.model.ChatSummary;
+import com.example.agricom_it.model.GifItem;
 import com.example.agricom_it.repo.ChatRepository;
 import com.example.agricom_it.ui.ChatListFragment;
 import com.google.firebase.firestore.DocumentChange;
@@ -30,6 +36,17 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import com.example.agricom_it.model.Message;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +83,8 @@ public class ChatActivity extends AppCompatActivity {
         editMessage = findViewById(R.id.editMessage);
         btnSend = findViewById(R.id.btnSend);
         otherUsername =findViewById(R.id.other_chat_username);
+
+        ImageButton btnGIF = findViewById(R.id.btnGIF);
 
         ChatSummary cs = new ChatSummary(chatId, List.of(currentUserId, otherUserId), currentUserId);
         adapter = new MessageAdapter(new ArrayList<>(), currentUserId);
@@ -161,6 +180,78 @@ public class ChatActivity extends AppCompatActivity {
                 }
             });
         });
+        btnGIF.setOnClickListener(v -> openGifDialog());
+    }
+
+    private void openGifDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_gif_search);
+
+        EditText searchBox = dialog.findViewById(R.id.gifSearchBox);
+        RecyclerView gifRecycler = dialog.findViewById(R.id.gifRecycler);
+
+        gifRecycler.setLayoutManager(new GridLayoutManager(this, 2));
+
+        List<GifItem> gifList = new ArrayList<>();
+        GifAdapter gifAdapter = new GifAdapter(gifList, url -> {
+            sendGif(url);
+            dialog.dismiss();
+        });
+        gifRecycler.setAdapter(gifAdapter);
+
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count){
+             if (s.length() > 1) fetchTenorGIFs(s.toString(), gifList, gifAdapter);
+            }
+        });
+        dialog.show();
+    }
+
+    //-----------------------------------------------------------------------------------[fetchTenorGIFs]
+    private static final String TENOR_API_KEY = "AIzaSyD9-zd1o-mG3n-2y2PDV14ubCBmmOPiL84";
+
+    private void fetchTenorGIFs(String query, List<GifItem> gifList, GifAdapter gifAdapter) {
+        try {
+            URL url = new URL("https://tenor.googleapis.com/v2/search?q=" + query + "&key=" + TENOR_API_KEY + "&limit=20");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            br.close();
+            JSONObject json = new JSONObject(sb.toString());
+            JSONArray results = json.getJSONArray("results");
+
+            gifList.clear();
+            for (int i = 0; i < results.length(); i++){
+                JSONObject media = results.getJSONObject(i).getJSONArray("media_format").getJSONObject(0);
+                String gifUrl = media.getString("gif");
+                gifList.add(new GifItem(gifUrl));
+            }
+            runOnUiThread(() -> gifAdapter.notifyDataSetChanged());
+
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    //-----------------------------------------------------------------------------------[sendGifs]
+    private void sendGif (String gifUrl) {
+        repo.sendMessage(chatId, currentUserId, gifUrl, success -> {
+            runOnUiThread(() -> {
+                if (Boolean.TRUE.equals(success)) {
+                    Toast.makeText(this, "GIF sent", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     //-----------------------------------------------------------------------------------[onDestroy]
@@ -172,3 +263,4 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 }
+

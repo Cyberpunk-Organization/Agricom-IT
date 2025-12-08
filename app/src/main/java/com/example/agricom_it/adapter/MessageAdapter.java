@@ -4,11 +4,13 @@ package com.example.agricom_it.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.agricom_it.R;
 import com.example.agricom_it.model.Message;
 import com.google.firebase.Timestamp;
@@ -60,14 +62,40 @@ public class MessageAdapter
         Message m = items.get(position);
         String text = m.getText() != null ? m.getText() : "";
         String time = formatTimestamp(m.getTimestamp());
+
+        ImageView gifView;
+        TextView messageView;
+        TextView timeView;
+
         if (holder instanceof SentHolder) {
-            ((SentHolder) holder).txtMessage.setText(text);
-            ((SentHolder) holder).txtTime.setText(time);
-        } else if (holder instanceof ReceivedHolder) {
-            ((ReceivedHolder) holder).txtMessage.setText(text);
-            ((ReceivedHolder) holder).txtTime.setText(time);
+            gifView = ((SentHolder) holder).imgGif;
+            messageView = ((SentHolder) holder).txtMessage;
+            timeView = ((SentHolder) holder).txtTime;
+        } else {
+            gifView = ((ReceivedHolder) holder).imgGif;
+            messageView = ((ReceivedHolder) holder).txtMessage;
+            timeView = ((ReceivedHolder) holder).txtTime;
+        }
+
+        timeView.setText(time);
+
+        // Check if message is a GIF
+        if (text.endsWith(".gif") || text.contains("tenor.com")) {
+            gifView.setVisibility(View.VISIBLE);
+            messageView.setVisibility(View.GONE);
+
+            Glide.with(gifView.getContext())
+                    .asGif()
+                    .load(text)
+                    .into(gifView);
+
+        } else {
+            gifView.setVisibility(View.GONE);
+            messageView.setVisibility(View.VISIBLE);
+            messageView.setText(text);
         }
     }
+
 
     //--------------------------------------------------------------------------------[getItemCount]
     @Override
@@ -116,25 +144,27 @@ public class MessageAdapter
 
     //----------------------------------------------------------------------------------[SentHolder]
     static class SentHolder extends RecyclerView.ViewHolder {
-        TextView txtMessage;
-        TextView txtTime;
+        TextView txtMessage, txtTime;
+        ImageView imgGif;
 
         SentHolder(@NonNull View v) {
             super(v);
             txtMessage = v.findViewById(R.id.textMessage);
             txtTime = v.findViewById(R.id.textTime);
+            imgGif = v.findViewById(R.id.imgGif);
         }
     }
 
     //------------------------------------------------------------------------------[ReceivedHolder]
     static class ReceivedHolder extends RecyclerView.ViewHolder {
-        TextView txtMessage;
-        TextView txtTime;
+        TextView txtMessage, txtTime;
+        ImageView imgGif;
 
         ReceivedHolder(@NonNull View v) {
             super(v);
             txtMessage = v.findViewById(R.id.textMessage);
             txtTime = v.findViewById(R.id.textTime);
+            imgGif = v.findViewById(R.id.imgGif);
         }
     }
 }

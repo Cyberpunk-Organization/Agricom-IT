@@ -63,6 +63,15 @@
             android:gravity="center_vertical"
             android:fitsSystemWindows="true">
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnGIF"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_gif"
+                android:contentDescription="GIF"
+                app:tint="@color/blue"/>
+
             <EditText
                 android:id="@+id/editMessage"
                 android:layout_width="0dp"
